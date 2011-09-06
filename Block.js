@@ -5,6 +5,8 @@ var BLOCK_WIDTH = 24;
 var Block = function (config) {
     this.moveBlock = Block.moveBlock;
     this.setPosition = Block.setPosition;
+    this.getX = Block.getX;
+    this.getY = Block.getY;
 
     config = config || {};
 
@@ -38,3 +40,6 @@ Block.setPosition = function(blockX, blockY) {
     this.x = this.boX + blockX * BLOCK_WIDTH;
     this.y = this.boY + blockY * BLOCK_WIDTH;
 };
+
+Block.getX = function() { return this.blockX; };
+Block.getY = function() { return this.blockY; };

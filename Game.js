@@ -4,11 +4,11 @@ function Game() {
     this.update = Game.update;
     this.draw = Game.draw;
     this.newBlock = Game.newBlock;
+    this.isLegalPosition = Game.isLegalPosition
+    this.newBlock = Game.newBlock;
+    this.dropBlock = Game.dropBlock;
     
     var thisObject = this;
-
-    this.newBlock = Game.newBlock;
-    this.processInput = Game.processInput;
 
     this.blocks = [];
     
@@ -27,7 +27,7 @@ function Game() {
 	},
 	down: {
 	    handler: function() {
-		thisObject.controlGroup.drop();
+		thisObject.dropBlock();
 	    }
 	},
 	z: {
@@ -47,7 +47,7 @@ function Game() {
 * drops a new block into the game
 */
 Game.newBlock = function () {
-    
+    var thisObject = this;
     var options = ['i', 'o', 'j', 'l', 'z', 's', 't'];
     var shape = 'i';
 
@@ -59,8 +59,9 @@ Game.newBlock = function () {
 	this.blocks.push(curBlock);
     }
 
-    // TODO: add the movement validator function
-    this.controlGroup = new ControlGroup(newBlocks, shape);
+    this.controlGroup = new ControlGroup(newBlocks, shape, function(x, y){
+	return thisObject.isLegalPosition(x, y);
+    });
 };
 
 /**
@@ -93,5 +94,33 @@ Game.update = function() {
 Game.draw = function() {
     for (var i = 0; i < this.blocks.length; i+= 1) {
 	this.blocks[i].draw();
+    }
+}
+
+/**
+* Returns true iff the given position can be moved into
+* @param {Number} x - the x position
+* @param {Number} y - the y position
+* @returns {Boolean} true iff the new position is legal
+*/
+Game.isLegalPosition = function (x, y) {
+    var i;
+    // see if it overlaps with any existing blocks
+    for (i = 0; i < this.blocks.length; i += 1) {
+	if (this.blocks[i].getX() === x && this.blocks[i].getY() === y) {
+	    return false;
+	}
+    }
+    
+    // if it's on the field
+    if (x >= 10 || x < 0 || y >= 20) {
+	return false;
+    }
+    return true;
+}
+
+Game.dropBlock = function () {
+    if (!this.controlGroup.drop()) {
+	this.newBlock();
     }
 }

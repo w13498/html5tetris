@@ -1,69 +1,3 @@
-var SHAPES = {
-    i: {
-	spin: 'corner',
-	pos: [
-	    { x: -2, y: 0 },
-	    { x: -1, y: 0},
-	    { x: 0, y: 0 },
-	    { x: 1, y: 0 }
-	]
-    },
-    o: {
-	spin: 'corner',
-	pos: [
-	    { x: -1, y: 0 },
-	    { x: 0, y: 0},
-	    { x: -1, y: -1 },
-	    { x: 0, y: -1 }
-	]
-    },
-    j: {
-	spin: 'block',
-	pos: [
-	    { x: -1, y: -1 },
-	    { x: -1, y: 0 },
-	    { x: 0, y: 0 },
-	    { x: 1, y: 0 }
-	]
-    },
-    l: {
-	spin: 'block',
-	pos: [
-	    { x: -1, y: 0 },
-	    { x: 0, y: 0 },
-	    { x: 1, y: 0 },
-	    { x: 1, y: -1 }
-	]
-    },
-    s: {
-	spin: 'block',
-	pos: [
-	    { x: -1, y: 0 },
-	    { x: 0, y: 0 },
-	    { x: 0, y: 1 },
-	    { x: 1, y: -1 }
-	]
-    },
-    z: {
-	spin: 'block',
-	pos: [
-	    { x: -1, y: -1 },
-	    { x: 0, y: -1 },
-	    { x: 0, y: 0 },
-	    { x: 1, y: 0 }
-	]
-    },
-    t: {
-	spin: 'block',
-	pos: [
-	    { x: -1, y: 0 },
-	    { x: 0, y: 0 },
-	    { x: 0, y: -1 },
-	    { x: 1, y: 0 }
-	]
-    }
-    
-};
 
 /**
 * The blocks that can be moved nby the user
@@ -93,55 +27,92 @@ function ControlGroup(blocks, shape, isLegalCallback) {
     this.shift = ControlGroup.shift;
     this.drop = ControlGroup.drop;
     this.turn = ControlGroup.turn;
+    this.isLegalPosition = ControlGroup.isLegalPosition;
 }
 
 /**
+* if the position is legal
+* @param {Number} x
+* @param {Number} y
+* @returns {Boolean} true iff the position is legal to move to
+*/
+ControlGroup.isLegalPosition = function (x, y) {
+    var i;
+    // if it's a currently occupied, it must be legal
+    for (i = 0; i < 4; i += 1) {
+	if (this.blocks[i].getX() === x && this.blocks[i].getY() === y) {
+	    return true;
+	}
+    }
+
+    // if it's still not proven legal, then defer to the game to decide
+    return this.isLegalCallback(x, y);
+};
+
+/**
 * Shift the block left or right
+* @param {Boolean} left - true to shift left false to shift right
+* @returns {Boolean} true iff the shift was successful
 */
 ControlGroup.shift = function(left) {
     var dx = left ? -1 : 1;
     var i;
+    var newPos = [];
     
+    for (i = 0; i < 4; i += 1) {
+	if (!this.isLegalPosition(this.blocks[i].getX()+dx, this.blocks[i].getY())) {
+	    return false;
+	}
+    }
+
     this.baseX += dx;
 
-    // TODO: only move if valid
     for (i = 0; i < this.blocks.length; i += 1) {
 	this.blocks[i].moveBlock(dx, 0);
     }
+    return true;
 };
 
 /**
 * Drop the block by one
+* @returns {Boolean} true iff the drop was successfull
 */
 ControlGroup.drop = function() {
     var i;
 
-    // TODO: don't drop if invalid
-    // TODO: call the bottomed out block callback if it's stuck
+    // don't drop if invalid
+    for (i = 0; i < this.blocks.length; i += 1) {
+	if (!this.isLegalPosition(this.blocks[i].getX(), this.blocks[i].getY() + 1)) {
+	    return false;
+	}
+    }
 
     this.baseY += 1;
 
     for (i = 0; i < this.blocks.length; i += 1) {
 	this.blocks[i].moveBlock(0, 1);
     }
+    
+    return true;
 };
 
 /**
 * Turns the block
 * @param {Boolean} cw - true for clockwise, false for counter-clockwise
+* @returns {Boolean} true iff the block was successfully turned
 */
 ControlGroup.turn = function (cw) {
     var newX, newY,
     oldX, oldY,
-    i;
+    i,
+    newPos = [];
 
     if (this.spin === 'block') {
 	for (i = 0; i < this.blocks.length; i += 1) {
 	    newX = (cw ? -1 : 1) * (this.blocks[i].blockY - this.baseY) + this.baseX;
 	    newY = (cw ? 1 : -1) * (this.blocks[i].blockX - this.baseX) + this.baseY;
 
-	    // TODO: check that it is a legal move
-	    this.blocks[i].setPosition(newX, newY);
+	    newPos[i] = {x: newX, y: newY};
 	}
     } else {
 	// point turning
@@ -158,8 +129,21 @@ ControlGroup.turn = function (cw) {
 	    if (newX > 0) { newX -= 1; }
 	    if (newY > 0) { newY -= 1; }
 
-	    // TODO: check that this is a legal move
-	    this.blocks[i].setPosition(newX + this.baseX, newY + this.baseY);
+	    newPos[i] = {x: newX + this.baseX, y: newY + this.baseY};
 	}
     }
+
+    // validate that the bocks can actually be moved   
+    for (i = 0; i < 4; i++) {
+	// TODO: try to move the block to a legal position in this orientation
+	if (!this.isLegalPosition(newPos[i].x, newPos[i].y)) {
+	    return false;
+	}
+    }
+
+    // must be legal at this point move the bocks
+    for (i = 0; i < 4; i++) {
+	this.blocks[i].setPosition(newPos[i].x, newPos[i].y);
+    }
+    return true;
 }
