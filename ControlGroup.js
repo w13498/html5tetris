@@ -17,17 +17,13 @@ function ControlGroup(blocks, shape, isLegalCallback) {
     var shapeConf = SHAPES[shape];
     this.pos = shapeConf.pos;
     this.spin = shapeConf.spin;
+    this.bottomed = false;
     
     this.isLegalCallback = isLegalCallback || function() {return true;};
 
     for (i = 0; i < blocks.length; i += 1) {
 	this.blocks[i].setPosition(this.baseX + this.pos[i].x, this.baseY + this.pos[i].y);
     }
-
-    this.shift = ControlGroup.shift;
-    this.drop = ControlGroup.drop;
-    this.turn = ControlGroup.turn;
-    this.isLegalPosition = ControlGroup.isLegalPosition;
 }
 
 /**
@@ -36,7 +32,7 @@ function ControlGroup(blocks, shape, isLegalCallback) {
 * @param {Number} y
 * @returns {Boolean} true iff the position is legal to move to
 */
-ControlGroup.isLegalPosition = function (x, y) {
+ControlGroup.prototype.isLegalPosition = function (x, y) {
     var i;
     // if it's a currently occupied, it must be legal
     for (i = 0; i < 4; i += 1) {
@@ -54,7 +50,7 @@ ControlGroup.isLegalPosition = function (x, y) {
 * @param {Boolean} left - true to shift left false to shift right
 * @returns {Boolean} true iff the shift was successful
 */
-ControlGroup.shift = function(left) {
+ControlGroup.prototype.shift = function(left) {
     var dx = left ? -1 : 1;
     var i;
     var newPos = [];
@@ -75,15 +71,15 @@ ControlGroup.shift = function(left) {
 
 /**
 * Drop the block by one
-* @returns {Boolean} true iff the drop was successfull
 */
-ControlGroup.drop = function() {
+ControlGroup.prototype.drop = function() {
     var i;
 
     // don't drop if invalid
     for (i = 0; i < this.blocks.length; i += 1) {
 	if (!this.isLegalPosition(this.blocks[i].getX(), this.blocks[i].getY() + 1)) {
-	    return false;
+	    this.bottomed = true;
+	    return;
 	}
     }
 
@@ -92,16 +88,21 @@ ControlGroup.drop = function() {
     for (i = 0; i < this.blocks.length; i += 1) {
 	this.blocks[i].moveBlock(0, 1);
     }
-    
-    return true;
 };
+
+/**
+* @returns {Boolean} true if the block is bottomed and another shoudl spawn
+*/
+ControlGroup.prototype.isBottomed = function() {
+    return this.bottomed;
+}
 
 /**
 * Turns the block
 * @param {Boolean} cw - true for clockwise, false for counter-clockwise
 * @returns {Boolean} true iff the block was successfully turned
 */
-ControlGroup.turn = function (cw) {
+ControlGroup.prototype.turn = function (cw) {
     var newX, newY,
     oldX, oldY,
     i,
@@ -133,10 +134,11 @@ ControlGroup.turn = function (cw) {
 	}
     }
 
-    // validate that the bocks can actually be moved   
+    
+    // for each block
     for (i = 0; i < 4; i++) {
-	// TODO: try to move the block to a legal position in this orientation
-	if (!this.isLegalPosition(newPos[i].x, newPos[i].y)) {
+	curPos = newPos[i];
+	if (!this.isLegalPosition(curPos.x, curPos.y)) {
 	    return false;
 	}
     }
@@ -146,4 +148,57 @@ ControlGroup.turn = function (cw) {
 	this.blocks[i].setPosition(newPos[i].x, newPos[i].y);
     }
     return true;
+}
+
+/**
+* Gets the positions that the block will use when it falls
+* @returns {[Object]} array of hashs of {x: Number, y: Number}
+*/
+ControlGroup.prototype.getFallPositions = function () {
+    var res = [],
+    dist = 0,
+    i,
+    curBlock,
+    notDone = true;
+
+    while (notDone) {
+	dist += 1;
+
+	// for each block
+	for (i = 0; i < 4 && notDone; i++) {
+	    curBlock = this.blocks[i];
+	    // if it's not a legal position
+	    if (!this.isLegalPosition(curBlock.getX(), curBlock.getY() + dist)) {
+		// back up one and stop dropping
+		dist -= 1;
+		notDone = false;
+	    }
+	}
+    }
+
+    // for each block
+    for (i = 0; i < 4; i++) {
+	curBlock = this.blocks[i];
+	res.push({x: curBlock.getX(), y: curBlock.getY() + dist});
+    }
+
+    return res;
+}
+
+/**
+* makes the block fall all the way to the bottom
+* forces the next cycle to be recognized as bottomed
+*/
+ControlGroup.prototype.fall = function() {
+    var positions = this.getFallPositions(),
+    res = [],
+    i, curPos;
+
+    // for each block
+    for (i = 0; i < 4; i++) {
+	curPos = positions[i];
+	this.blocks[i].setPosition(curPos.x, curPos.y);
+    }
+
+    this.bottomed = true;
 }

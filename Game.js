@@ -1,13 +1,5 @@
 
 function Game() {
-    this.processInput = Game.processInput;
-    this.update = Game.update;
-    this.draw = Game.draw;
-    this.newBlock = Game.newBlock;
-    this.isLegalPosition = Game.isLegalPosition
-    this.newBlock = Game.newBlock;
-    this.dropBlock = Game.dropBlock;
-    
     var thisObject = this;
 
     this.blocks = [];
@@ -15,41 +7,34 @@ function Game() {
     this.controlGroup = null;
     
     this.input = {
-	left: {
-	    handler: function () {
-		thisObject.controlGroup.shift(true);
-	    }
-	},
-	right: {
-	    handler: function() {
+	left: { handler: function () {
+	    thisObject.controlGroup.shift(true);
+	}},
+	right: { handler: function() {
 		thisObject.controlGroup.shift(false);
-	    }
-	},
-	down: {
-	    handler: function() {
-		thisObject.dropBlock();
-	    }
-	},
-	z: {
-	    handler: function() {
-		thisObject.controlGroup.turn(false);
-	    }
-	},
-	x: {
-	    handler: function() {
-		thisObject.controlGroup.turn(true);
-	    }
-	}
+	}},
+	down: { handler: function() {
+	    thisObject.dropBlock();
+	}},
+	space: { handler: function() {
+	    thisObject.controlGroup.fall();
+	}},
+	z: { handler: function() {
+	    thisObject.controlGroup.turn(false);
+	}},
+	x: { handler: function() {
+	    thisObject.controlGroup.turn(true);
+	}}
     };
 }
 
 /**
 * drops a new block into the game
 */
-Game.newBlock = function () {
+Game.prototype.newBlock = function () {
     var thisObject = this;
     var options = ['i', 'o', 'j', 'l', 'z', 's', 't'];
-    var shape = 'i';
+    var shape = options[Math.floor(Math.random()*7)];
 
     // create some new blocks
     var newBlocks = [];
@@ -67,7 +52,7 @@ Game.newBlock = function () {
 /**
 * processes the input keys
 */
-Game.processInput = function() {
+Game.prototype.processInput = function() {
     for (var keyName in this.input) {
 	//  if the key is down
 	if (jaws.pressed(keyName)) {
@@ -83,15 +68,30 @@ Game.processInput = function() {
     }
 };
 
-Game.update = function() {
+Game.prototype.update = function() {
+    // if the first block needs to be made
     if (!this.controlGroup) {
 	this.newBlock();
     }
 
     this.processInput();
+
+    // TODO: check for a drop period
+
+    // if a new block needs to be made
+    if (this.controlGroup.isBottomed()) {
+	// look for rows
+	var rows = this.getRows();
+	if (rows.length > 0) {
+	    this.removeRows(rows);
+	}
+	this.newBlock();
+    }
 }
 
-Game.draw = function() {
+Game.prototype.draw = function() {
+    // TODO: draw preview blocks
+
     for (var i = 0; i < this.blocks.length; i+= 1) {
 	this.blocks[i].draw();
     }
@@ -103,7 +103,7 @@ Game.draw = function() {
 * @param {Number} y - the y position
 * @returns {Boolean} true iff the new position is legal
 */
-Game.isLegalPosition = function (x, y) {
+Game.prototype.isLegalPosition = function (x, y) {
     var i;
     // see if it overlaps with any existing blocks
     for (i = 0; i < this.blocks.length; i += 1) {
@@ -119,8 +119,9 @@ Game.isLegalPosition = function (x, y) {
     return true;
 }
 
-Game.dropBlock = function () {
-    if (!this.controlGroup.drop()) {
-	this.newBlock();
-    }
+/**
+* drops the controlled blocks by one
+*/
+Game.prototype.dropBlock = function () {
+    this.controlGroup.drop();
 }
