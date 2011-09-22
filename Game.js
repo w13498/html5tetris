@@ -1,18 +1,35 @@
-
 function Game() {
     var thisObject = this;
 
-    this.blocks = [];
-    
+    this.firstLoop = true;
+
+    this.blocks = [];    
     this.controlGroup = null;
+
+    // TODO: should this be driven from configuration???
+    this.level = 1;
+    this.dropPeriod = 500;
+    this.timeToNextDrop = this.dropPeriod;
+
+    // TODO: find the official values for these constants
+    this.keyChargeTime = 200;
+    this.keyRepeatTime = 100;
+    
+    this.lastTime = null;
     
     this.input = {
-	left: { handler: function () {
-	    thisObject.controlGroup.shift(true);
-	}},
-	right: { handler: function() {
+	left: { 
+	    autoRepeat: true,
+	    handler: function () {
+		thisObject.controlGroup.shift(true);
+	    }
+	},
+	right: { 
+	    autoRepeat: true,
+	    handler: function() {
 		thisObject.controlGroup.shift(false);
-	}},
+	    }
+	},
 	down: { handler: function() {
 	    thisObject.dropBlock();
 	}},
@@ -51,32 +68,65 @@ Game.prototype.newBlock = function () {
 
 /**
 * processes the input keys
+* @param {Number} dTime - the time in milliseconds since the last frame
 */
-Game.prototype.processInput = function() {
+Game.prototype.processInput = function(dTime) {
+    var curInput;
+
     for (var keyName in this.input) {
+	curInput = this.input[keyName];
+	
 	//  if the key is down
 	if (jaws.pressed(keyName)) {
 	    // if it is a 'press' frame
-	    if (!this.input[keyName].lastState) {
-		this.input[keyName].handler();
-		this.input[keyName].lastState = true;
+	    if (!curInput.lastState) {
+		curInput.handler();
+		curInput.lastState = true;
+		curInput.charged = false;
+		curInput.holdTime = 0;
+	    }
+	    // if it supports auto-repeat
+	    if (curInput.autoRepeat) {
+		curInput.holdTime += dTime;
+
+		// if not charged and past the charge time
+		if ((!curInput.charged) && (curInput.holdTime > this.keyChargeTime)) {
+		    // call the handler, and reset the hold time
+		    curInput.holdTime -= this.keyChargeTime;
+		    curInput.handler();
+		    curInput.charged = true;
+		}
+		// if charged and past the repeat time
+		if (curInput.charged && (curInput.holdTime > this.keyRepeatTime)) {
+		    curInput.holdTime -= this.keyRepeatTime;
+		    curInput.handler();
+		}
 	    }
 	} else {
 	    // it was released
-	    this.input[keyName].lastState = false
+	    curInput.lastState = false
 	}
     }
 };
 
 Game.prototype.update = function() {
     // if the first block needs to be made
-    if (!this.controlGroup) {
+    if (this.firstLoop) {
+	this.firstLoop = false;
+
 	this.newBlock();
+
+	this.lastTime = (new Date()).getTime();
     }
 
-    this.processInput();
+    // TODO: is this going to be too slow???
+    var curTime = (new Date()).getTime();
+    var dTime = curTime - this.lastTime;
+    this.lastTime = curTime;
 
-    // TODO: check for a drop period
+    this.processInput(dTime);
+
+    this.applyGravity(dTime);
 
     // if a new block needs to be made
     if (this.controlGroup.isBottomed()) {
@@ -122,6 +172,10 @@ Game.prototype.isLegalPosition = function (x, y) {
 /**
 * drops the controlled blocks by one
 */
-Game.prototype.dropBlock = function () {
+Game.prototype.dropBlock = function (causedByGravity) {
+    if (!causedByGravity) {
+	this.timeToNextDrop = this.dropPeriod;
+    }
+
     this.controlGroup.drop();
 }

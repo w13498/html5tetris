@@ -9,15 +9,17 @@
 function ControlGroup(blocks, shape, isLegalCallback) {
     var i;
     
-    this.blocks = blocks;
-    this.baseX = 5;
-    this.baseY = -1;
 
     // place the blocks according to the shape
     var shapeConf = SHAPES[shape];
     this.pos = shapeConf.pos;
     this.spin = shapeConf.spin;
     this.bottomed = false;
+
+    this.blocks = blocks;
+    this.baseX = shapeConf.startX;
+    this.baseY = -1;
+
     
     this.isLegalCallback = isLegalCallback || function() {return true;};
 
@@ -97,6 +99,7 @@ ControlGroup.prototype.isBottomed = function() {
     return this.bottomed;
 }
 
+// TODO: replace this with an offset based checker to detect wall kick possibilities
 /**
 * Turns the block
 * @param {Boolean} cw - true for clockwise, false for counter-clockwise

@@ -73,3 +73,18 @@ Game.prototype.removeRows = function (rows) {
 	}
     }
 }
+
+Game.prototype.applyGravity = function (dTime) {
+    this.timeToNextDrop -= dTime;
+
+    // drop until there is a positive time until the next drop time is positive, or the control group s bottomed out
+    while (this.timeToNextDrop < 0 && (!this.controlGroup.isBottomed())) {
+	this.dropBlock(true);
+	this.timeToNextDrop += this.dropPeriod;
+    }
+
+    // if it exited through bottoming, reset the drop period
+    if (this.controlGroup.isBottomed()) {
+	this.timeToNextDrop = this.dropPeriod;
+    }
+};
