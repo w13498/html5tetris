@@ -1,10 +1,17 @@
 function Game() {
-    var thisObject = this;
+    var thisObject = this,
+    i;
 
     this.firstLoop = true;
 
     this.blocks = [];    
     this.controlGroup = null;
+
+    // make the preview blocks
+    this.previewBlocks = [];
+    for (i = 0; i < 4; i++) {
+	this.previewBlocks.push(new Block({x: -1, y: -1, preview: true}));
+    }
 
     // TODO: should this be driven from configuration???
     this.level = 1;
@@ -56,7 +63,7 @@ Game.prototype.newBlock = function () {
     // create some new blocks
     var newBlocks = [];
     for (var i = 0; i < 4; i++) {
-	var curBlock = new Block({x: -1, y: -1});
+	var curBlock = new Block({x: -1, y: -1, shape: shape});
 	newBlocks.push(curBlock);
 	this.blocks.push(curBlock);
     }
@@ -139,10 +146,29 @@ Game.prototype.update = function() {
     }
 }
 
+/**
+* Renders the entire game scene
+*/
 Game.prototype.draw = function() {
-    // TODO: draw preview blocks
+    var i;
 
-    for (var i = 0; i < this.blocks.length; i+= 1) {
+    // update the position of the preview blocks
+    if (this.controlGroup) {
+	// ask the control group to move the preview blocks
+	this.controlGroup.configurePreviewBlocks(this.previewBlocks);
+    } else {
+	// if there is no contorl group, just move them off the screen
+	for (i = 0; i < 4; i++) {
+	    this.previewBlocks[i].setPosition(-1, -1);
+	}
+    }
+
+    // draw the preview blocks
+    for (i = 0; i < 4; i++) {
+	this.previewBlocks[i].draw();
+    }
+
+    for (i = 0; i < this.blocks.length; i+= 1) {
 	this.blocks[i].draw();
     }
 }

@@ -25,7 +25,15 @@ function Tetris() {
 }
 
 window.onload = function () {
+    jaws.assets.add('media/blueblock.png');
+    jaws.assets.add('media/cyanblock.png');
+    jaws.assets.add('media/greenblock.png');
+    jaws.assets.add('media/orangeblock.png');
+    jaws.assets.add('media/purpleblock.png');
     jaws.assets.add('media/redblock.png');
+    jaws.assets.add('media/yellowblock.png');
+
+    jaws.assets.add('media/greyblock.png');
     jaws.assets.add('media/emptyblock.png');
     jaws.start(Tetris);
 };

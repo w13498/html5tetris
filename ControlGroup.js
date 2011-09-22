@@ -205,3 +205,16 @@ ControlGroup.prototype.fall = function() {
 
     this.bottomed = true;
 }
+
+/**
+* Sets the preview blocks to the approproriate positions
+* @param {[Block]} previews - the 4 blocks to be modified to be put into position as preview blocks
+*/
+ControlGroup.prototype.configurePreviewBlocks = function(previews) {
+    var positions = this.getFallPositions(),
+    i;
+    
+    for (i = 0; i < 4; i++) {
+	previews[i].setPosition(positions[i].x, positions[i].y);
+    }
+};

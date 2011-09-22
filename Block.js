@@ -13,7 +13,11 @@ var Block = function (config) {
     config.x = this.boX + BLOCK_WIDTH * this.blockX;
     config.y = this.boY + BLOCK_WIDTH * this.blockY;
 
-    config.image = 'media/redblock.png';
+    if (config.preview) {
+	config.image = 'media/greyblock.png'
+    } else {
+	config.image = SHAPES[config.shape].image;
+    }
 
     var parent = new jaws.Sprite(config);
     for (key in parent) {

@@ -7,7 +7,8 @@ var SHAPES = {
 	    { x: -1, y: 0},
 	    { x: 0, y: 0 },
 	    { x: 1, y: 0 }
-	]
+	],
+	image: 'media/cyanblock.png'
     },
     o: {
 	spin: 'corner',
@@ -17,7 +18,8 @@ var SHAPES = {
 	    { x: 0, y: 0},
 	    { x: -1, y: -1 },
 	    { x: 0, y: -1 }
-	]
+	],
+	image: 'media/yellowblock.png'
     },
     j: {
 	spin: 'block',
@@ -27,7 +29,8 @@ var SHAPES = {
 	    { x: -1, y: 0 },
 	    { x: 0, y: 0 },
 	    { x: 1, y: 0 }
-	]
+	],
+	image: 'media/blueblock.png'
     },
     l: {
 	spin: 'block',
@@ -37,7 +40,8 @@ var SHAPES = {
 	    { x: 0, y: 0 },
 	    { x: 1, y: 0 },
 	    { x: 1, y: -1 }
-	]
+	],
+	image: 'media/orangeblock.png'
     },
     s: {
 	spin: 'block',
@@ -47,7 +51,8 @@ var SHAPES = {
 	    { x: 0, y: 0 },
 	    { x: 0, y: -1 },
 	    { x: 1, y: -1 }
-	]
+	],
+	image: 'media/greenblock.png'
     },
     z: {
 	spin: 'block',
@@ -57,7 +62,8 @@ var SHAPES = {
 	    { x: 0, y: -1 },
 	    { x: 0, y: 0 },
 	    { x: 1, y: 0 }
-	]
+	],
+	image: 'media/redblock.png'
     },
     t: {
 	spin: 'block',
@@ -67,7 +73,8 @@ var SHAPES = {
 	    { x: 0, y: 0 },
 	    { x: 0, y: -1 },
 	    { x: 1, y: 0 }
-	]
+	],
+	image: 'media/purpleblock.png'
     }
     
 };
