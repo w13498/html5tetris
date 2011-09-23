@@ -26,6 +26,14 @@ var Block = function (config) {
 
 };
 
+Block.prototype.setColor = function(shape, preview) {
+    if (preview) {
+	this.setImage('media/greyblock.png');
+    } else {
+	this.setImage(SHAPES[shape].image);
+    }
+}
+
 Block.prototype.moveBlock = function(dx, dy) {
     this.blockX += dx;
     this.blockY += dy;

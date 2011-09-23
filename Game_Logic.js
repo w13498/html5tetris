@@ -88,3 +88,14 @@ Game.prototype.applyGravity = function (dTime) {
 	this.timeToNextDrop = this.dropPeriod;
     }
 };
+
+/**
+* Changes the shapes of the preview along the side
+* @param {[Char]} queue - the queue of pieces
+*/
+Game.prototype.updatePreviews = function(queue) {
+    var i;
+    for (i = 0; i < queue.length; i++) {
+	this.previewGroups[i].setShape(queue[i]);
+    }
+}

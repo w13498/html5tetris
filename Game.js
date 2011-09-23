@@ -1,6 +1,6 @@
 function Game() {
     var thisObject = this,
-    i;
+    i, j;
 
     this.firstLoop = true;
 
@@ -24,6 +24,16 @@ function Game() {
     
     this.lastTime = null;
     
+    // evenly distributed random piece generator
+    this.previewLength = 5;
+    this.randBag = new RandomBag(this.previewLength);
+    // make the preview blocks
+    this.previewGroups = [];
+    for (i = 0; i < this.previewLength; i++) {
+	this.previewGroups.push(new PreviewGroup(340, 75 * i + 50));
+    }
+
+
     this.input = {
 	left: { 
 	    autoRepeat: true,
@@ -37,9 +47,12 @@ function Game() {
 		thisObject.controlGroup.shift(false);
 	    }
 	},
-	down: { handler: function() {
-	    thisObject.dropBlock();
-	}},
+	down: {
+	    autoRepeat: true,
+	    handler: function() {
+		thisObject.dropBlock();
+	    }
+	},
 	space: { handler: function() {
 	    thisObject.controlGroup.fall();
 	}},
@@ -56,14 +69,14 @@ function Game() {
 * drops a new block into the game
 */
 Game.prototype.newBlock = function () {
-    var thisObject = this;
-    var options = ['i', 'o', 'j', 'l', 'z', 's', 't'];
-    var shape = options[Math.floor(Math.random()*7)];
+    var thisObject = this,
+    shape = this.randBag.popQueue(),
+    newBlocks = [],
+    curBlock;
 
     // create some new blocks
-    var newBlocks = [];
     for (var i = 0; i < 4; i++) {
-	var curBlock = new Block({x: -1, y: -1, shape: shape});
+	curBlock = new Block({x: -1, y: -1, shape: shape});
 	newBlocks.push(curBlock);
 	this.blocks.push(curBlock);
     }
@@ -71,6 +84,8 @@ Game.prototype.newBlock = function () {
     this.controlGroup = new ControlGroup(newBlocks, shape, function(x, y){
 	return thisObject.isLegalPosition(x, y);
     });
+
+    this.updatePreviews(this.randBag.getQueue());
 };
 
 /**
@@ -126,7 +141,6 @@ Game.prototype.update = function() {
 	this.lastTime = (new Date()).getTime();
     }
 
-    // TODO: is this going to be too slow???
     var curTime = (new Date()).getTime();
     var dTime = curTime - this.lastTime;
     this.lastTime = curTime;
@@ -161,6 +175,11 @@ Game.prototype.draw = function() {
 	for (i = 0; i < 4; i++) {
 	    this.previewBlocks[i].setPosition(-1, -1);
 	}
+    }
+
+    // draw the queue
+    for (i = 0; i < this.previewGroups.length; i++) {
+	this.previewGroups[i].draw();
     }
 
     // draw the preview blocks
