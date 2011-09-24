@@ -3,6 +3,7 @@ function PreviewGroup(baseX, baseY) {
     var i;
     
     this.blocks = [];
+    this.shape = null;
 
     // create the blocks
     for (i = 0; i < 4; i++) {
@@ -24,11 +25,17 @@ function PreviewGroup(baseX, baseY) {
 PreviewGroup.prototype.setShape = function(shape) {
     var shapeConfig = SHAPES[shape],
     i;
+
+    this.shape = shape;
     
     for (i = 0; i < 4; i++) {
 	this.blocks[i].setPosition(shapeConfig.pos[i].x, shapeConfig.pos[i].y);
 	this.blocks[i].setColor(shape, false);
     }
+}
+
+PreviewGroup.prototype.getShape = function () {
+    return this.shape;
 }
 
 PreviewGroup.prototype.draw = function() {

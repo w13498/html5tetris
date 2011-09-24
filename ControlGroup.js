@@ -20,6 +20,7 @@ function ControlGroup(blocks, shape, isLegalCallback) {
     this.baseX = shapeConf.startX;
     this.baseY = -1;
 
+    this.shape = shape;
     
     this.isLegalCallback = isLegalCallback || function() {return true;};
 
@@ -218,3 +219,11 @@ ControlGroup.prototype.configurePreviewBlocks = function(previews) {
 	previews[i].setPosition(positions[i].x, positions[i].y);
     }
 };
+
+ControlGroup.prototype.getShape = function () {
+    return this.shape;
+}
+
+ControlGroup.prototype.getBlocks = function () {
+    return this.blocks;
+}

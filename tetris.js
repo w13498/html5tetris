@@ -1,4 +1,7 @@
 
+FIELD_OFFSET_X = 150;
+FIELD_OFFSET_Y = 0;
+
 function Tetris() {
     var border;
     var background;

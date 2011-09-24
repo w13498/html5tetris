@@ -33,6 +33,8 @@ function Game() {
 	this.previewGroups.push(new PreviewGroup(340, 75 * i + 50));
     }
 
+    this.swapGroup = null;
+    this.swapAllowed = true;
 
     this.input = {
 	left: { 
@@ -61,6 +63,9 @@ function Game() {
 	}},
 	x: { handler: function() {
 	    thisObject.controlGroup.turn(true);
+	}},
+	c: { handler: function() {
+	    thisObject.swap();
 	}}
     };
 }
@@ -68,7 +73,7 @@ function Game() {
 /**
 * drops a new block into the game
 */
-Game.prototype.newBlock = function () {
+Game.prototype.newBlock = function (calledBySwap) {
     var thisObject = this,
     shape = this.randBag.popQueue(),
     newBlocks = [],
@@ -84,6 +89,11 @@ Game.prototype.newBlock = function () {
     this.controlGroup = new ControlGroup(newBlocks, shape, function(x, y){
 	return thisObject.isLegalPosition(x, y);
     });
+
+    if (!calledBySwap) {
+	// the user is allowed to swap blocks again
+	this.swapAllowed = true;
+    }
 
     this.updatePreviews(this.randBag.getQueue());
 };
@@ -177,14 +187,19 @@ Game.prototype.draw = function() {
 	}
     }
 
-    // draw the queue
-    for (i = 0; i < this.previewGroups.length; i++) {
-	this.previewGroups[i].draw();
-    }
-
     // draw the preview blocks
     for (i = 0; i < 4; i++) {
 	this.previewBlocks[i].draw();
+    }
+
+    // draw the swap block
+    if (this.swapGroup) {
+	this.swapGroup.draw();
+    }
+
+    // draw the queue
+    for (i = 0; i < this.previewGroups.length; i++) {
+	this.previewGroups[i].draw();
     }
 
     for (i = 0; i < this.blocks.length; i+= 1) {

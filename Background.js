@@ -3,8 +3,8 @@ var Background = function (config) {
     
     config = config || {};
 
-    this.originX = config.x || 0;
-    this.originY = config.y || 0;
+    this.originX = (config.x || 0) + FIELD_OFFSET_X;
+    this.originY = (config.y || 0) + FIELD_OFFSET_Y;
 
     this.width = 10;
     this.height = 20;

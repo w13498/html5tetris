@@ -5,8 +5,8 @@ var BLOCK_WIDTH = 24;
 var Block = function (config) {
     config = config || {};
 
-    this.boX = config.boardOriginX || 0;
-    this.boY = config.boardOriginY || 0;
+    this.boX = (config.boardOriginX || 0) + FIELD_OFFSET_X;
+    this.boY = (config.boardOriginY || 0) + FIELD_OFFSET_Y;
     this.blockX = config.blockX;
     this.blockY = config.blockY;
 

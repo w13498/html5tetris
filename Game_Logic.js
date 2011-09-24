@@ -59,19 +59,17 @@ Game.prototype.removeRows = function (rows) {
 	// if it is being removed
 	if (remove[curY]) {
 	    // remove the block
-	    if (i === this.blocks.length - 1) {
-		// last entry, just kill it
-		this.blocks.pop();
-	    } else {
-		// not last entry, fill the hole and try it again
-		this.blocks[i] = this.blocks.pop();
-		i--;
-	    }
+	    this.removeBlock(i);
+	    i -= 1;
 	} else {
 	    // it is being dropped
 	    curBlock.setPosition(curBlock.getX(), curBlock.getY() + dropDist[curY]);
 	}
     }
+}
+
+Game.prototype.removeBlock = function(index) {
+    return this.blocks.splice(index, 1);
 }
 
 Game.prototype.applyGravity = function (dTime) {
@@ -98,4 +96,57 @@ Game.prototype.updatePreviews = function(queue) {
     for (i = 0; i < queue.length; i++) {
 	this.previewGroups[i].setShape(queue[i]);
     }
+}
+
+/**
+* called when the user attempts to swap a block
+*/
+Game.prototype.swap = function() {
+    var i, j,
+    newShape,
+    oldShape = this.controlGroup.getShape(),
+    oldBlocks = this.controlGroup.getBlocks(),
+    newBlocks = [],
+    thisObject = this;
+
+    // can only be called once per drop
+    if (!this.swapAllowed) {
+	return;
+    }
+    this.swapAllowed = false;
+
+    // remove the blocks
+    // for each block on the field
+    for (i = 0; i < this.blocks.length; i++) {
+	// if the block is part of the control group, remove it
+	for (j = 0; j < 4; j++) {
+	    if (oldBlocks[j] === this.blocks[i]) {
+		this.removeBlock(i);
+		i -= 1;
+	    }
+	}
+    }
+    
+    // if there is a block waiting
+    if (this.swapGroup) {
+	newShape = this.swapGroup.getShape();
+	for (i = 0; i < 4; i++) {
+	    newBlocks.push(new Block({x:-1, y:-1, shape: newShape}));
+	    this.blocks.push(newBlocks[i]);
+	}
+	
+	this.controlGroup = new ControlGroup(newBlocks, newShape, function(x, y){
+	    return thisObject.isLegalPosition(x, y);
+	});
+
+	this.swapGroup.setShape(oldShape);
+
+	return;
+    }
+
+    // if there is no block waiting
+    this.swapGroup = new PreviewGroup(-80, 100);
+    this.swapGroup.setShape(oldShape);
+    this.newBlock(true);    
+
 }
