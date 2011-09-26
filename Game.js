@@ -20,7 +20,7 @@ function Game() {
 
     // TODO: find the official values for these constants
     this.keyChargeTime = 200;
-    this.keyRepeatTime = 100;
+    this.keyRepeatTime = 50;
     
     this.lastTime = null;
     
@@ -51,6 +51,7 @@ function Game() {
 	},
 	down: {
 	    autoRepeat: true,
+	    preCharged: true,
 	    handler: function() {
 		thisObject.dropBlock();
 	    }
@@ -114,7 +115,7 @@ Game.prototype.processInput = function(dTime) {
 	    if (!curInput.lastState) {
 		curInput.handler();
 		curInput.lastState = true;
-		curInput.charged = false;
+		curInput.charged = (curInput.preCharged ? true : false);
 		curInput.holdTime = 0;
 	    }
 	    // if it supports auto-repeat
