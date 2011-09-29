@@ -144,17 +144,17 @@ Game.prototype.processInput = function(dTime) {
     }
 };
 
-Game.prototype.update = function() {
+Game.prototype.update = function(time) {
     // if the first block needs to be made
     if (this.firstLoop) {
 	this.firstLoop = false;
 
 	this.newBlock();
 
-	this.lastTime = (new Date()).getTime();
+	this.lastTime = time;
     }
 
-    var curTime = (new Date()).getTime();
+    var curTime = time;
     var dTime = curTime - this.lastTime;
     this.lastTime = curTime;
 

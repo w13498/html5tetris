@@ -3,11 +3,19 @@
 
 <script src="jawsjs.js"></script>
 
+<script>
+function onClickEvent(event){
+if (Tetris.currentInstance) {
+Tetris.currentInstance.mouseClicked(event.offsetX, event.offsetY);
+}
+}
+</script>
+
 </head>
 <body>
 
 <center>
-<canvas width="600" height="500"></canvas>
+  <canvas width="600" height="500" onclick="onClickEvent(event)"></canvas>
 </center>
 
 <script src="Block.js"></script>
@@ -20,6 +28,7 @@
 <script src="ScoreTracker.js"></script>
 <script src="Game.js"></script>
 <script src="Game_Logic.js"></script>
+<script src="Button.js"></script>
 <script src="tetris.js"></script>
 
 </body>

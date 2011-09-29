@@ -23,7 +23,6 @@ var Block = function (config) {
     for (key in parent) {
 	this[key] = parent[key];
     }
-
 };
 
 Block.prototype.setColor = function(shape, preview) {
