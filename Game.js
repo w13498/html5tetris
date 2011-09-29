@@ -13,10 +13,10 @@ function Game() {
 	this.previewBlocks.push(new Block({x: -1, y: -1, preview: true}));
     }
 
-    // TODO: should this be driven from configuration???
-    this.level = 1;
-    this.dropPeriod = 500;
+    this.scoreTracker = new ScoreTracker();
+    this.dropPeriod = this.scoreTracker.getLevelPeriod();
     this.timeToNextDrop = this.dropPeriod;
+    this.levelDisplay = new NumberDisplay({val: this.scoreTracker.getLevel(), x: 350, y: 430});
 
     // TODO: find the official values for these constants
     this.keyChargeTime = 200;
@@ -79,6 +79,8 @@ Game.prototype.newBlock = function (calledBySwap) {
     shape = this.randBag.popQueue(),
     newBlocks = [],
     curBlock;
+
+    this.dropPeriod = this.scoreTracker.getLevelPeriod();
 
     // create some new blocks
     for (var i = 0; i < 4; i++) {
@@ -206,6 +208,10 @@ Game.prototype.draw = function() {
     for (i = 0; i < this.blocks.length; i+= 1) {
 	this.blocks[i].draw();
     }
+
+    this.levelDisplay.setValue(this.scoreTracker.getLevel());
+    this.levelDisplay.draw();
+
 }
 
 /**

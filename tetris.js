@@ -38,5 +38,17 @@ window.onload = function () {
 
     jaws.assets.add('media/greyblock.png');
     jaws.assets.add('media/emptyblock.png');
+
+    jaws.assets.add('media/numbers/0.png');
+    jaws.assets.add('media/numbers/1.png');
+    jaws.assets.add('media/numbers/2.png');
+    jaws.assets.add('media/numbers/3.png');
+    jaws.assets.add('media/numbers/4.png');
+    jaws.assets.add('media/numbers/5.png');
+    jaws.assets.add('media/numbers/6.png');
+    jaws.assets.add('media/numbers/7.png');
+    jaws.assets.add('media/numbers/8.png');
+    jaws.assets.add('media/numbers/9.png');
+
     jaws.start(Tetris);
 };

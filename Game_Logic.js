@@ -66,6 +66,9 @@ Game.prototype.removeRows = function (rows) {
 	    curBlock.setPosition(curBlock.getX(), curBlock.getY() + dropDist[curY]);
 	}
     }
+
+    // apply the score
+    this.scoreTracker.updateScore({lines: rows.length});
 }
 
 Game.prototype.removeBlock = function(index) {

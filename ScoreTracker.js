@@ -7,14 +7,10 @@ function ScoreTracker() {
 
 ScoreTracker.levelLines = function (level) {
     var levels = [
-	5,
-	10,
-	15,
-	20,
-	25
+	10
     ];
-    if (level < level.length) {
-	return levels[level];
+    if (level <= levels.length) {
+	return levels[level-1];
     }
     return levels[levels.length - 1];
 }
@@ -36,3 +32,11 @@ ScoreTracker.prototype.updateScore = function(config) {
 ScoreTracker.prototype.getLinesRemaining = function() { return this.linesRemaining; }
 ScoreTracker.prototype.getScore = function() { return this.score; }
 ScoreTracker.prototype.getLevel = function() { return this.level; }
+ScoreTracker.prototype.getLevelPeriod = function() {
+    // TODO: get a better level speed estimation
+    var res = 500 - 30 * this.level;
+    if (res < 5) {
+	res = 5;
+    }
+    return res;
+}
