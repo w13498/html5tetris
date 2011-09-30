@@ -9,7 +9,6 @@
 function ControlGroup(blocks, shape, isLegalCallback) {
     var i;
     
-
     // place the blocks according to the shape
     var shapeConf = SHAPES[shape];
     this.pos = shapeConf.pos;
@@ -18,10 +17,12 @@ function ControlGroup(blocks, shape, isLegalCallback) {
 
     this.blocks = blocks;
     this.baseX = shapeConf.startX;
-    this.baseY = -1;
+    this.baseY = shapeConf.startY;;
 
     this.shape = shape;
-    
+    this.kickOffsets = WALL_KICK_OFFSETS[shapeConf.kickType];
+    this.dir = 0;
+
     this.isLegalCallback = isLegalCallback || function() {return true;};
 
     for (i = 0; i < blocks.length; i += 1) {
@@ -100,13 +101,61 @@ ControlGroup.prototype.isBottomed = function() {
     return this.bottomed;
 }
 
-// TODO: replace this with an offset based checker to detect wall kick possibilities
 /**
 * Turns the block
 * @param {Boolean} cw - true for clockwise, false for counter-clockwise
 * @returns {Boolean} true iff the block was successfully turned
 */
-ControlGroup.prototype.turn = function (cw) {
+ControlGroup.prototype.turn = function(cw) {
+    var kick,
+    newPos = null,
+    direction = cw ? 'cw' : 'ccw',
+    i;
+
+    // for possible each kick offset
+    for (i = 0; i < this.kickOffsets.length; i += 1) {
+	kick = this.kickOffsets[this.dir][direction][i];
+	newPos = this.tryTurn(cw, kick);
+	if (newPos) {
+	    break;
+	}
+    }
+
+    // if there s still no valid rotation, fail
+    if (!newPos) {
+	return false;
+    }
+
+    // must be legal at this point move the bocks
+    for (i = 0; i < 4; i++) {
+	this.blocks[i].setPosition(newPos[i].x, newPos[i].y);
+    }
+    this.baseX += kick.x;
+    this.baseY += kick.y;
+
+    // keep track of the direction
+    if (cw) {
+	this.dir += 1;
+	if (this.dir === 4) {
+	    this.dir = 0;
+	}
+    } else {
+	this.dir -= 1;
+	if (this.dir === -1) {
+	    this.dir = 3;
+	}
+    }
+
+    return true;
+}
+
+/**
+* Checks if the given rotation and kick is valid.
+* @param {Boolean} cw - true if cw, false if ccw
+* @param {Object} kick - the kick offset x/y object to try
+* @returns {Array} and array of x/y objects if valid, null if not valid
+*/
+ControlGroup.prototype.tryTurn = function (cw, kick) {
     var newX, newY,
     oldX, oldY,
     i,
@@ -114,8 +163,8 @@ ControlGroup.prototype.turn = function (cw) {
 
     if (this.spin === 'block') {
 	for (i = 0; i < this.blocks.length; i += 1) {
-	    newX = (cw ? -1 : 1) * (this.blocks[i].blockY - this.baseY) + this.baseX;
-	    newY = (cw ? 1 : -1) * (this.blocks[i].blockX - this.baseX) + this.baseY;
+	    newX = (cw ? -1 : 1) * (this.blocks[i].blockY - this.baseY) + this.baseX + kick.x;
+	    newY = (cw ? 1 : -1) * (this.blocks[i].blockX - this.baseX) + this.baseY + kick.y;
 
 	    newPos[i] = {x: newX, y: newY};
 	}
@@ -134,7 +183,7 @@ ControlGroup.prototype.turn = function (cw) {
 	    if (newX > 0) { newX -= 1; }
 	    if (newY > 0) { newY -= 1; }
 
-	    newPos[i] = {x: newX + this.baseX, y: newY + this.baseY};
+	    newPos[i] = {x: newX + this.baseX + kick.x, y: newY + this.baseY + kick.y};
 	}
     }
 
@@ -143,15 +192,12 @@ ControlGroup.prototype.turn = function (cw) {
     for (i = 0; i < 4; i++) {
 	curPos = newPos[i];
 	if (!this.isLegalPosition(curPos.x, curPos.y)) {
-	    return false;
+	    return null;
 	}
     }
 
-    // must be legal at this point move the bocks
-    for (i = 0; i < 4; i++) {
-	this.blocks[i].setPosition(newPos[i].x, newPos[i].y);
-    }
-    return true;
+    return newPos;
+
 }
 
 /**
