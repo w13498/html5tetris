@@ -33,10 +33,23 @@ ScoreTracker.prototype.getLinesRemaining = function() { return this.linesRemaini
 ScoreTracker.prototype.getScore = function() { return this.score; }
 ScoreTracker.prototype.getLevel = function() { return this.level; }
 ScoreTracker.prototype.getLevelPeriod = function() {
-    // TODO: get a better level speed estimation
-    var res = 500 - 30 * this.level;
-    if (res < 5) {
-	res = 5;
-    }
+    var periods = [
+	1000,
+	800,
+	600,
+	470,
+	380,
+	250,
+	200,
+	160,
+	130,
+	90,
+	50,
+	27,
+	20,
+	15,
+	10
+    ],
+    res = periods[(this.level < periods.length) ? this.level : periods.length - 1];
     return res;
 }
