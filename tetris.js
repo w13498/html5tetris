@@ -112,6 +112,10 @@ window.onload = function () {
     jaws.assets.add('media/numbers/8.png');
     jaws.assets.add('media/numbers/9.png');
 
+    jaws.assets.add('media/numbers/level.png');
+    jaws.assets.add('media/numbers/lines.png');
+    jaws.assets.add('media/numbers/score.png');
+
     jaws.assets.add('media/buttons/continue.png');
     jaws.assets.add('media/buttons/restart.png');
 

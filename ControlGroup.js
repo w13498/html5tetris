@@ -70,16 +70,14 @@ ControlGroup.prototype.shift = function(left) {
     for (i = 0; i < this.blocks.length; i += 1) {
 	this.blocks[i].moveBlock(dx, 0);
     }
+    this.updateBottomedState();
+
     return true;
 };
 
-/**
-* Drop the block by one
-*/
-ControlGroup.prototype.drop = function() {
+ControlGroup.prototype.updateBottomedState = function() {
     var i;
 
-    // don't drop if invalid
     for (i = 0; i < this.blocks.length; i += 1) {
 	if (!this.isLegalPosition(this.blocks[i].getX(), this.blocks[i].getY() + 1)) {
 	    this.bottomed = true;
@@ -87,11 +85,26 @@ ControlGroup.prototype.drop = function() {
 	}
     }
 
+    this.bottomed = false;
+}
+
+/**
+* Drop the block by one
+*/
+ControlGroup.prototype.drop = function() {
+    var i;
+
+    // don't drop if bottomed
+    if (this.bottomed) {
+	return;
+    }
+
     this.baseY += 1;
 
     for (i = 0; i < this.blocks.length; i += 1) {
 	this.blocks[i].moveBlock(0, 1);
     }
+    this.updateBottomedState();
 };
 
 /**
@@ -145,6 +158,8 @@ ControlGroup.prototype.turn = function(cw) {
 	    this.dir = 3;
 	}
     }
+
+    this.updateBottomedState();
 
     return true;
 }
@@ -273,3 +288,4 @@ ControlGroup.prototype.getShape = function () {
 ControlGroup.prototype.getBlocks = function () {
     return this.blocks;
 }
+

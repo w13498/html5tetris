@@ -10,18 +10,33 @@ function Game() {
     // make the preview blocks
     this.previewBlocks = [];
     for (i = 0; i < 4; i++) {
-	this.previewBlocks.push(new Block({x: -1, y: -1, preview: true}));
+	this.previewBlocks.push(new Block({x: -10, y: -10, preview: true}));
     }
 
     this.scoreTracker = new ScoreTracker();
     this.dropPeriod = this.scoreTracker.getLevelPeriod();
     this.timeToNextDrop = this.dropPeriod;
-    this.levelDisplay = new NumberDisplay({val: this.scoreTracker.getLevel(), x: 350, y: 430});
+
+    this.levelDisplay = new NumberDisplay({val: this.scoreTracker.getLevel(), x: -50, y: 420});
+    this.linesDisplay = new NumberDisplay({val: this.scoreTracker.getLinesRemaining(), x: -50, y: 350});
+    this.scoreDisplay = new NumberDisplay({val: 1114, x: -50, y: 280});
+
+    // TODO: get rid of the offsets here???
+    this.levelLabel = new jaws.Sprite({image: 'media/numbers/level.png',
+				       x:-120 + FIELD_OFFSET_X, y: 390 + FIELD_OFFSET_Y});
+    this.linesLabel = new jaws.Sprite({image: 'media/numbers/lines.png',
+				       x: -120 + FIELD_OFFSET_X, y: 320 + FIELD_OFFSET_Y});
+    this.scoreLabel = new jaws.Sprite({image: 'media/numbers/score.png',
+				       x: -120 + FIELD_OFFSET_X, y: 250 + FIELD_OFFSET_Y});
 
     // TODO: find the official values for these constants
     this.keyChargeTime = 200;
     this.keyRepeatTime = 50;
     
+    this.bottomTimer;
+    this.bottomLockTime = 500;
+    this.lastBottomedState = false;
+
     this.lastTime = null;
     
     // evenly distributed random piece generator
@@ -40,13 +55,17 @@ function Game() {
 	left: { 
 	    autoRepeat: true,
 	    handler: function () {
-		thisObject.controlGroup.shift(true);
+		if (thisObject.controlGroup.shift(true)) {
+		    thisObject.resetLockCounter(true);
+		}
 	    }
 	},
 	right: { 
 	    autoRepeat: true,
 	    handler: function() {
-		thisObject.controlGroup.shift(false);
+		if (thisObject.controlGroup.shift(false)) {
+		    thisObject.resetLockCounter(true);
+		}
 	    }
 	},
 	down: {
@@ -58,12 +77,17 @@ function Game() {
 	},
 	space: { handler: function() {
 	    thisObject.controlGroup.fall();
+	    thisObject.lockBlocks();
 	}},
 	z: { handler: function() {
-	    thisObject.controlGroup.turn(false);
+	    if (thisObject.controlGroup.turn(false)) {
+		thisObject.resetLockCounter(true);
+	    }
 	}},
 	x: { handler: function() {
-	    thisObject.controlGroup.turn(true);
+	    if (thisObject.controlGroup.turn(true)) {
+		thisObject.resetLockCounter(true);
+	    }
 	}},
 	c: { handler: function() {
 	    thisObject.swap();
@@ -84,7 +108,7 @@ Game.prototype.newBlock = function (calledBySwap) {
 
     // create some new blocks
     for (var i = 0; i < 4; i++) {
-	curBlock = new Block({x: -1, y: -1, shape: shape});
+	curBlock = new Block({x: -10, y: -10, shape: shape});
 	newBlocks.push(curBlock);
 	this.blocks.push(curBlock);
     }
@@ -160,16 +184,22 @@ Game.prototype.update = function(time) {
 
     this.processInput(dTime);
 
-    this.applyGravity(dTime);
+    if (!this.controlGroup.isBottomed()) {
+	this.lastBottomedState = false;
+	this.applyGravity(dTime);
 
-    // if a new block needs to be made
-    if (this.controlGroup.isBottomed()) {
-	// look for rows
-	var rows = this.getRows();
-	if (rows.length > 0) {
-	    this.removeRows(rows);
+    } else {
+	// if it has just touched hte bottom
+	if (!this.lastBottomedState) {
+	    this.resetLockCounter(true);
+	} else {
+	    this.bottomTimer -= dTime;
+	    
+	    if (this.bottomTimer <= 0 || this.slideCount >= 15) {
+		this.lockBlocks();
+	    }
 	}
-	this.newBlock();
+	this.lastBottomedState = true;
     }
 }
 
@@ -186,7 +216,7 @@ Game.prototype.draw = function() {
     } else {
 	// if there is no contorl group, just move them off the screen
 	for (i = 0; i < 4; i++) {
-	    this.previewBlocks[i].setPosition(-1, -1);
+	    this.previewBlocks[i].setPosition(-10, -10);
 	}
     }
 
@@ -211,6 +241,16 @@ Game.prototype.draw = function() {
 
     this.levelDisplay.setValue(this.scoreTracker.getLevel());
     this.levelDisplay.draw();
+
+    this.linesDisplay.setValue(this.scoreTracker.getLinesRemaining());
+    this.linesDisplay.draw();
+
+    this.scoreDisplay.setValue(1337);
+    this.scoreDisplay.draw();
+
+    this.levelLabel.draw();
+    this.linesLabel.draw();
+    this.scoreLabel.draw();
 
 }
 

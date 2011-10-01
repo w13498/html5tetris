@@ -134,7 +134,7 @@ Game.prototype.swap = function() {
     if (this.swapGroup) {
 	newShape = this.swapGroup.getShape();
 	for (i = 0; i < 4; i++) {
-	    newBlocks.push(new Block({x:-1, y:-1, shape: newShape}));
+	    newBlocks.push(new Block({x:-10, y:-10, shape: newShape}));
 	    this.blocks.push(newBlocks[i]);
 	}
 	
@@ -152,4 +152,30 @@ Game.prototype.swap = function() {
     this.swapGroup.setShape(oldShape);
     this.newBlock(true);    
 
+}
+
+/**
+* locks the currnt piece in, registers lines and makes a new block
+*/
+Game.prototype.lockBlocks = function() {
+    // look for rows
+    var rows = this.getRows();
+    if (rows.length > 0) {
+	this.removeRows(rows);
+    }
+    this.newBlock();
+    this.resetLockCounter(false);
+}
+
+/**
+* Resets the lock counter, and the slide counter if not soft
+* @param {Boolean} soft = true if a soft reset, and the slide counter should not be reset
+*/
+Game.prototype.resetLockCounter = function (soft) {
+    if (soft) {
+	this.slideCount += 1;
+    } else {
+	this.slideCount = 0
+    }
+    this.bottomTimer = this.bottomLockTime;
 }

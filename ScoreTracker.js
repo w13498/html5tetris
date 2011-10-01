@@ -6,13 +6,7 @@ function ScoreTracker() {
 }
 
 ScoreTracker.levelLines = function (level) {
-    var levels = [
-	10
-    ];
-    if (level <= levels.length) {
-	return levels[level-1];
-    }
-    return levels[levels.length - 1];
+    return level*5;
 }
     
 
