@@ -218,7 +218,7 @@ ControlGroup.prototype.tryTurn = function (cw, kick) {
 
 /**
 * Gets the positions that the block will use when it falls
-* @returns {[Object]} array of hashs of {x: Number, y: Number}
+* @returns {Object} {dist:{Number}, positions: {[Object]} array of hashs of {x: Number, y: Number}}
 */
 ControlGroup.prototype.getFallPositions = function () {
     var res = [],
@@ -248,15 +248,18 @@ ControlGroup.prototype.getFallPositions = function () {
 	res.push({x: curBlock.getX(), y: curBlock.getY() + dist});
     }
 
-    return res;
+    return {dist: dist, positions: res};
 }
 
 /**
 * makes the block fall all the way to the bottom
 * forces the next cycle to be recognized as bottomed
+* @returns {Number} the distance fallen
 */
 ControlGroup.prototype.fall = function() {
-    var positions = this.getFallPositions(),
+    var fall = this.getFallPositions(),
+    positions = fall.positions,
+    dist = fall.dist,
     res = [],
     i, curPos;
 
@@ -267,6 +270,7 @@ ControlGroup.prototype.fall = function() {
     }
 
     this.bottomed = true;
+    return dist;
 }
 
 /**
@@ -274,7 +278,7 @@ ControlGroup.prototype.fall = function() {
 * @param {[Block]} previews - the 4 blocks to be modified to be put into position as preview blocks
 */
 ControlGroup.prototype.configurePreviewBlocks = function(previews) {
-    var positions = this.getFallPositions(),
+    var positions = this.getFallPositions().positions,
     i;
     
     for (i = 0; i < 4; i++) {
@@ -290,3 +294,32 @@ ControlGroup.prototype.getBlocks = function () {
     return this.blocks;
 }
 
+/*
+* Gets the type of T spin that the group is in
+* @returns {String} 'mini' for a mini-t, 'normal' for a normal t, null for not a t spin
+*/
+ControlGroup.prototype.getTSpin = function() {
+    var i,
+    testPoints = [{x:-1,y:-1},{x:1,y:-1},{x:1,y:1},{x:-1,y:1}],
+    count = 0;
+    
+    // make sure it's actually a t
+    if (this.shape !== 't') {
+	return null;
+    }
+
+    // 3 point t test
+    for (i = 0; i < 4; i += 1) {
+	if (!this.isLegalPosition(this.baseX + testPoints[i].x, this.baseY + testPoints[i].y)) {
+	    count += 1;
+	}
+    }
+
+    if (count >= 3) {
+	if (this.dir === 0) {
+	    return 'mini';
+	}
+	return 'normal';
+    }
+    return null;
+}

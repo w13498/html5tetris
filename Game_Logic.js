@@ -27,7 +27,7 @@ Game.prototype.getRows = function () {
 }
 
 /**
-* Removes the rows and applies them to the score and row count
+* Removes the rows from the field
 */
 Game.prototype.removeRows = function (rows) {
     var dropDist = [],
@@ -66,9 +66,6 @@ Game.prototype.removeRows = function (rows) {
 	    curBlock.setPosition(curBlock.getX(), curBlock.getY() + dropDist[curY]);
 	}
     }
-
-    // apply the score
-    this.scoreTracker.updateScore({lines: rows.length});
 }
 
 Game.prototype.removeBlock = function(index) {
@@ -158,11 +155,26 @@ Game.prototype.swap = function() {
 * locks the currnt piece in, registers lines and makes a new block
 */
 Game.prototype.lockBlocks = function() {
+    // figure out if it a t-spin/t-spin mini
+    var tSpinType = this.controlGroup.getTSpin(),
+    scoreObject = {};
+
+    if (tSpinType === 'mini') {
+	scoreObject.miniT = true;
+    } else if (tSpinType === 'normal') {
+	scoreObject.normalT = true;
+    }
+
     // look for rows
     var rows = this.getRows();
+    scoreObject.lines = rows.length;
     if (rows.length > 0) {
 	this.removeRows(rows);
     }
+
+    // apply the score
+    this.scoreTracker.updateScore(scoreObject);
+
     this.newBlock();
     this.resetLockCounter(false);
 }

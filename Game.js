@@ -73,10 +73,12 @@ function Game() {
 	    preCharged: true,
 	    handler: function() {
 		thisObject.dropBlock();
+		thisObject.scoreTracker.softDrop();
 	    }
 	},
 	space: { handler: function() {
-	    thisObject.controlGroup.fall();
+	    var dist = thisObject.controlGroup.fall();
+	    thisObject.scoreTracker.hardDrop(dist);
 	    thisObject.lockBlocks();
 	}},
 	z: { handler: function() {
@@ -245,7 +247,7 @@ Game.prototype.draw = function() {
     this.linesDisplay.setValue(this.scoreTracker.getLinesRemaining());
     this.linesDisplay.draw();
 
-    this.scoreDisplay.setValue(1337);
+    this.scoreDisplay.setValue(this.scoreTracker.getScore());
     this.scoreDisplay.draw();
 
     this.levelLabel.draw();
