@@ -123,11 +123,12 @@ ControlGroup.prototype.turn = function(cw) {
     var kick,
     newPos = null,
     direction = cw ? 'cw' : 'ccw',
+    availableKicks = this.kickOffsets[this.dir][direction],
     i;
 
     // for possible each kick offset
-    for (i = 0; i < this.kickOffsets.length; i += 1) {
-	kick = this.kickOffsets[this.dir][direction][i];
+    for (i = 0; i < availableKicks.length; i += 1) {
+	kick = availableKicks[i];
 	newPos = this.tryTurn(cw, kick);
 	if (newPos) {
 	    break;
