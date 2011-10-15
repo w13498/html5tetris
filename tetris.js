@@ -1,6 +1,6 @@
 
-FIELD_OFFSET_X = 150;
-FIELD_OFFSET_Y = 0;
+FIELD_OFFSET_X = 180;
+FIELD_OFFSET_Y = 12;
 
 function Tetris() {
     var border = null;
@@ -130,6 +130,8 @@ window.onload = function () {
 
     jaws.assets.add('media/buttons/continue.png');
     jaws.assets.add('media/buttons/restart.png');
+
+    jaws.assets.add('media/backgroud/backdrop.png');
 
     jaws.start(Tetris);
 };

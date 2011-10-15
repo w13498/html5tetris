@@ -11,13 +11,17 @@ var Background = function (config) {
 
     this.tile = new jaws.Sprite({image: 'media/emptyblock.png' });
 
-    this.draw = Background.draw;
-
+    this.backdrop = new jaws.Sprite({image: 'media/background/backdrop.png'});
+    this.backdrop.x = 0;
+    this.backdrop.y = 0;
 };
 
 
-Background.draw = function () {
+Background.prototype.draw = function () {
     var i, j;
+
+    this.backdrop.draw();
+
     for (i = 0; i < this.width; i++) {
 	for (j = 0; j < this.height; j++) {
 	    this.tile.x = this.originX + BLOCK_WIDTH * i;
