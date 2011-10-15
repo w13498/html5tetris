@@ -47,7 +47,7 @@ function Game() {
     // make the preview blocks
     this.previewGroups = [];
     for (i = 0; i < this.previewLength; i++) {
-	this.previewGroups.push(new PreviewGroup(310, 75 * i + 50));
+	this.previewGroups.push(new PreviewGroup(330, 70 * i + 35));
     }
 
     this.swapGroup = null;

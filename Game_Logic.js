@@ -145,7 +145,7 @@ Game.prototype.swap = function() {
     }
 
     // if there is no block waiting
-    this.swapGroup = new PreviewGroup(-80, 100);
+    this.swapGroup = new PreviewGroup(-100, 60);
     this.swapGroup.setShape(oldShape);
     this.newBlock(true);    
 

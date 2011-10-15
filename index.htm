@@ -6,7 +6,8 @@
 <script>
 function onClickEvent(event){
 if (Tetris.currentInstance) {
-Tetris.currentInstance.mouseClicked(event.offsetX, event.offsetY);
+/*Tetris.currentInstance.mouseClicked(event.offsetX, event.offsetY);*/
+Tetris.currentInstance.mouseClicked(event.pageX - event.currentTarget.offsetLeft, event.pageY - event.currentTarget.offsetTop);
 }
 }
 </script>
