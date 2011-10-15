@@ -103,7 +103,7 @@ ScoreTracker.prototype.updateScore = function(config) {
 	    this.level += 1;
 	    this.linesRemaining = ScoreTracker.levelLines(this.level);
 	} else {
-	    this.gameWon = true;
+	    this.isGameWon = true;
 	}
     }
 

@@ -13,6 +13,8 @@ function Tetris() {
     var statePauseTime = 0;
     var paused = false;
 
+    var gameOver = false;
+
     var mouseClick = null;
 
     var self = this;
@@ -37,7 +39,7 @@ function Tetris() {
 	var realTime = (new Date()).getTime(),
 	escapePressed = jaws.pressed('esc');
 	
-	if (!paused) {
+	if (!paused && !gameOver) {
 	    // see if the game should be pased
 	    if (escapePressed && (!lastEscapeState)) {
 		// go into pause mode
@@ -50,10 +52,10 @@ function Tetris() {
 		if (scoreObject) {
 		    // TODO: send a this on to someone to show and report the score
 		    alert(scoreObject);
+		    gameOver = true;
 		}
 	    }
-	} else 
-	{
+	} else if (paused) {
 	    // see if any buttons were pressed
 	    if (mouseClick) {
 		if (continueButton.isClicked(mouseClick.x, mouseClick.y)) {
@@ -67,6 +69,8 @@ function Tetris() {
 		    jaws.start(Tetris);
 		}
 	    }
+	} else {
+	    // TODO: nothing???
 	}
 	
 	lastEscapeState = escapePressed;
@@ -74,17 +78,19 @@ function Tetris() {
     }
     
     this.draw = function() {
-	// clear the screen
-	jaws.context.clearRect(0, 0, jaws.width, jaws.height);
+	if (!paused && !gameOver) {
+	    // clear the screen
+	    jaws.context.clearRect(0, 0, jaws.width, jaws.height);
 
-	if (!paused) {
 	    // draw the game
 	    background.draw();
 	    game.draw();
-	} else {
+	} else if (paused) {
 	    //draw the pause menu
 	    continueButton.draw();
 	    restartButton.draw();
+	} else {
+	    
 	}
     }
     
