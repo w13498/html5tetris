@@ -6,6 +6,8 @@ function ScoreTracker() {
     this.curCombo = -1;
     this.lastWasBonus = false;
     this.backToBackCount = 0;
+
+    this.isGameWon = false;
 }
 
 ScoreTracker.levelLines = function (level) {
@@ -97,8 +99,12 @@ ScoreTracker.prototype.updateScore = function(config) {
     // apply the lines cleared
     this.linesRemaining -= linesCleared;
     if (this.linesRemaining < 0) {
-	this.level += 1;
-	this.linesRemaining = ScoreTracker.levelLines(this.level);
+	if (this.level < 15) {
+	    this.level += 1;
+	    this.linesRemaining = ScoreTracker.levelLines(this.level);
+	} else {
+	    this.gameWon = true;
+	}
     }
 
     this.score += scoreDiff;
@@ -136,4 +142,15 @@ ScoreTracker.prototype.getLevelPeriod = function() {
     ],
     res = periods[(this.level < periods.length) ? this.level : periods.length - 1];
     return res;
+}
+
+ScoreTracker.prototype.gameWon = function() {
+    return this.isGameWon;
+}
+
+ScoreTracker.prototype.getResults = function() {
+    return {
+	score: this.score,
+	level: this.level
+    };
 }

@@ -23,10 +23,18 @@ function ControlGroup(blocks, shape, isLegalCallback) {
     this.kickOffsets = WALL_KICK_OFFSETS[shapeConf.kickType];
     this.dir = 0;
 
+    this.isIllegalStart = false;
+
     this.isLegalCallback = isLegalCallback || function() {return true;};
 
     for (i = 0; i < blocks.length; i += 1) {
-	this.blocks[i].setPosition(this.baseX + this.pos[i].x, this.baseY + this.pos[i].y);
+	var newX = this.baseX + this.pos[i].x;
+	var newY = this.baseY + this.pos[i].y;
+	// see if the block placement is illegal before placing
+	if (!this.isLegalCallback(newX, newY)) {
+	    this.isIllegalStart = true;
+	}
+	this.blocks[i].setPosition(newX, newY);
     }
 }
 

@@ -45,6 +45,12 @@ function Tetris() {
 		paused = true;
 	    } else {
 		game.update(realTime - timeOffset);
+		// see if the game is over
+		var scoreObject = game.getResults();
+		if (scoreObject) {
+		    // TODO: send a this on to someone to show and report the score
+		    alert(scoreObject);
+		}
 	    }
 	} else 
 	{

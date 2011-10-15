@@ -39,6 +39,8 @@ function Game() {
 
     this.lastTime = null;
     
+    this.gameLost = false;
+
     // evenly distributed random piece generator
     this.previewLength = 5;
     this.randBag = new RandomBag(this.previewLength);
@@ -118,6 +120,10 @@ Game.prototype.newBlock = function (calledBySwap) {
     this.controlGroup = new ControlGroup(newBlocks, shape, function(x, y){
 	return thisObject.isLegalPosition(x, y);
     });
+    
+    if (this.controlGroup.isIllegalStart) {
+	this.gameLost = true;
+    }
 
     if (!calledBySwap) {
 	// the user is allowed to swap blocks again

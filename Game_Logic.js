@@ -191,3 +191,14 @@ Game.prototype.resetLockCounter = function (soft) {
     }
     this.bottomTimer = this.bottomLockTime;
 }
+
+/**
+ * Determines if the game is over and returns a score object
+ * if it is. Otherwise, returns null
+ */
+Game.prototype.getResults = function() {
+    if (this.gameLost || this.scoreTracker.gameWon()) {
+	return this.scoreTracker.getResults();
+    }
+    return null;
+}
