@@ -22,6 +22,9 @@ function Tetris() {
     var continueButton = null;
     var restartButton = null;
 
+    var lastTime = null;
+    var dTime = null;
+
     this.setup = function () {
 	Tetris.currentInstance = self;
 	game = new Game();
@@ -38,6 +41,14 @@ function Tetris() {
     this.update = function() {
 	var realTime = (new Date()).getTime(),
 	escapePressed = jaws.pressed('esc');
+
+	if (lastTime == null) {
+	    dTime = 0;
+	    lastTime = realTime;
+	} else {
+	    dTime = realTime - lastTime;
+	    lastTime = realTime;
+	}
 	
 	if (!paused && !gameOver) {
 	    // see if the game should be pased
@@ -78,13 +89,14 @@ function Tetris() {
     }
     
     this.draw = function() {
+
 	if (!paused && !gameOver) {
 	    // clear the screen
 	    jaws.context.clearRect(0, 0, jaws.width, jaws.height);
 
 	    // draw the game
 	    background.draw();
-	    game.draw();
+	    game.draw(dTime);
 	} else if (paused) {
 	    //draw the pause menu
 	    continueButton.draw();
@@ -131,7 +143,7 @@ window.onload = function () {
     jaws.assets.add('media/buttons/continue.png');
     jaws.assets.add('media/buttons/restart.png');
 
-    jaws.assets.add('media/backgroud/backdrop.png');
+    jaws.assets.add('media/background/backdrop.png');
 
     jaws.start(Tetris);
 };

@@ -1,37 +1,45 @@
 <html>
-<head>
+  <head>
+    <script src="jawsjs.js"></script>
 
-<script src="jawsjs.js"></script>
+    <script>
+      function onClickEvent(event){
+      if (Tetris.currentInstance) {
+      /*Tetris.currentInstance.mouseClicked(event.offsetX, event.offsetY);*/
+      Tetris.currentInstance.mouseClicked(event.pageX - event.currentTarget.offsetLeft, event.pageY - event.currentTarget.offsetTop);
+      }
+      }
+    </script>
 
-<script>
-function onClickEvent(event){
-if (Tetris.currentInstance) {
-/*Tetris.currentInstance.mouseClicked(event.offsetX, event.offsetY);*/
-Tetris.currentInstance.mouseClicked(event.pageX - event.currentTarget.offsetLeft, event.pageY - event.currentTarget.offsetTop);
-}
-}
-</script>
+  </head>
+  <body>
 
-</head>
-<body>
+    <div style="width: 600px; height: 500px; margin: 0 auto;">
+      <b>
+	<div class="typeface-js" 
+	     id="scoreDiv" 
+	     style="font-family: monospace; font-size:20px; position: relative; top: 140px; left: 20px; height: 0px; color: #009900;"></div>
+      </b>
+      
+      <canvas id="gameCanvas" width="600" height="500" onclick="onClickEvent(event)"></canvas>
+    </div>
 
-<center>
-  <canvas width="600" height="500" onclick="onClickEvent(event)"></canvas>
-</center>
 
-<script src="Block.js"></script>
-<script src="Shapes.js"></script>
-<script src="WallKicks.js"></script>
-<script src="ControlGroup.js"></script>
-<script src="Background.js"></script>
-<script src="RandomBag.js"></script>
-<script src="PreviewGroup.js"></script>
-<script src="NumberDisplay.js"></script>
-<script src="ScoreTracker.js"></script>
-<script src="Game.js"></script>
-<script src="Game_Logic.js"></script>
-<script src="Button.js"></script>
-<script src="tetris.js"></script>
 
-</body>
+    <script src="Block.js"></script>
+    <script src="Shapes.js"></script>
+    <script src="WallKicks.js"></script>
+    <script src="ControlGroup.js"></script>
+    <script src="Background.js"></script>
+    <script src="RandomBag.js"></script>
+    <script src="PreviewGroup.js"></script>
+    <script src="NumberDisplay.js"></script>
+    <script src="ScoreTracker.js"></script>
+    <script src="TtyBlock.js"></script>
+    <script src="Game.js"></script>
+    <script src="Game_Logic.js"></script>
+    <script src="Button.js"></script>
+    <script src="tetris.js"></script>
+
+  </body>
 </html>

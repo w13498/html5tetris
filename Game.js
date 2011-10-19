@@ -13,7 +13,8 @@ function Game() {
 	this.previewBlocks.push(new Block({x: -10, y: -10, preview: true}));
     }
 
-    this.scoreTracker = new ScoreTracker();
+    this.scoreOutput = new TtyBlock("scoreDiv", 3);
+    this.scoreTracker = new ScoreTracker(this.scoreOutput);
     this.dropPeriod = this.scoreTracker.getLevelPeriod();
     this.timeToNextDrop = this.dropPeriod;
 
@@ -26,8 +27,6 @@ function Game() {
 				       x:-120 + FIELD_OFFSET_X, y: 390 + FIELD_OFFSET_Y});
     this.linesLabel = new jaws.Sprite({image: 'media/numbers/lines.png',
 				       x: -120 + FIELD_OFFSET_X, y: 320 + FIELD_OFFSET_Y});
-    this.scoreLabel = new jaws.Sprite({image: 'media/numbers/score.png',
-				       x: -120 + FIELD_OFFSET_X, y: 250 + FIELD_OFFSET_Y});
 
     // TODO: find the official values for these constants
     this.keyChargeTime = 200;
@@ -214,8 +213,11 @@ Game.prototype.update = function(time) {
 /**
 * Renders the entire game scene
 */
-Game.prototype.draw = function() {
+Game.prototype.draw = function(dTime) {
     var i;
+
+    
+    this.scoreOutput.draw(dTime);
 
     // update the position of the preview blocks
     if (this.controlGroup) {
@@ -258,7 +260,6 @@ Game.prototype.draw = function() {
 
     this.levelLabel.draw();
     this.linesLabel.draw();
-    this.scoreLabel.draw();
 
 }
 

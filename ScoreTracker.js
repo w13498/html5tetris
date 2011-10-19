@@ -1,7 +1,9 @@
-function ScoreTracker() {
+function ScoreTracker(scoreOutput) {
     this.level = 1;
     this.score = 0;
-    this.linesRemaining = ScoreTracker.levelLines(this.level); // TODO: drive this value
+    this.linesRemaining = ScoreTracker.levelLines(this.level);
+
+    this.scoreOutput = scoreOutput;
     
     this.curCombo = -1;
     this.lastWasBonus = false;
@@ -108,7 +110,7 @@ ScoreTracker.prototype.updateScore = function(config) {
     }
 
     this.score += scoreDiff;
-    
+    this.outputScore();
 }
 
 ScoreTracker.prototype.softDrop = function() {
@@ -153,4 +155,10 @@ ScoreTracker.prototype.getResults = function() {
 	score: this.score,
 	level: this.level
     };
+}
+
+ScoreTracker.prototype.outputScore = function() {
+    this.scoreOutput.addLine("Score:");
+    this.scoreOutput.addLine("" + this.score);
+    this.scoreOutput.addLine("");
 }
