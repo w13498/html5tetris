@@ -1,15 +1,21 @@
-function ScoreTracker(scoreOutput) {
+function ScoreTracker(scoreOutput, linesOutput, levelOutput) {
     this.level = 1;
     this.score = 0;
     this.linesRemaining = ScoreTracker.levelLines(this.level);
 
     this.scoreOutput = scoreOutput;
+    this.linesOutput = linesOutput;
+    this.levelOutput = levelOutput;
     
     this.curCombo = -1;
     this.lastWasBonus = false;
     this.backToBackCount = 0;
 
     this.isGameWon = false;
+
+    this.outputScore();
+    this.outputLines();
+    this.outputLevel();
 }
 
 ScoreTracker.levelLines = function (level) {
@@ -99,7 +105,7 @@ ScoreTracker.prototype.updateScore = function(config) {
     }
     
     // apply the lines cleared
-    this.linesRemaining -= linesCleared;
+    this.linesRemaining -= linesCleared;    
     if (this.linesRemaining <= 0) {
 	if (this.level < 15) {
 	    this.level += 1;
@@ -107,7 +113,13 @@ ScoreTracker.prototype.updateScore = function(config) {
 	} else {
 	    this.isGameWon = true;
 	}
+	this.outputLevel();
     }
+
+    if (this.linesCleared !== 0) {
+	this.outputLines();
+    }
+
 
     this.score += scoreDiff;
     this.outputScore();
@@ -161,4 +173,16 @@ ScoreTracker.prototype.outputScore = function() {
     this.scoreOutput.addLine("Score:");
     this.scoreOutput.addLine("" + this.score);
     this.scoreOutput.addLine("");
+}
+
+ScoreTracker.prototype.outputLines = function() {
+    this.linesOutput.addLine("Lines:");
+    this.linesOutput.addLine("" + this.linesRemaining);
+    this.linesOutput.addLine("");
+}
+
+ScoreTracker.prototype.outputLevel = function() {
+    this.levelOutput.addLine("Level:");
+    this.levelOutput.addLine("" + this.level);
+    this.levelOutput.addLine("");
 }

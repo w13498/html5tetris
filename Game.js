@@ -21,15 +21,6 @@ function Game() {
     this.dropPeriod = this.scoreTracker.getLevelPeriod();
     this.timeToNextDrop = this.dropPeriod;
 
-    this.levelDisplay = new NumberDisplay({val: this.scoreTracker.getLevel(), x: -50, y: 420});
-    this.linesDisplay = new NumberDisplay({val: this.scoreTracker.getLinesRemaining(), x: -50, y: 350});
-
-    // TODO: get rid of the offsets here???
-    this.levelLabel = new jaws.Sprite({image: 'media/numbers/level.png',
-				       x:-120 + FIELD_OFFSET_X, y: 390 + FIELD_OFFSET_Y});
-    this.linesLabel = new jaws.Sprite({image: 'media/numbers/lines.png',
-				       x: -120 + FIELD_OFFSET_X, y: 320 + FIELD_OFFSET_Y});
-
     // TODO: find the official values for these constants
     this.keyChargeTime = 200;
     this.keyRepeatTime = 50;
@@ -252,15 +243,6 @@ Game.prototype.draw = function(dTime) {
     for (i = 0; i < this.blocks.length; i+= 1) {
 	this.blocks[i].draw();
     }
-
-    this.levelDisplay.setValue(this.scoreTracker.getLevel());
-    this.levelDisplay.draw();
-
-    this.linesDisplay.setValue(this.scoreTracker.getLinesRemaining());
-    this.linesDisplay.draw();
-
-    this.levelLabel.draw();
-    this.linesLabel.draw();
 
 }
 

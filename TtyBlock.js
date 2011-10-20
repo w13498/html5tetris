@@ -26,7 +26,7 @@ function TtyBlock (divName, numLines) {
 
 
 /**
-   updates the text block
+  updates the text block
  */
 TtyBlock.prototype.draw = function (dTime) {
     var i,
@@ -34,19 +34,22 @@ TtyBlock.prototype.draw = function (dTime) {
     lastLine;
 
     this.timePassedType += dTime;
-    this.timePassedFlash += dTime;
     
     while (this.timePassedType > this.typePeriod) {
 	this.curPos += 1;
 	this.timePassedType -= this.typePeriod;
     }
 
-    while (this.timePassedFlash > this.flashPeriod) {
-	this.cursorShown = !this.cursorShown;
-	this.timePassedFlash -= this.flashPeriod;
+    lastLine = this.lines[this.lines.length-1];
+    
+    if (this.curPos > lastLine.length) {
+	this.timePassedFlash += dTime;
+	while (this.timePassedFlash > this.flashPeriod) {
+	    this.cursorShown = !this.cursorShown;
+	    this.timePassedFlash -= this.flashPeriod;
+	}
     }
 
-    lastLine = this.lines[this.lines.length-1];
     // if I'm past the end of the last line, and there is a backlog, shift all the lines
     if (this.curPos > lastLine.length && this.backlog.length > 0) {
 	this.lines.shift();
