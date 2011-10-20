@@ -98,6 +98,10 @@ function Tetris() {
 	    background.draw();
 	    game.draw(dTime);
 	} else if (paused) {
+	    // draw the game
+	    background.draw();
+	    game.draw(dTime);
+
 	    //draw the pause menu
 	    continueButton.draw();
 	    restartButton.draw();

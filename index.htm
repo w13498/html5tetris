@@ -1,5 +1,28 @@
 <html>
   <head>
+    <style type="text/css">
+      .ttyOutput
+      {
+      font-family: monospace;
+      font-size:20px;
+      position: relative;
+      height: 0px;
+      color: #009900;
+      }
+      .scoreOutput
+      {
+      top: 140px; left: 20px;
+      }
+      .linesOutput
+      {
+      top: 230px; left: 20px;
+      }
+      .levelOutput
+      {
+      top: 320; left: 20px;
+      }
+    </style>
+
     <script src="jawsjs.js"></script>
 
     <script>
@@ -16,9 +39,9 @@
 
     <div style="width: 600px; height: 500px; margin: 0 auto;">
       <b>
-	<div class="typeface-js" 
-	     id="scoreDiv" 
-	     style="font-family: monospace; font-size:20px; position: relative; top: 140px; left: 20px; height: 0px; color: #009900;"></div>
+	<div class="ttyOutput scoreOutput" id="scoreDiv"></div>
+	<div class="ttyOutput linesOutput" id="linesDiv"></div>
+	<div class="ttyOutput levelOutput" id="levelDiv"></div>
       </b>
       
       <canvas id="gameCanvas" width="600" height="500" onclick="onClickEvent(event)"></canvas>

@@ -14,13 +14,15 @@ function Game() {
     }
 
     this.scoreOutput = new TtyBlock("scoreDiv", 3);
-    this.scoreTracker = new ScoreTracker(this.scoreOutput);
+    this.linesOutput = new TtyBlock("linesDiv", 3);
+    this.levelOutput = new TtyBlock("levelDiv", 3);
+    this.scoreTracker = new ScoreTracker(this.scoreOutput, this.linesOutput, this.levelOutput);
+
     this.dropPeriod = this.scoreTracker.getLevelPeriod();
     this.timeToNextDrop = this.dropPeriod;
 
     this.levelDisplay = new NumberDisplay({val: this.scoreTracker.getLevel(), x: -50, y: 420});
     this.linesDisplay = new NumberDisplay({val: this.scoreTracker.getLinesRemaining(), x: -50, y: 350});
-    this.scoreDisplay = new NumberDisplay({val: 1114, x: -50, y: 280});
 
     // TODO: get rid of the offsets here???
     this.levelLabel = new jaws.Sprite({image: 'media/numbers/level.png',
@@ -218,6 +220,8 @@ Game.prototype.draw = function(dTime) {
 
     
     this.scoreOutput.draw(dTime);
+    this.linesOutput.draw(dTime);
+    this.levelOutput.draw(dTime);
 
     // update the position of the preview blocks
     if (this.controlGroup) {
@@ -254,9 +258,6 @@ Game.prototype.draw = function(dTime) {
 
     this.linesDisplay.setValue(this.scoreTracker.getLinesRemaining());
     this.linesDisplay.draw();
-
-    this.scoreDisplay.setValue(this.scoreTracker.getScore());
-    this.scoreDisplay.draw();
 
     this.levelLabel.draw();
     this.linesLabel.draw();

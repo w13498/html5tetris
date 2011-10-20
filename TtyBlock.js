@@ -7,7 +7,8 @@ function TtyBlock (divName, numLines) {
     // slow scorlling effect variables
     this.curPos = 0;
     this.cursorShown = false;
-    
+
+    // TODO: make these random starting values
     this.timePassedType = 0;
     this.timePassedFlash = 0;
     
