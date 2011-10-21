@@ -16,7 +16,8 @@ function Game() {
     this.scoreOutput = new TtyBlock("scoreDiv", 3);
     this.linesOutput = new TtyBlock("linesDiv", 3);
     this.levelOutput = new TtyBlock("levelDiv", 3);
-    this.scoreTracker = new ScoreTracker(this.scoreOutput, this.linesOutput, this.levelOutput);
+    this.tickerOutput = new TtyBlock("tickerDiv", 5);
+    this.scoreTracker = new ScoreTracker(this.scoreOutput, this.linesOutput, this.levelOutput, this.tickerOutput);
 
     this.dropPeriod = this.scoreTracker.getLevelPeriod();
     this.timeToNextDrop = this.dropPeriod;
@@ -213,6 +214,7 @@ Game.prototype.draw = function(dTime) {
     this.scoreOutput.draw(dTime);
     this.linesOutput.draw(dTime);
     this.levelOutput.draw(dTime);
+    this.tickerOutput.draw(dTime);
 
     // update the position of the preview blocks
     if (this.controlGroup) {

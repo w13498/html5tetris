@@ -1,13 +1,14 @@
 <html>
   <head>
+    <link href='http://fonts.googleapis.com/css?family=VT323' rel='stylesheet' type='text/css' />
     <style type="text/css">
       .ttyOutput
       {
-      font-family: monospace;
+      font-family: VT323;
       font-size:20px;
       position: relative;
       height: 0px;
-      color: #009900;
+      color: #008800;
       }
       .scoreOutput
       {
@@ -15,12 +16,16 @@
       }
       .linesOutput
       {
-      top: 230px; left: 20px;
+      top: 235px; left: 20px;
       }
       .levelOutput
       {
-      top: 320; left: 20px;
+      top: 328; left: 20px;
       }
+.tickerOutput
+{
+top: 372; left: 435;
+}
     </style>
 
     <script src="jawsjs.js"></script>
@@ -28,7 +33,6 @@
     <script>
       function onClickEvent(event){
       if (Tetris.currentInstance) {
-      /*Tetris.currentInstance.mouseClicked(event.offsetX, event.offsetY);*/
       Tetris.currentInstance.mouseClicked(event.pageX - event.currentTarget.offsetLeft, event.pageY - event.currentTarget.offsetTop);
       }
       }
@@ -38,11 +42,11 @@
   <body>
 
     <div style="width: 600px; height: 500px; margin: 0 auto;">
-      <b>
-	<div class="ttyOutput scoreOutput" id="scoreDiv"></div>
-	<div class="ttyOutput linesOutput" id="linesDiv"></div>
-	<div class="ttyOutput levelOutput" id="levelDiv"></div>
-      </b>
+      
+      <div class="ttyOutput scoreOutput" id="scoreDiv"></div>
+      <div class="ttyOutput linesOutput" id="linesDiv"></div>
+      <div class="ttyOutput levelOutput" id="levelDiv"></div>
+      <div class="ttyOutput tickerOutput" id="tickerDiv"></div>
       
       <canvas id="gameCanvas" width="600" height="500" onclick="onClickEvent(event)"></canvas>
     </div>

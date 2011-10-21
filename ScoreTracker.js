@@ -1,4 +1,4 @@
-function ScoreTracker(scoreOutput, linesOutput, levelOutput) {
+function ScoreTracker(scoreOutput, linesOutput, levelOutput, tickerOutput) {
     this.level = 1;
     this.score = 0;
     this.linesRemaining = ScoreTracker.levelLines(this.level);
@@ -6,6 +6,7 @@ function ScoreTracker(scoreOutput, linesOutput, levelOutput) {
     this.scoreOutput = scoreOutput;
     this.linesOutput = linesOutput;
     this.levelOutput = levelOutput;
+    this.tickerOutput = tickerOutput;
     
     this.curCombo = -1;
     this.lastWasBonus = false;
@@ -30,6 +31,7 @@ ScoreTracker.prototype.updateScore = function(config) {
 
     if (config.miniT) {
 	// mini t spin, 1 for no lines, 2 for 1 line
+	this.tickerOutput.addLine("T Spin Mini");
 	linesCleared += 1;
 	scoreDiff += 100 * this.level;
 	if (config.lines === 1) {
@@ -40,20 +42,24 @@ ScoreTracker.prototype.updateScore = function(config) {
 	// normal t spin, bonus for eveything but 0 lines
 	switch (config.lines) {
 	case 0:
+	    this.tickerOutput.addLine("T Spin");
 	    linesCleared += 4;
 	    scoreDiff += 400 * this.level;
 	    break;
 	case 1:
+	    this.tickerOutput.addLine("T Spin Single");
 	    linesCleared += 8;
 	    isBonus = true;
 	    scoreDiff += 800 * this.level;
 	    break;
 	case 2:
+	    this.tickerOutput.addLine("T Spin Double");
 	    linesCleared += 12;
 	    isBonus = true;
 	    scoreDiff += 1200 * this.level;
 	    break;
 	case 3:
+	    this.tickerOutput.addLine("T SPIN TRIPLE");
 	    linesCleared += 16;
 	    isBonus = true;
 	    scoreDiff += 1600 * this.level;
@@ -63,18 +69,22 @@ ScoreTracker.prototype.updateScore = function(config) {
 	// plain old line clears
 	switch (config.lines) {
 	case 1:
+	    this.tickerOutput.addLine("Single");
 	    linesCleared += 1;
 	    scoreDiff += 100 * this.level;
 	    break;
 	case 2:
+	    this.tickerOutput.addLine("Double");
 	    linesCleared += 3;
 	    scoreDiff += 300 * this.level;
 	    break;
 	case 3:
+	    this.tickerOutput.addLine("Triple");
 	    linesCleared += 5;
 	    scoreDiff += 500 * this.level;
 	    break;
 	case 4:
+	    this.tickerOutput.addLine("TETRIS");
 	    linesCleared += 8;
 	    isBonus = true;
 	    scoreDiff += 800 * this.level;
@@ -87,12 +97,16 @@ ScoreTracker.prototype.updateScore = function(config) {
 	this.curCombo += 1;
 	linesCleared += Math.floor(this.curCombo * 0.5);
 	scoreDiff += 50 * this.curCombo * this.level;
+	if (this.curCombo >= 1) {
+	    this.tickerOutput.addLine("Combo x" + this.curCombo);
+	}
     } else {
 	this.curCombo = -1;
     }
 
     // apply back-to-back bonus
     if (this.lastWasBonus && isBonus) {
+	this.tickerOutput.addLine("Back-to-Back");
 	this.backToBackCount += 1;
 	linesCleared = Math.floor(linesCleared * 1.5);	
 	scoreDiff += this.backToBackCount * 0.5 * scoreDiff;
