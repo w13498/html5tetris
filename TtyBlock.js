@@ -72,5 +72,5 @@ TtyBlock.prototype.draw = function (dTime) {
 }
 
 TtyBlock.prototype.addLine = function(str) {
-    this.backlog.push("> " + str);
+    this.backlog.push("   > " + str);
 }

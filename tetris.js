@@ -62,7 +62,7 @@ function Tetris() {
 		var scoreObject = game.getResults();
 		if (scoreObject) {
 		    // TODO: send a this on to someone to show and report the score
-		    alert(scoreObject);
+		    alert("GAME OVER! This part not implemented yet...");
 		    gameOver = true;
 		}
 	    }
