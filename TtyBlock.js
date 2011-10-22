@@ -72,5 +72,11 @@ TtyBlock.prototype.draw = function (dTime) {
 }
 
 TtyBlock.prototype.addLine = function(str) {
+    // if the backlog is too long, then remove the last 3 values
+    // TOOD: parameterize these lengths
+    if (this.backlog.length > 9) {
+	this.backlog.splice(this.backlog.length - 3, 3);
+    }
+
     this.backlog.push("   > " + str);
 }
