@@ -2,7 +2,30 @@
 FIELD_OFFSET_X = 180;
 FIELD_OFFSET_Y = 12;
 
-function Tetris() {
+function TetrisControl() {
+    var tetris = new Tetris(this);
+
+    this.setup = function () {
+	tetris.setup();
+    }
+    this.update = function () {
+	tetris.update();
+    }
+    this.draw = function () {
+	tetris.draw();
+    }
+
+    this.restart = function() {
+	// create a new Tetris object
+	tetris = new Tetris(this);
+
+	// emulate an initial setup condition and the first loop
+	tetris.setup();
+	tetris.update();
+    }
+}
+
+function Tetris(controller) {
     var border = null;
     var background = null;
     var game = null;
@@ -76,8 +99,8 @@ function Tetris() {
 		}
 		if (restartButton.isClicked(mouseClick.x, mouseClick.y)) {
 		    // restart the game
-		    jaws.gameloop.stop();
-		    jaws.start(Tetris);
+		    controller.restart();
+		    return;
 		}
 	    }
 	} else {
@@ -134,5 +157,5 @@ window.onload = function () {
 
     jaws.assets.add('media/background/backdrop.png');
 
-    jaws.start(Tetris);
+    jaws.start(TetrisControl);
 };
