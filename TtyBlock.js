@@ -16,7 +16,7 @@ function TtyBlock (divName, numLines) {
     this.typePeriod = 30;
     this.flashPeriod = 300;
 
-    this.lines = []
+    this.lines = [];
     for (i = 0; i < numLines; i += 1) {
 	this.lines.push("");
     }
@@ -53,7 +53,7 @@ TtyBlock.prototype.draw = function (dTime) {
     // if I'm past the end of the last line, and there is a backlog, shift all the lines
     if (this.curPos > lastLine.length && this.backlog.length > 0) {
 	this.lines.shift();
-	lastLine = this.backlog.shift()
+	lastLine = this.backlog.shift();
 	this.lines.push(lastLine);
 	this.curPos = 0;
     }
@@ -69,7 +69,7 @@ TtyBlock.prototype.draw = function (dTime) {
     // rewirte for html gaurds
     outputString.replace('>', '&gt');
     this.elem.innerHTML = outputString;
-}
+};
 
 TtyBlock.prototype.addLine = function(str) {
     // if the backlog is too long, then remove the last 3 values
@@ -79,4 +79,4 @@ TtyBlock.prototype.addLine = function(str) {
     }
 
     this.backlog.push("   > " + str);
-}
+};

@@ -1,6 +1,6 @@
 function Game() {
     var thisObject = this,
-    i, j;
+    i;
 
     this.firstLoop = true;
 
@@ -9,7 +9,7 @@ function Game() {
 
     // make the preview blocks
     this.previewBlocks = [];
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i += 1) {
 	this.previewBlocks.push(new Block({x: -10, y: -10, preview: true}));
     }
 
@@ -39,7 +39,7 @@ function Game() {
     this.randBag = new RandomBag(this.previewLength);
     // make the preview blocks
     this.previewGroups = [];
-    for (i = 0; i < this.previewLength; i++) {
+    for (i = 0; i < this.previewLength; i += 1) {
 	this.previewGroups.push(new PreviewGroup(330, 70 * i + 35));
     }
 
@@ -99,12 +99,13 @@ Game.prototype.newBlock = function (calledBySwap) {
     var thisObject = this,
     shape = this.randBag.popQueue(),
     newBlocks = [],
-    curBlock;
+    curBlock,
+    i;
 
     this.dropPeriod = this.scoreTracker.getLevelPeriod();
 
     // create some new blocks
-    for (var i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i += 1) {
 	curBlock = new Block({x: -10, y: -10, shape: shape});
 	newBlocks.push(curBlock);
 	this.blocks.push(curBlock);
@@ -131,9 +132,10 @@ Game.prototype.newBlock = function (calledBySwap) {
 * @param {Number} dTime - the time in milliseconds since the last frame
 */
 Game.prototype.processInput = function(dTime) {
-    var curInput;
+    var curInput,
+    keyName;
 
-    for (var keyName in this.input) {
+    for (keyName in this.input) {
 	curInput = this.input[keyName];
 	
 	//  if the key is down
@@ -164,12 +166,15 @@ Game.prototype.processInput = function(dTime) {
 	    }
 	} else {
 	    // it was released
-	    curInput.lastState = false
+	    curInput.lastState = false;
 	}
     }
 };
 
 Game.prototype.update = function(time) {
+    var curTime,
+    dTime;
+
     // if the first block needs to be made
     if (this.firstLoop) {
 	this.firstLoop = false;
@@ -179,8 +184,8 @@ Game.prototype.update = function(time) {
 	this.lastTime = time;
     }
 
-    var curTime = time;
-    var dTime = curTime - this.lastTime;
+    curTime = time;
+    dTime = curTime - this.lastTime;
     this.lastTime = curTime;
 
     this.processInput(dTime);
@@ -202,14 +207,13 @@ Game.prototype.update = function(time) {
 	}
 	this.lastBottomedState = true;
     }
-}
+};
 
 /**
 * Renders the entire game scene
 */
 Game.prototype.draw = function(dTime) {
     var i;
-
     
     this.scoreOutput.draw(dTime);
     this.linesOutput.draw(dTime);
@@ -222,13 +226,13 @@ Game.prototype.draw = function(dTime) {
 	this.controlGroup.configurePreviewBlocks(this.previewBlocks);
     } else {
 	// if there is no contorl group, just move them off the screen
-	for (i = 0; i < 4; i++) {
+	for (i = 0; i < 4; i += 1) {
 	    this.previewBlocks[i].setPosition(-10, -10);
 	}
     }
 
     // draw the preview blocks
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i += 1) {
 	this.previewBlocks[i].draw();
     }
 
@@ -238,15 +242,15 @@ Game.prototype.draw = function(dTime) {
     }
 
     // draw the queue
-    for (i = 0; i < this.previewGroups.length; i++) {
+    for (i = 0; i < this.previewGroups.length; i += 1) {
 	this.previewGroups[i].draw();
     }
 
-    for (i = 0; i < this.blocks.length; i+= 1) {
+    for (i = 0; i < this.blocks.length; i += 1) {
 	this.blocks[i].draw();
     }
 
-}
+};
 
 /**
 * Returns true iff the given position can be moved into
@@ -268,7 +272,7 @@ Game.prototype.isLegalPosition = function (x, y) {
 	return false;
     }
     return true;
-}
+};
 
 /**
 * drops the controlled blocks by one
@@ -279,4 +283,4 @@ Game.prototype.dropBlock = function (causedByGravity) {
     }
 
     this.controlGroup.drop();
-}
+};

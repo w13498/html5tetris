@@ -5,7 +5,7 @@ function RandomBag(queueSize) {
 
     // initialize by refilling the queue
     while (this.queue.length < queueSize) {
-	this.queue.push(this._nextAvailable());
+	this.queue.push(this.nextAvailable());
     }
 }
 
@@ -17,7 +17,7 @@ RandomBag.initialList = ['i', 'o', 'j', 'l', 'z', 's', 't'];
 */
 RandomBag.prototype.getQueue = function () {
     return this.queue;
-}
+};
 
 /**
 * Moves the queue forward by one
@@ -25,16 +25,16 @@ RandomBag.prototype.getQueue = function () {
 */
 RandomBag.prototype.popQueue = function () {
     var res = this.queue.shift();
-    this.queue.push(this._nextAvailable());
+    this.queue.push(this.nextAvailable());
     return res;
-}
+};
 
 /**
 * gets the next letter for the queue, and updates the random bag state
 * @returns {Char} the next letter for the queue
 * @private
 */
-RandomBag.prototype._nextAvailable = function() {
+RandomBag.prototype.nextAvailable = function() {
     var index, res;
 
     // if the available needs to be rebuilt
@@ -46,4 +46,4 @@ RandomBag.prototype._nextAvailable = function() {
     res = this.available.splice(index, 1)[0];
 
     return res;
-}
+};

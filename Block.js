@@ -3,6 +3,8 @@
 var BLOCK_WIDTH = 24;
 
 var Block = function (config) {
+    var parent, key;
+
     config = config || {};
 
     this.boX = (config.boardOriginX || 0) + FIELD_OFFSET_X;
@@ -14,12 +16,12 @@ var Block = function (config) {
     config.y = this.boY + BLOCK_WIDTH * this.blockY;
 
     if (config.preview) {
-	config.image = 'media/greyblock.png'
+	config.image = 'media/greyblock.png';
     } else {
 	config.image = SHAPES[config.shape].image;
     }
 
-    var parent = new jaws.Sprite(config);
+    parent = new jaws.Sprite(config);
     for (key in parent) {
 	this[key] = parent[key];
     }
@@ -31,7 +33,7 @@ Block.prototype.setColor = function(shape, preview) {
     } else {
 	this.setImage(SHAPES[shape].image);
     }
-}
+};
 
 Block.prototype.moveBlock = function(dx, dy) {
     this.blockX += dx;

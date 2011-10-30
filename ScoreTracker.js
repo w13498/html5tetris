@@ -21,8 +21,7 @@ function ScoreTracker(scoreOutput, linesOutput, levelOutput, tickerOutput) {
 
 ScoreTracker.levelLines = function (level) {
     return level*5;
-}
-    
+};
 
 ScoreTracker.prototype.updateScore = function(config) {
     var linesCleared = 0,
@@ -143,23 +142,24 @@ ScoreTracker.prototype.updateScore = function(config) {
     if (tickerLines.length === 0) {
 	this.tickerOutput.addLine("");
     } else {
-	for (i = 0; i < tickerLines.length; i++) {
+	for (i = 0; i < tickerLines.length; i += 1) {
 	    this.tickerOutput.addLine(tickerLines[i]);
 	}
     }
-}
+};
 
 ScoreTracker.prototype.softDrop = function() {
     this.score += 1;
-}
+};
 
 ScoreTracker.prototype.hardDrop = function(dist) {
     this.score += 2 * dist;
-}
+};
 
-ScoreTracker.prototype.getLinesRemaining = function() { return this.linesRemaining; }
-ScoreTracker.prototype.getScore = function() { return this.score; }
-ScoreTracker.prototype.getLevel = function() { return this.level; }
+ScoreTracker.prototype.getLinesRemaining = function() { return this.linesRemaining; };
+ScoreTracker.prototype.getScore = function() { return this.score; };
+ScoreTracker.prototype.getLevel = function() { return this.level; };
+
 ScoreTracker.prototype.getLevelPeriod = function() {
     var periods = [
 	1000,
@@ -180,33 +180,33 @@ ScoreTracker.prototype.getLevelPeriod = function() {
     ],
     res = periods[(this.level < periods.length) ? this.level : periods.length - 1];
     return res;
-}
+};
 
 ScoreTracker.prototype.gameWon = function() {
     return this.isGameWon;
-}
+};
 
 ScoreTracker.prototype.getResults = function() {
     return {
 	score: this.score,
 	level: this.level
     };
-}
+};
 
 ScoreTracker.prototype.outputScore = function() {
     this.scoreOutput.addLine("Score:");
     this.scoreOutput.addLine("" + this.score);
     this.scoreOutput.addLine("");
-}
+};
 
 ScoreTracker.prototype.outputLines = function() {
     this.linesOutput.addLine("Lines:");
     this.linesOutput.addLine("" + this.linesRemaining);
     this.linesOutput.addLine("");
-}
+};
 
 ScoreTracker.prototype.outputLevel = function() {
     this.levelOutput.addLine("Level:");
     this.levelOutput.addLine("" + this.level);
     this.levelOutput.addLine("");
-}
+};

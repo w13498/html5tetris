@@ -7,17 +7,19 @@
 * to the new position
 */
 function ControlGroup(blocks, shape, isLegalCallback) {
-    var i;
+    var i,
+    newX, newY,
+    shapeConf;
     
     // place the blocks according to the shape
-    var shapeConf = SHAPES[shape];
+    shapeConf = SHAPES[shape];
     this.pos = shapeConf.pos;
     this.spin = shapeConf.spin;
     this.bottomed = false;
 
     this.blocks = blocks;
     this.baseX = shapeConf.startX;
-    this.baseY = shapeConf.startY;;
+    this.baseY = shapeConf.startY;
 
     this.shape = shape;
     this.kickOffsets = WALL_KICK_OFFSETS[shapeConf.kickType];
@@ -28,8 +30,8 @@ function ControlGroup(blocks, shape, isLegalCallback) {
     this.isLegalCallback = isLegalCallback || function() {return true;};
 
     for (i = 0; i < blocks.length; i += 1) {
-	var newX = this.baseX + this.pos[i].x;
-	var newY = this.baseY + this.pos[i].y;
+	newX = this.baseX + this.pos[i].x;
+	newY = this.baseY + this.pos[i].y;
 	// see if the block placement is illegal before placing
 	if (!this.isLegalCallback(newX, newY)) {
 	    this.isIllegalStart = true;
@@ -63,9 +65,8 @@ ControlGroup.prototype.isLegalPosition = function (x, y) {
 * @returns {Boolean} true iff the shift was successful
 */
 ControlGroup.prototype.shift = function(left) {
-    var dx = left ? -1 : 1;
-    var i;
-    var newPos = [];
+    var dx = (left ? -1 : 1),
+    i;
     
     for (i = 0; i < 4; i += 1) {
 	if (!this.isLegalPosition(this.blocks[i].getX()+dx, this.blocks[i].getY())) {
@@ -94,7 +95,7 @@ ControlGroup.prototype.updateBottomedState = function() {
     }
 
     this.bottomed = false;
-}
+};
 
 /**
 * Drop the block by one
@@ -120,7 +121,7 @@ ControlGroup.prototype.drop = function() {
 */
 ControlGroup.prototype.isBottomed = function() {
     return this.bottomed;
-}
+};
 
 /**
 * Turns the block
@@ -149,7 +150,7 @@ ControlGroup.prototype.turn = function(cw) {
     }
 
     // must be legal at this point move the bocks
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i += 1) {
 	this.blocks[i].setPosition(newPos[i].x, newPos[i].y);
     }
     this.baseX += kick.x;
@@ -171,7 +172,7 @@ ControlGroup.prototype.turn = function(cw) {
     this.updateBottomedState();
 
     return true;
-}
+};
 
 /**
 * Checks if the given rotation and kick is valid.
@@ -183,7 +184,8 @@ ControlGroup.prototype.tryTurn = function (cw, kick) {
     var newX, newY,
     oldX, oldY,
     i,
-    newPos = [];
+    newPos = [],
+    curPos;
 
     if (this.spin === 'block') {
 	for (i = 0; i < this.blocks.length; i += 1) {
@@ -213,7 +215,7 @@ ControlGroup.prototype.tryTurn = function (cw, kick) {
 
     
     // for each block
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i += 1) {
 	curPos = newPos[i];
 	if (!this.isLegalPosition(curPos.x, curPos.y)) {
 	    return null;
@@ -222,7 +224,7 @@ ControlGroup.prototype.tryTurn = function (cw, kick) {
 
     return newPos;
 
-}
+};
 
 /**
 * Gets the positions that the block will use when it falls
@@ -239,7 +241,7 @@ ControlGroup.prototype.getFallPositions = function () {
 	dist += 1;
 
 	// for each block
-	for (i = 0; i < 4 && notDone; i++) {
+	for (i = 0; i < 4 && notDone; i += 1) {
 	    curBlock = this.blocks[i];
 	    // if it's not a legal position
 	    if (!this.isLegalPosition(curBlock.getX(), curBlock.getY() + dist)) {
@@ -251,13 +253,13 @@ ControlGroup.prototype.getFallPositions = function () {
     }
 
     // for each block
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i += 1) {
 	curBlock = this.blocks[i];
 	res.push({x: curBlock.getX(), y: curBlock.getY() + dist});
     }
 
     return {dist: dist, positions: res};
-}
+};
 
 /**
 * makes the block fall all the way to the bottom
@@ -268,18 +270,17 @@ ControlGroup.prototype.fall = function() {
     var fall = this.getFallPositions(),
     positions = fall.positions,
     dist = fall.dist,
-    res = [],
     i, curPos;
 
     // for each block
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i += 1) {
 	curPos = positions[i];
 	this.blocks[i].setPosition(curPos.x, curPos.y);
     }
 
     this.bottomed = true;
     return dist;
-}
+};
 
 /**
 * Sets the preview blocks to the approproriate positions
@@ -289,18 +290,18 @@ ControlGroup.prototype.configurePreviewBlocks = function(previews) {
     var positions = this.getFallPositions().positions,
     i;
     
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i += 1) {
 	previews[i].setPosition(positions[i].x, positions[i].y);
     }
 };
 
 ControlGroup.prototype.getShape = function () {
     return this.shape;
-}
+};
 
 ControlGroup.prototype.getBlocks = function () {
     return this.blocks;
-}
+};
 
 /*
 * Gets the type of T spin that the group is in
@@ -330,4 +331,4 @@ ControlGroup.prototype.getTSpin = function() {
 	return 'normal';
     }
     return null;
-}
+};

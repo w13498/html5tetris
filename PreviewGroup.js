@@ -6,7 +6,7 @@ function PreviewGroup(baseX, baseY) {
     this.shape = null;
 
     // create the blocks
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i += 1) {
 	this.blocks.push(new Block({
 	    boardOriginX: baseX,
 	    boardOriginY: baseY,
@@ -28,20 +28,20 @@ PreviewGroup.prototype.setShape = function(shape) {
 
     this.shape = shape;
     
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i += 1) {
 	this.blocks[i].setPosition(shapeConfig.pos[i].x, shapeConfig.pos[i].y);
 	this.blocks[i].setColor(shape, false);
     }
-}
+};
 
 PreviewGroup.prototype.getShape = function () {
     return this.shape;
-}
+};
 
 PreviewGroup.prototype.draw = function() {
     var i;
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i += 1) {
 	this.blocks[i].draw();
     }
-}
+};
 				

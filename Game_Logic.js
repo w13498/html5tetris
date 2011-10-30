@@ -9,11 +9,11 @@ Game.prototype.getRows = function () {
     curRow;
 
     // initialize the rows to 0
-    for (i = 0; i < 20; i++) {
+    for (i = 0; i < 20; i += 1) {
 	rows[i] = 0;
     }
     // for each block
-    for (i = 0; i < this.blocks.length; i++) {
+    for (i = 0; i < this.blocks.length; i += 1) {
 	// increment the appropriate row
 	curRow = this.blocks[i].getY();
 	rows[curRow] += 1;
@@ -24,7 +24,7 @@ Game.prototype.getRows = function () {
     }
 
     return res;
-}
+};
 
 /**
 * Removes the rows from the field
@@ -37,22 +37,22 @@ Game.prototype.removeRows = function (rows) {
     curY;
 
     // initialize drops to 0
-    for (i = 0; i < 20; i++) {
+    for (i = 0; i < 20; i += 1) {
 	dropDist[i] = 0;
     }
 
     // for each removed row
-    for (i = 0; i < rows.length; i++) {
+    for (i = 0; i < rows.length; i += 1) {
 	remove[rows[i]] = true;
 	
 	// every row above this should be dropped another spot
-	for (j = 0; j < rows[i]; j++) {
-	    dropDist[j]++;
+	for (j = 0; j < rows[i]; j += 1) {
+	    dropDist[j] += 1;
 	}
     }
 
     // for each block
-    for (i = 0; i < this.blocks.length; i++) {
+    for (i = 0; i < this.blocks.length; i += 1) {
 	curBlock = this.blocks[i];
 	curY = curBlock.getY();
 
@@ -66,11 +66,11 @@ Game.prototype.removeRows = function (rows) {
 	    curBlock.setPosition(curBlock.getX(), curBlock.getY() + dropDist[curY]);
 	}
     }
-}
+};
 
 Game.prototype.removeBlock = function(index) {
     return this.blocks.splice(index, 1);
-}
+};
 
 Game.prototype.applyGravity = function (dTime) {
     this.timeToNextDrop -= dTime;
@@ -93,10 +93,10 @@ Game.prototype.applyGravity = function (dTime) {
 */
 Game.prototype.updatePreviews = function(queue) {
     var i;
-    for (i = 0; i < queue.length; i++) {
+    for (i = 0; i < queue.length; i += 1) {
 	this.previewGroups[i].setShape(queue[i]);
     }
-}
+};
 
 /**
 * called when the user attempts to swap a block
@@ -117,9 +117,9 @@ Game.prototype.swap = function() {
 
     // remove the blocks
     // for each block on the field
-    for (i = 0; i < this.blocks.length; i++) {
+    for (i = 0; i < this.blocks.length; i += 1) {
 	// if the block is part of the control group, remove it
-	for (j = 0; j < 4; j++) {
+	for (j = 0; j < 4; j += 1) {
 	    if (oldBlocks[j] === this.blocks[i]) {
 		this.removeBlock(i);
 		i -= 1;
@@ -130,7 +130,7 @@ Game.prototype.swap = function() {
     // if there is a block waiting
     if (this.swapGroup) {
 	newShape = this.swapGroup.getShape();
-	for (i = 0; i < 4; i++) {
+	for (i = 0; i < 4; i += 1) {
 	    newBlocks.push(new Block({x:-10, y:-10, shape: newShape}));
 	    this.blocks.push(newBlocks[i]);
 	}
@@ -149,7 +149,7 @@ Game.prototype.swap = function() {
     this.swapGroup.setShape(oldShape);
     this.newBlock(true);    
 
-}
+};
 
 /**
 * locks the currnt piece in, registers lines and makes a new block
@@ -157,7 +157,8 @@ Game.prototype.swap = function() {
 Game.prototype.lockBlocks = function() {
     // figure out if it a t-spin/t-spin mini
     var tSpinType = this.controlGroup.getTSpin(),
-    scoreObject = {};
+    scoreObject = {},
+    rows;
 
     if (tSpinType === 'mini') {
 	scoreObject.miniT = true;
@@ -166,7 +167,7 @@ Game.prototype.lockBlocks = function() {
     }
 
     // look for rows
-    var rows = this.getRows();
+    rows = this.getRows();
     scoreObject.lines = rows.length;
     if (rows.length > 0) {
 	this.removeRows(rows);
@@ -177,7 +178,7 @@ Game.prototype.lockBlocks = function() {
 
     this.newBlock();
     this.resetLockCounter(false);
-}
+};
 
 /**
 * Resets the lock counter, and the slide counter if not soft
@@ -187,10 +188,10 @@ Game.prototype.resetLockCounter = function (soft) {
     if (soft) {
 	this.slideCount += 1;
     } else {
-	this.slideCount = 0
+	this.slideCount = 0;
     }
     this.bottomTimer = this.bottomLockTime;
-}
+};
 
 /**
  * Determines if the game is over and returns a score object
@@ -201,4 +202,4 @@ Game.prototype.getResults = function() {
 	return this.scoreTracker.getResults();
     }
     return null;
-}
+};

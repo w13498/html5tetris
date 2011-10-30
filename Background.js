@@ -22,8 +22,8 @@ Background.prototype.draw = function () {
 
     this.backdrop.draw();
 
-    for (i = 0; i < this.width; i++) {
-	for (j = 0; j < this.height; j++) {
+    for (i = 0; i < this.width; i += 1) {
+	for (j = 0; j < this.height; j += 1) {
 	    this.tile.x = this.originX + BLOCK_WIDTH * i;
 	    this.tile.y = this.originY + BLOCK_WIDTH * j;
 

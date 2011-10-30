@@ -7,13 +7,13 @@ function TetrisControl() {
 
     this.setup = function () {
 	tetris.setup();
-    }
+    };
     this.update = function () {
 	tetris.update();
-    }
+    };
     this.draw = function () {
 	tetris.draw();
-    }
+    };
 
     this.restart = function() {
 	// create a new Tetris object
@@ -22,31 +22,29 @@ function TetrisControl() {
 	// emulate an initial setup condition and the first loop
 	tetris.setup();
 	tetris.update();
-    }
+    };
 }
 
 function Tetris(controller) {
-    var border = null;
-    var background = null;
-    var game = null;
-    var timeOffset = 0;
+    var background = null,
+    game = null,
+    timeOffset = 0,
 
-    var lastEscapeState = false;
-    var lastMouseLeftState = false;
-    var statePauseTime = 0;
-    var paused = false;
+    lastEscapeState = false,
+    startPauseTime = 0,
+    paused = false,
 
-    var gameOver = false;
+    gameOver = false,
 
-    var mouseClick = null;
+    mouseClick = null,
 
-    var self = this;
+    self = this,
 
-    var continueButton = null;
-    var restartButton = null;
+    continueButton = null,
+    restartButton = null,
 
-    var lastTime = null;
-    var dTime = null;
+    lastTime = null,
+    dTime = null;
 
     this.setup = function () {
 	Tetris.currentInstance = self;
@@ -59,13 +57,14 @@ function Tetris(controller) {
 	jaws.preventDefaultKeys(['up', 'down', 'left', 'right', 'space', 'z', 'x', 'esc']);
 
 	timeOffset = (new Date()).getTime();
-    }
+    };
 
     this.update = function() {
 	var realTime = (new Date()).getTime(),
-	escapePressed = jaws.pressed('esc');
+	escapePressed = jaws.pressed('esc'),
+	scoreObject;
 
-	if (lastTime == null) {
+	if (lastTime === null) {
 	    dTime = 0;
 	    lastTime = realTime;
 	} else {
@@ -82,7 +81,7 @@ function Tetris(controller) {
 	    } else {
 		game.update(realTime - timeOffset);
 		// see if the game is over
-		var scoreObject = game.getResults();
+		scoreObject = game.getResults();
 		if (scoreObject) {
 		    // TODO: send a this on to someone to show and report the score
 		    alert("GAME OVER! This part not implemented yet...");
@@ -109,7 +108,7 @@ function Tetris(controller) {
 	
 	lastEscapeState = escapePressed;
 	mouseClick = null;
-    }
+    };
     
     this.draw = function() {
 
@@ -129,13 +128,20 @@ function Tetris(controller) {
 	    continueButton.draw();
 	    restartButton.draw();
 	} else {
-	    
+	    // continue to draw the game for game over
+	    // clear the screen
+	    jaws.context.clearRect(0, 0, jaws.width, jaws.height);
+
+	    // draw the game
+	    background.draw();
+	    game.draw(dTime);
+
 	}
-    }
+    };
     
     this.mouseClicked = function(x, y) {
 	mouseClick = {x: x, y: y};
-    }
+    };
 }
 
 
