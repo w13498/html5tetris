@@ -29,6 +29,8 @@ function ControlGroup(blocks, shape, isLegalCallback) {
 
     this.isLegalCallback = isLegalCallback || function() {return true;};
 
+    this.lastWasSpin = false;
+
     for (i = 0; i < blocks.length; i += 1) {
 	newX = this.baseX + this.pos[i].x;
 	newY = this.baseY + this.pos[i].y;
@@ -68,6 +70,8 @@ ControlGroup.prototype.shift = function(left) {
     var dx = (left ? -1 : 1),
     i;
     
+    this.lastWasSpin = false;
+
     for (i = 0; i < 4; i += 1) {
 	if (!this.isLegalPosition(this.blocks[i].getX()+dx, this.blocks[i].getY())) {
 	    return false;
@@ -103,6 +107,8 @@ ControlGroup.prototype.updateBottomedState = function() {
 ControlGroup.prototype.drop = function() {
     var i;
 
+    this.lastWasSpin = false;
+
     // don't drop if bottomed
     if (this.bottomed) {
 	return;
@@ -134,6 +140,8 @@ ControlGroup.prototype.turn = function(cw) {
     direction = cw ? 'cw' : 'ccw',
     availableKicks = this.kickOffsets[this.dir][direction],
     i;
+
+    this.lastWasSpin = true;
 
     // for possible each kick offset
     for (i = 0; i < availableKicks.length; i += 1) {
@@ -272,6 +280,8 @@ ControlGroup.prototype.fall = function() {
     dist = fall.dist,
     i, curPos;
 
+    this.lastWasSpin = false;
+
     // for each block
     for (i = 0; i < 4; i += 1) {
 	curPos = positions[i];
@@ -312,6 +322,10 @@ ControlGroup.prototype.getTSpin = function() {
     testPoints = [{x:-1,y:-1},{x:1,y:-1},{x:1,y:1},{x:-1,y:1}],
     count = 0;
     
+    if (!this.lastWasSpin) {
+	return null;
+    }
+
     // make sure it's actually a t
     if (this.shape !== 't') {
 	return null;
