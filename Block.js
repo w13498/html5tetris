@@ -51,3 +51,7 @@ Block.prototype.setPosition = function(blockX, blockY) {
 
 Block.prototype.getX = function() { return this.blockX; };
 Block.prototype.getY = function() { return this.blockY; };
+
+Block.prototype.isPosition = function(x, y) {
+    return this.blockX === x && this.blockY === y;
+}

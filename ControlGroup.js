@@ -49,10 +49,12 @@ function ControlGroup(blocks, shape, isLegalCallback) {
 * @returns {Boolean} true iff the position is legal to move to
 */
 ControlGroup.prototype.isLegalPosition = function (x, y) {
-    var i;
+    var i,
+    blocks = this.blocks;
+
     // if it's a currently occupied, it must be legal
     for (i = 0; i < 4; i += 1) {
-	if (this.blocks[i].getX() === x && this.blocks[i].getY() === y) {
+	if (blocks[i].isPosition(x, y)) {
 	    return true;
 	}
     }

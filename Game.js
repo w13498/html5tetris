@@ -259,10 +259,12 @@ Game.prototype.draw = function(dTime) {
 * @returns {Boolean} true iff the new position is legal
 */
 Game.prototype.isLegalPosition = function (x, y) {
-    var i;
+    var i,
+    blocks = this.blocks;
+
     // see if it overlaps with any existing blocks
-    for (i = 0; i < this.blocks.length; i += 1) {
-	if (this.blocks[i].getX() === x && this.blocks[i].getY() === y) {
+    for (i = 0; i < blocks.length; i += 1) {
+	if (blocks[i].isPosition(x, y)) {
 	    return false;
 	}
     }
