@@ -47,33 +47,51 @@ top: 372; left: 435;
     <script>
       function onClickEvent(event){
       if (Tetris.currentInstance) {
-      Tetris.currentInstance.mouseClicked(event.pageX - event.currentTarget.offsetLeft, event.pageY - event.currentTarget.offsetTop);
+      // must be parent element if inside table tags
+      Tetris.currentInstance.mouseClicked(event.pageX - event.currentTarget.parentElement.offsetLeft, event.pageY - event.currentTarget.parentElement.offsetTop);
       }
       }
     </script>
 
   </head>
   <body>
-
-    <div style="width: 600px; height: 500px; margin: 0 auto;">
-      
-      <div class="ttyOutput scoreOutput" id="scoreDiv"></div>
-      <div class="ttyOutput linesOutput" id="linesDiv"></div>
-      <div class="ttyOutput levelOutput" id="levelDiv"></div>
-      <div class="ttyOutput tickerOutput" id="tickerDiv"></div>
-      
-      <canvas id="gameCanvas" width="600" height="500" onclick="onClickEvent(event)"></canvas>
-    </div>
-
-    <br/><br/>
-    <div style="text-align: center;">
-      <b>Controls:</b><br/>
-      Left, Right: Shift Block<br/>
-      Down: Soft Drop<br/>
-      Z, X: Rotate<br/>
-      C: Save Piece<br/>
-      Space: Hard Drop<br/>
-      Esc: Pause<br/>
-    </div>
+    <table border="0" style="margin: 0 auto">
+      <tr>
+	<td>
+	  <div style="width: 600px; position: relative; top: 0; left: 0;">
+	
+	    <div class="ttyOutput scoreOutput" id="scoreDiv"></div>
+	    <div class="ttyOutput linesOutput" id="linesDiv"></div>
+	    <div class="ttyOutput levelOutput" id="levelDiv"></div>
+	    <div class="ttyOutput tickerOutput" id="tickerDiv"></div>
+	    
+	    <canvas id="gameCanvas" width="600" height="500" onclick="onClickEvent(event)"></canvas>
+	    
+	    <div style="text-align: center;">
+	      <b>Controls:</b><br/>
+	      Left, Right: Shift Block<br/>
+	      Down: Soft Drop<br/>
+	      Z, X: Rotate<br/>
+	      C: Save Piece<br/>
+	      Space: Hard Drop<br/>
+	      Esc: Pause<br/>
+	    </div>
+	    
+	  </div>
+	</td>
+	<td>
+	  <div style="width: 160; position: relative; top: 0; right: 0;">
+<script type="text/javascript"><!--
+google_ad_client = "ca-pub-9406939281323264";
+google_ad_slot = "5204671365";
+google_ad_width = 160;
+google_ad_height = 600;
+//-->
+	    </script>
+	    <script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
+	  </div>
+	</td>
+      </tr>
+    </table>
   </body>
 </html>
