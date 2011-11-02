@@ -207,6 +207,17 @@ Game.prototype.update = function(time) {
 	}
 	this.lastBottomedState = true;
     }
+
+    // update the position of the preview blocks
+    if (this.controlGroup) {
+	// ask the control group to move the preview blocks
+	this.controlGroup.configurePreviewBlocks(this.previewBlocks);
+    } else {
+	// if there is no contorl group, just move them off the screen
+	for (i = 0; i < 4; i += 1) {
+	    this.previewBlocks[i].setPosition(-10, -10);
+	}
+    }
 };
 
 /**
@@ -220,20 +231,9 @@ Game.prototype.draw = function(dTime) {
     this.levelOutput.draw(dTime);
     this.tickerOutput.draw(dTime);
 
-    // update the position of the preview blocks
-    if (this.controlGroup) {
-	// ask the control group to move the preview blocks
-	this.controlGroup.configurePreviewBlocks(this.previewBlocks);
-    } else {
-	// if there is no contorl group, just move them off the screen
-	for (i = 0; i < 4; i += 1) {
-	    this.previewBlocks[i].setPosition(-10, -10);
-	}
-    }
-
     // draw the preview blocks
     for (i = 0; i < 4; i += 1) {
-	this.previewBlocks[i].draw();
+	this.previewBlocks[i].drawIfInvalid();
     }
 
     // draw the swap block
@@ -247,7 +247,7 @@ Game.prototype.draw = function(dTime) {
     }
 
     for (i = 0; i < this.blocks.length; i += 1) {
-	this.blocks[i].draw();
+	this.blocks[i].drawIfInvalid();
     }
 
 };

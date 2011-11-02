@@ -69,6 +69,7 @@ Game.prototype.removeRows = function (rows) {
 };
 
 Game.prototype.removeBlock = function(index) {
+    this.blocks[index].kill();
     return this.blocks.splice(index, 1);
 };
 

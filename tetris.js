@@ -33,6 +33,7 @@ function Tetris(controller) {
     lastEscapeState = false,
     startPauseTime = 0,
     paused = false,
+    lastPaused = false,
 
     gameOver = false,
 
@@ -113,12 +114,16 @@ function Tetris(controller) {
     this.draw = function() {
 
 	if (!paused && !gameOver) {
-	    // clear the screen
-	    jaws.context.clearRect(0, 0, jaws.width, jaws.height);
 
 	    // draw the game
-	    background.draw();
+	    background.draw(lastPaused);
+	    if (lastPaused) {
+		lastPaused = false;
+		Block.invalidateAll();
+	    }
 	    game.draw(dTime);
+	    Block.invalidFlushed();
+
 	} else if (paused) {
 	    // draw the game
 	    background.draw();
@@ -127,11 +132,9 @@ function Tetris(controller) {
 	    //draw the pause menu
 	    continueButton.draw();
 	    restartButton.draw();
+	    lastPaused = true;
 	} else {
 	    // continue to draw the game for game over
-	    // clear the screen
-	    jaws.context.clearRect(0, 0, jaws.width, jaws.height);
-
 	    // draw the game
 	    background.draw();
 	    game.draw(dTime);
