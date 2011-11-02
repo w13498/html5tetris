@@ -165,6 +165,7 @@ window.onload = function () {
     jaws.assets.add('media/buttons/restart.png');
 
     jaws.assets.add('media/background/backdrop.png');
+    jaws.assets.add('media/background/topbar.png');
 
     jaws.start(TetrisControl);
 };
