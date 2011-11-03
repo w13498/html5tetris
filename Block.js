@@ -29,17 +29,17 @@ function Block(config) {
     for (key in parent) {
 	this[key] = parent[key];
     }
-};
+}
 
 Block.invalidSpaces = {};
 Block.allInvalidated = false;
 Block.invalidFlushed = function() {
     Block.invalidSpaces = {};
     Block.allInvalidated = false;
-}
+};
 Block.invalidateAll = function() {
     Block.allInvalidated = true;
-}
+};
 
 Block.prototype.setColor = function(shape, preview) {
     if (preview) {
@@ -73,14 +73,14 @@ Block.prototype.getY = function() { return this.blockY; };
 
 Block.prototype.isPosition = function(x, y) {
     return this.blockX === x && this.blockY === y;
-}
+};
 
 Block.prototype.drawIfInvalid = function() {
     if (Block.invalidSpaces[this.blockX + "," + this.blockY] || Block.allInvalidated || this.blockY < 0) {
 	this.draw();
     }
-}
+};
 
 Block.prototype.kill = function() {
     Block.invalidSpaces[this.blockX + "," + this.blockY] = true;
-}
+};
