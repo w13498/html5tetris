@@ -48,7 +48,8 @@ top: 372; left: 435;
       function onClickEvent(event){
       if (Tetris.currentInstance) {
       // must be parent element if inside table tags
-      Tetris.currentInstance.mouseClicked(event.pageX - event.currentTarget.parentElement.offsetLeft, event.pageY - event.currentTarget.parentElement.offsetTop);
+      //Tetris.currentInstance.mouseClicked(event.pageX - event.currentTarget.parentElement.offsetLeft, event.pageY - event.currentTarget.parentElement.offsetTop);
+      Tetris.currentInstance.mouseClicked(event.layerX, event.layerY);
       }
       }
     </script>
