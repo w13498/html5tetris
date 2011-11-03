@@ -12,8 +12,8 @@ var Background = function (config) {
     this.height = 20;
 
     this.tiles = [];
-    for (x = 0; x < this.width; x++) {
-	for (y = 0; y < this.height; y++) {
+    for (x = 0; x < this.width; x += 1) {
+	for (y = 0; y < this.height; y += 1) {
 	    curTile = new Block({ empty: true, blockX: x, blockY: y });
 	    this.tiles.push(curTile);
 	}

@@ -26,7 +26,7 @@ function Game() {
     this.keyChargeTime = 200;
     this.keyRepeatTime = 50;
     
-    this.bottomTimer;
+    this.bottomTimer = null;
     this.bottomLockTime = 500;
     this.lastBottomedState = false;
 
@@ -173,7 +173,8 @@ Game.prototype.processInput = function(dTime) {
 
 Game.prototype.update = function(time) {
     var curTime,
-    dTime;
+    dTime,
+    i;
 
     // if the first block needs to be made
     if (this.firstLoop) {
