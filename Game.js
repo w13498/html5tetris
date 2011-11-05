@@ -10,7 +10,7 @@ function Game() {
     // make the preview blocks
     this.previewBlocks = [];
     for (i = 0; i < 4; i += 1) {
-	this.previewBlocks.push(new Block({x: -10, y: -10, preview: true}));
+	this.previewBlocks.push(new Block({blockX: -10, blockY: -10, preview: true}));
     }
 
     this.scoreOutput = new TtyBlock("scoreDiv", 3);
@@ -45,6 +45,10 @@ function Game() {
 
     this.swapGroup = null;
     this.swapAllowed = true;
+
+    // the currently occupied positions, number of blocks at a position
+    // indexed by the position as a string
+    this.occupiedPositions = {};
 
     this.input = {
 	left: { 
@@ -106,7 +110,7 @@ Game.prototype.newBlock = function (calledBySwap) {
 
     // create some new blocks
     for (i = 0; i < 4; i += 1) {
-	curBlock = new Block({x: -10, y: -10, shape: shape});
+	curBlock = new Block({blockX: -10, blockY: -10, shape: shape, occupiedPositions: this.occupiedPositions});
 	newBlocks.push(curBlock);
 	this.blocks.push(curBlock);
     }
@@ -260,14 +264,9 @@ Game.prototype.draw = function(dTime) {
 * @returns {Boolean} true iff the new position is legal
 */
 Game.prototype.isLegalPosition = function (x, y) {
-    var i,
-    blocks = this.blocks;
-
-    // see if it overlaps with any existing blocks
-    for (i = 0; i < blocks.length; i += 1) {
-	if (blocks[i].isPosition(x, y)) {
-	    return false;
-	}
+    // if there is a block in the way
+    if (this.occupiedPositions[x+','+y]) {
+	return false;
     }
     
     // if it's on the field
