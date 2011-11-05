@@ -12,6 +12,9 @@ function Block(config) {
     this.blockX = config.blockX;
     this.blockY = config.blockY;
 
+    this.occupiedPositions = config.occupiedPositions;
+    this.addOccupied(this.blockX, this.blockY);
+
     Block.invalidSpaces[this.blockX + "," + this.blockY] = true;
 
     config.x = this.boX + BLOCK_WIDTH * this.blockX;
@@ -52,18 +55,22 @@ Block.prototype.setColor = function(shape, preview) {
 
 Block.prototype.moveBlock = function(dx, dy) {
     Block.invalidSpaces[this.blockX + "," + this.blockY] = true;
+    this.removeOccupied(this.blockX, this.blockY);
     this.blockX += dx;
     this.blockY += dy;
     Block.invalidSpaces[this.blockX + "," + this.blockY] = true;
+    this.addOccupied(this.blockX, this.blockY);
     this.x += dx * BLOCK_WIDTH;
     this.y += dy * BLOCK_WIDTH;
 };
 
 Block.prototype.setPosition = function(blockX, blockY) {
     Block.invalidSpaces[this.blockX + "," + this.blockY] = true;
+    this.removeOccupied(this.blockX, this.blockY);
     this.blockX = blockX;
     this.blockY = blockY;
     Block.invalidSpaces[this.blockX + "," + this.blockY] = true;
+    this.addOccupied(this.blockX, this.blockY);
     this.x = this.boX + blockX * BLOCK_WIDTH;
     this.y = this.boY + blockY * BLOCK_WIDTH;
 };
@@ -83,4 +90,22 @@ Block.prototype.drawIfInvalid = function() {
 
 Block.prototype.kill = function() {
     Block.invalidSpaces[this.blockX + "," + this.blockY] = true;
+    this.removeOccupied(this.blockX, this.blockY);
+};
+
+Block.prototype.removeOccupied = function(x, y) {
+    var posString = x + ',' + y;
+    if (this.occupiedPositions && this.occupiedPositions[posString]) {
+	this.occupiedPositions[posString] -= 1;
+    }
+};
+
+Block.prototype.addOccupied = function(x, y) {
+    var posString = x + ',' + y;
+    if (this.occupiedPositions) {
+	if (this.occupiedPositions[posString] === undefined) {
+	    this.occupiedPositions[posString] = 0;
+	}
+	this.occupiedPositions[posString] += 1;
+    }
 };

@@ -29,6 +29,10 @@
 {
     width: 160;
 }
+.towerAdCell
+{
+    vertical-align: text-top;
+}
 
 
 /** GAME ELEMENTS **/

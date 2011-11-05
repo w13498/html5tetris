@@ -132,7 +132,7 @@ Game.prototype.swap = function() {
     if (this.swapGroup) {
 	newShape = this.swapGroup.getShape();
 	for (i = 0; i < 4; i += 1) {
-	    newBlocks.push(new Block({x:-10, y:-10, shape: newShape}));
+	    newBlocks.push(new Block({blockX:-10, blockY:-10, shape: newShape, occupiedPositions: this.occupiedPositions}));
 	    this.blocks.push(newBlocks[i]);
 	}
 	
