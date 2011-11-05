@@ -1,33 +1,9 @@
 <html>
   <head>
     <title>TwitchTetris</title>
-    <link href='http://fonts.googleapis.com/css?family=VT323' rel='stylesheet' type='text/css' />
-    <style type="text/css">
-      .ttyOutput
-      {
-      font-family: VT323;
-      font-size:20px;
-      position: relative;
-      height: 0px; width: 200px;
-      color: #008800;
-      }
-      .scoreOutput
-      {
-      top: 140px; left: 20px;
-      }
-      .linesOutput
-      {
-      top: 235px; left: 20px;
-      }
-      .levelOutput
-      {
-      top: 328; left: 20px;
-      }
-.tickerOutput
-{
-top: 372; left: 435;
-}
-    </style>
+    <link href="http://fonts.googleapis.com/css?family=VT323" rel="stylesheet" type="text/css" />
+
+    <link href="styles.css" rel="stylesheet" type="text/css" />
 
     <script src="jawsjs.js"></script>
     <script src="Block.js"></script>
@@ -48,8 +24,6 @@ top: 372; left: 435;
     <script>
       function onClickEvent(event){
       if (Tetris.currentInstance) {
-      // must be parent element if inside table tags
-      //Tetris.currentInstance.mouseClicked(event.pageX - event.currentTarget.parentElement.offsetLeft, event.pageY - event.currentTarget.parentElement.offsetTop);
       Tetris.currentInstance.mouseClicked(event.layerX, event.layerY);
       }
       }
@@ -57,10 +31,10 @@ top: 372; left: 435;
 
   </head>
   <body>
-    <table border="0" style="margin: 0 auto">
+    <table border="0" class="mainTable">
       <tr>
 	<td>
-	  <div style="width: 600px; position: relative; top: 0; left: 0;">
+	  <div class="gamePanel">
 	
 	    <div class="ttyOutput scoreOutput" id="scoreDiv"></div>
 	    <div class="ttyOutput linesOutput" id="linesDiv"></div>
@@ -69,9 +43,9 @@ top: 372; left: 435;
 	    
 	    <canvas id="gameCanvas" width="600" height="500" onclick="onClickEvent(event)"></canvas>
 	    
-	    <div style="text-align: center;">
+	    <div class="controlsTitle">
 	      <b>Controls:</b><br/>
-	      <table border="1" cellpadding="3" style="margin: 0 auto;">
+	      <table border="1" cellpadding="3" class="controlsTable">
 		<tr><td>Left, Right:</td><td>Shift Block</td></tr>
 		<tr><td>Down:</td> <td>Soft Drop</td></tr>
 		<tr><td>Z, X:</td><td>Rotate</td></tr>
@@ -93,7 +67,7 @@ top: 372; left: 435;
 	  </div>
 	</td>
 	<td style="vertical-align: text-top;">
-	  <div style="width: 160;">
+	  <div class="towerAd">
 <script type="text/javascript"><!--
 google_ad_client = "ca-pub-9406939281323264";
 /* TwitchTetris Ads */

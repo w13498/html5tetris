@@ -1,0 +1,60 @@
+/** PAGE ELEMENTS **/
+
+/* Page table */
+.mainTable
+{
+    margin: 0 auto
+}
+
+/* panel containing the game and controls */
+.gamePanel
+{
+    width: 600px;
+    position: relative;
+    top: 0; left: 0;
+}
+
+/* controls table */
+.controlsTitle
+{
+    text-align: center;
+}
+.controlsTable
+{
+    margin: 0 auto;
+}
+
+/* right side tower ad */
+.towerAd
+{
+    width: 160;
+}
+
+
+/** GAME ELEMENTS **/
+/* text blocks */
+.ttyOutput
+{
+    font-family: VT323;
+    font-size:20px;
+    position: relative;
+    height: 0px; width: 200px;
+    color: #008800;
+}
+.scoreOutput
+{
+    top: 140px; left: 20px;
+}
+.linesOutput
+{
+    top: 235px; left: 20px;
+}
+.levelOutput
+{
+    top: 328; left: 20px;
+}
+.tickerOutput
+{
+    top: 372; left: 435;
+}
+
