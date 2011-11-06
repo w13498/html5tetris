@@ -1,15 +1,115 @@
 /** PAGE ELEMENTS **/
 
+.menuCell
+{
+    background-color: #001d00;
+    vertical-align: top;
+    height: 600px;
+    color: #000000;
+}
+
+
+.instructions
+{
+    margin: 0 5;
+    font-size: 15px;
+    font-family: VT323;
+    color: #008000;
+    background-color: #000d00;
+    border: 1px solid #008000;
+    border-radius: 5px;
+    padding: 5px;
+    width: 140;
+}
+
+.menu
+{
+    width: 160;
+}
+
+.menuLogo
+{
+    width: 150px;
+    margin: 5 5;
+    text-align: center;
+}
+
+.menuItem
+{
+    font-family: VT323;
+    margin: 0 auto;
+    border: 1px solid #008000;
+    border-radius: 5px;
+    background-color: #000d00;
+    color: #008000;
+    padding: 5px;
+    width: 140px;
+    font-size: 18px;
+}
+
+a.bareLink:link
+{
+    text-decoration: none;
+}
+a.bareLink:active
+{
+    text-decoration: none;
+}
+a.bareLink:visited
+{
+    text-decoration: none;
+}
+
+.selectedMenuItem
+{
+    color: #000d00;
+    background-color: #008000;
+}
+
+.menuItem:hover
+{
+    color: #c0c0c0;    
+}
+
+body
+{
+    background-color: #000000;
+}
+
+.aboutText
+{
+    margin: 5 5;
+    font-size: 16px;
+    font-family: VT323;
+    color: #008000;
+    background-color: #000d00;
+    border: 1px solid #008000;
+    border-radius: 5px;
+    padding: 5px;
+    width: 580;
+}
+
+.contentCell
+{
+    background-color: #001d00;
+    color: #c0c0c0;
+    font-family: VT323;
+    vertical-align: top;
+}
+
 /* Page table */
 .mainTable
 {
-    margin: 0 auto
+    margin: 0 auto;
+    border-collapse: collapse;
+    border: 1px solid #000000;
+
 }
 
 /* panel containing the game and controls */
 .gamePanel
 {
-    width: 600px;
+    width: 601px;
     position: relative;
     top: 0; left: 0;
 }
@@ -22,8 +122,16 @@
 .controlsTable
 {
     margin: 0 auto;
+    text-align: center;
+    border-collapse: collapse;
+    border: 1px solid #008000;
+    color: #008000;
+    background-color: #000d00;
 }
-
+.controlsTable td
+{
+    border-color: #008000;
+}
 /* right side tower ad */
 .towerAd
 {
@@ -34,6 +142,10 @@
     vertical-align: text-top;
 }
 
+.gameCanvas
+{
+    border: 1px solid #008000;
+}
 
 /** GAME ELEMENTS **/
 /* text blocks */
@@ -44,6 +156,7 @@
     position: relative;
     height: 0px; width: 200px;
     color: #008800;
+    line-height: 100%;
 }
 .scoreOutput
 {
