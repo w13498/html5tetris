@@ -15,7 +15,7 @@ JS_SRC = \
 	Button.js \
 	tetris.js
 
-debug : $(JS_SRC) index.htm tetris.py app.yaml styles.css
+debug : $(JS_SRC) index.htm about.htm tetris.py app.yaml styles.css
 	-rm -r debug
 	mkdir debug
 	mkdir debug/tetris
@@ -23,12 +23,13 @@ debug : $(JS_SRC) index.htm tetris.py app.yaml styles.css
 	mkdir debug/tetris/media
 	cp -R media/* debug/tetris/media
 	cp index.htm debug/tetris/index.html
+	cp about.htm debug/tetris/about.html
 	cp tetris.py debug/
 	cp app.yaml debug/
 	cp styles.css debug/tetris/
 
 
-webDeployment : $(JS_SRC) index_deploy.html tetris.py app.yaml styles.css
+webDeployment : $(JS_SRC) index_deploy.html about.htm tetris.py app.yaml styles.css
 	-rm -r deploy
 	mkdir deploy
 	mkdir deploy/tetris
@@ -38,6 +39,7 @@ webDeployment : $(JS_SRC) index_deploy.html tetris.py app.yaml styles.css
 	mkdir deploy/tetris/media
 	cp -R media/* deploy/tetris/media
 	cp index_deploy.html deploy/tetris/index.html
+	cp about.htm deploy/tetris/about.html
 	cp tetris.py deploy/
 	cp app.yaml deploy/
 	cp styles.css deploy/tetris/
