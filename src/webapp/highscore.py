@@ -4,6 +4,8 @@ import urllib
 import wsgiref.handlers
 
 import random
+import json
+import datetime
 
 from google.appengine.ext import db
 from google.appengine.ext import webapp
@@ -24,15 +26,22 @@ class HSFullTableHandler(webapp.RequestHandler):
         myScoreQ = db.GqlQuery("SELECT * FROM Score " + 
                                "WHERE tempRef = %s" % (self.request.get('tempRef')))
         myScore = myScoreQ[0]
-        
-        self.response.out.write('<html><body>')
-        self.response.out.write('Your score: %s<br/><br/>' % (str(myScore.score)))
-        
-        self.response.out.write('Top Scores:<br/>');
+
+        topScoreObjects = []
+        curRank = 1
         for curScore in allScores:
-            self.response.out.write('%s : %s<br/>' % (str(curScore.score), str(curScore.tempRef)))
+            date = curScore.date
+            topScoreObjects.append({
+                    'name': curScore.name,
+                    'score': curScore.score,
+                    'date': datetime.date(date.year, date.month, date.day).isoformat()
+                    })
         
-        self.response.out.write('</body></html>\n');
+        self.response.out.write(json.dumps({
+                    'userScore': myScore.score,
+                    'tempRef': myScore.tempRef,
+                    'topScores': topScoreObjects
+                    }) + '\n');
 
 
 class HSPostScoreHandler(webapp.RequestHandler):
@@ -41,16 +50,29 @@ class HSPostScoreHandler(webapp.RequestHandler):
         score = int(self.request.get('s'))
         tempRef = int(random.random() * 100000000)
         record = Score(score=score,
-                       name=self.request.get('name'),
+                       name=(self.request.get('name') or 'unnamed'),
                        tempRef=tempRef)
         
         record.put()
         
-        self.response.out.write(str(tempRef))
+        self.response.out.write(str(tempRef) + '\n')
+
+class HSApplyNameHandler(webapp.RequestHandler):
+    def post(self):
+        tempRef = self.request.get('tempRef')
+        name = self.request.get('name')
+        
+        scoreQ = db.GqlQuery("SELECT * FROM Score WHERE tempRef = %s" % tempRef)
+        score = scoreQ[0]
+        score.name = name
+        score.tempRef = 0
+        
+        score.put()
 
 application = webapp.WSGIApplication([
         ('/score/full', HSFullTableHandler),
         ('/score/post', HSPostScoreHandler),
+        ('/score/apply', HSApplyNameHandler),
         ], debug=True)
 
 def main():
