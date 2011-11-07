@@ -12,6 +12,9 @@ handlers:
   static_files: tetris/\1
   upload: tetris/(.*)
 
+- url: /score/.*
+  script: highscore.py
+
 - url: /(.+)
   static_files: tetris/\1
   upload: tetris/(.*)

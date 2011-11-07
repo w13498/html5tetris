@@ -27,7 +27,8 @@ DEPLOY_HTML_SRC = \
 
 WEB_APP_SRC = \
 	src/webapp/app.yaml \
-	src/webapp/tetris.py
+	src/webapp/tetris.py \
+	src/webapp/highscore.py
 
 debug : $(JS_SRC) $(DEBUG_HTML_SRC) $(WEB_APP_SRC)
 	-rm -r debug
