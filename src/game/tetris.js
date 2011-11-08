@@ -85,8 +85,8 @@ function Tetris(controller) {
 		scoreObject = game.getResults();
 		if (scoreObject) {
 		    // TODO: send a this on to someone to show and report the score
-		    alert("GAME OVER! This part not implemented yet...");
 		    gameOver = true;
+		    sendScoreRequest(scoreObject.score);
 		}
 	    }
 	} else if (paused) {
@@ -169,3 +169,25 @@ window.onload = function () {
 
     jaws.start(TetrisControl);
 };
+
+function sendScoreRequest(score) {
+    var xmlhttp;
+    if (window.XMLHttpRequest)
+    {// code for IE7+, Firefox, Chrome, Opera, Safari
+	xmlhttp=new XMLHttpRequest();
+    }
+    else
+    {// code for IE6, IE5
+	xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange=function()
+    {
+	if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	{
+	    window.location.replace('/scoreScreen.html?tempRef='+xmlhttp.responseText);
+	}
+    }
+
+    xmlhttp.open("POST", "/score/reportScore?s="+score, true);
+    xmlhttp.send();
+}

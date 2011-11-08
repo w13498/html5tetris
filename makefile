@@ -18,12 +18,18 @@ JS_SRC = \
 DEBUG_HTML_SRC = \
 	src/html/index.htm \
 	src/html/styles.css \
-	src/html/about.htm
+	src/html/about.htm \
+	src/html/scoreScreen.htm \
+	src/html/scoreScreen.js \
+	src/html/json-minified.js
 
 DEPLOY_HTML_SRC = \
 	src/html/index_deploy.html \
 	src/html/styles.css \
-	src/html/about.htm
+	src/html/about.htm \
+	src/html/scoreScreen.htm \
+	src/html/scoreScreen.js \
+	src/html/json-minified.js
 
 WEB_APP_SRC = \
 	src/webapp/app.yaml \
@@ -39,7 +45,10 @@ debug : $(JS_SRC) $(DEBUG_HTML_SRC) $(WEB_APP_SRC)
 	cp -R media/* debug/tetris/media
 	cp src/html/index.htm debug/tetris/index.html
 	cp src/html/about.htm debug/tetris/about.html
+	cp src/html/scoreScreen.htm debug/tetris/scoreScreen.html
+	cp src/html/scoreScreen.js debug/tetris/scoreScreen.js
 	cp src/html/styles.css debug/tetris/
+	cp src/html/json-minified.js debug/tetris/
 	cp $(WEB_APP_SRC) debug
 
 
@@ -54,5 +63,8 @@ webDeployment : $(JS_SRC) $(DEPLOY_HTML_SRC) $(WEB_APP_SRC)
 	cp -R media/* deploy/tetris/media
 	cp src/html/index_deploy.html deploy/tetris/index.html
 	cp src/html/about.htm deploy/tetris/about.html
+	cp src/html/scoreScreen.htm deploy/tetris/scoreScreen.html
+	cp src/html/scoreScreen.js deploy/tetris/scoreScreen.js
 	cp src/html/styles.css deploy/tetris/
+	cp src/html/json-minified.js deploy/tetris/
 	cp $(WEB_APP_SRC) deploy

@@ -14,44 +14,44 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 class Score(db.Model):
     name=db.StringProperty()
     score=db.IntegerProperty()
-    date=db.DateTimeProperty(auto_now_add=True)
+    date=db.StringProperty()
     tempRef=db.IntegerProperty()
 
-class HSFullTableHandler(webapp.RequestHandler):
-    def get(self):
-        allScoresQ = db.GqlQuery("SELECT * FROM Score " +
-                                 "ORDER BY score DESC")
-        allScores = allScoresQ.fetch(100);
-
+class HSPostGameHandler(webapp.RequestHandler):
+    def post(self):
         myScoreQ = db.GqlQuery("SELECT * FROM Score " + 
                                "WHERE tempRef = %s" % (self.request.get('tempRef')))
         myScore = myScoreQ[0]
 
-        topScoreObjects = []
-        curRank = 1
-        for curScore in allScores:
-            date = curScore.date
-            topScoreObjects.append({
-                    'name': curScore.name,
-                    'score': curScore.score,
-                    'date': datetime.date(date.year, date.month, date.day).isoformat()
-                    })
+        totalRankQ = db.GqlQuery("SELECT * FROM Score WHERE score > %s" % (myScore.score))
+        dailyRankQ = db.GqlQuery("SELECT * FROM Score WHERE date = '%s' AND score > %s"
+                                 % (myScore.date, myScore.score))
         
+        totalRank = len(totalRankQ.fetch(100)) + 1
+        dailyRank = len(dailyRankQ.fetch(1000)) + 1
+
+        if totalRank > 100:
+            totalRank = -1
+        if dailyRank > 100:
+            dailyRank = -1
+
         self.response.out.write(json.dumps({
                     'userScore': myScore.score,
                     'tempRef': myScore.tempRef,
-                    'topScores': topScoreObjects
+                    'totalRank': totalRank,
+                    'dailyRank': dailyRank
                     }) + '\n');
 
 
-class HSPostScoreHandler(webapp.RequestHandler):
+class HSReportScoreHandler(webapp.RequestHandler):
     def post(self):
         # TODO: obfusticate score input
         score = int(self.request.get('s'))
         tempRef = int(random.random() * 100000000)
         record = Score(score=score,
-                       name=(self.request.get('name') or 'unnamed'),
-                       tempRef=tempRef)
+                       name=(self.request.get('name') or 'Unnamed'),
+                       tempRef=tempRef,
+                       date=datetime.date.today().isoformat())
         
         record.put()
         
@@ -70,8 +70,8 @@ class HSApplyNameHandler(webapp.RequestHandler):
         score.put()
 
 application = webapp.WSGIApplication([
-        ('/score/full', HSFullTableHandler),
-        ('/score/post', HSPostScoreHandler),
+        ('/score/postGame', HSPostGameHandler),
+        ('/score/reportScore', HSReportScoreHandler),
         ('/score/apply', HSApplyNameHandler),
         ], debug=True)
 

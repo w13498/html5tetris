@@ -47,6 +47,25 @@
     font-size: 18px;
 }
 
+.scoreArea
+{
+    width: 500px;
+}
+
+.playAgainButton
+{
+    font-family: VT323;
+    text-align: center;
+    margin: 0 auto;
+    border: 1px solid #008000;
+    border-radius: 5px;
+    background-color: #000d00;
+    color: #008000;
+    padding: 5px;
+    width: 140px;
+    font-size: 18px;
+}
+
 a.bareLink:link
 {
     text-decoration: none;
@@ -145,6 +164,36 @@ body
 .gameCanvas
 {
     border: 1px solid #008000;
+}
+
+.resTitle
+{
+    font-size: 26px;
+    text-align: center;
+}
+.resultsTable
+{
+    margin: 0 auto;
+    font-size: 26px;
+    border-collapse: collapse;
+    border: 1px solid #008000;
+    color: #008000;
+    background-color: #000d00;
+}
+.resultsTable td
+{
+    border: 1px solid #008000;
+    padding: 10px;
+    width: 200px;
+}
+
+.resultsLeft
+{
+    text-align: right;
+}
+.resultsRight
+{
+    text-align: left;
 }
 
 /** GAME ELEMENTS **/
