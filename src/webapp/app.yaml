@@ -1,0 +1,20 @@
+application: twitchtetris
+version: 0-2-1
+runtime: python
+api_version: 1
+
+handlers:
+- url: /
+  static_files: tetris/index.html
+  upload: tetris/index.html
+
+- url: /tetris/(.+)
+  static_files: tetris/\1
+  upload: tetris/(.*)
+
+- url: /score/.*
+  script: highscore.py
+
+- url: /(.+)
+  static_files: tetris/\1
+  upload: tetris/(.*)
