@@ -4,9 +4,9 @@ import urllib
 import wsgiref.handlers
 
 import random
-import json
 import datetime
 
+from django.utils import simplejson
 from google.appengine.ext import db
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
@@ -35,7 +35,7 @@ class HSPostGameHandler(webapp.RequestHandler):
         if dailyRank > 100:
             dailyRank = -1
 
-        self.response.out.write(json.dumps({
+        self.response.out.write(simplejson.dumps({
                     'userScore': myScore.score,
                     'tempRef': myScore.tempRef,
                     'totalRank': totalRank,
@@ -95,7 +95,7 @@ class HSTablesHandler(webapp.RequestHandler):
                     'score': curScore.score,
                     'name': curScore.name
                     })
-        self.response.out.write(json.dumps({
+        self.response.out.write(simplejson.dumps({
                     'topScores': topScoreList,
                     'dailyScores': dailyScoreList
                     }));
