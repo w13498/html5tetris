@@ -199,6 +199,26 @@ body
     width: 200px;
 }
 
+.highScoreTable
+{
+    margin: 0 auto;
+    font-size: 18px;
+    border-collapse: collapse;
+    border: 1px solid #008000;
+    color: #008000;
+    background-color: #000d00;
+}
+.highScoreTable td
+{
+    border: 1px solid #008000;
+    width: 200px;
+}
+.highScoreTableHeader
+{
+    color: #c0c0c0;
+    font-weight: bold;
+}
+
 .resultsLeft
 {
     text-align: right;

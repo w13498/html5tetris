@@ -48,6 +48,7 @@ class HSReportScoreHandler(webapp.RequestHandler):
         # TODO: obfusticate score input
         score = int(self.request.get('s'))
         tempRef = int(random.random() * 100000000)
+        # TODO: CGI clean name input
         record = Score(score=score,
                        name=(self.request.get('name') or 'Unnamed'),
                        tempRef=tempRef,
@@ -94,7 +95,7 @@ class HSTablesHandler(webapp.RequestHandler):
                     'score': curScore.score,
                     'name': curScore.name
                     })
-        self.response.write(json.dumps({
+        self.response.out.write(json.dumps({
                     'topScores': topScoreList,
                     'dailyScores': dailyScoreList
                     }));

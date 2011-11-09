@@ -5,10 +5,10 @@
     
     <link href="styles.css" rel="stylesheet" type="text/css" />
 
-    <script src="scoreScreen.js"></script>
+    <script src="highScores.js"></script>
     <script src="json-minified.js"></script>
   </head>
-  <body onload="scoreScreenOnLoad()">
+  <body onload="highScoresOnLoad()">
 
     <table border="0" class="mainTable">
       <tr>
@@ -26,7 +26,7 @@
 	    </a>
 	    <br/>
 	    <a href="highScores.html" class="bareLink">
-	      <div class="menuItem">High Scores</div>
+	      <div class="menuItem selectedMenuItem">High Scores</div>
 	    </a>
 	    <br/>
 	    <a href="http://www.leighpauls.com" class="bareLink">
@@ -44,20 +44,13 @@
 	  </div>
 	</td>
 	<td class="contentCell">
-	  <div class="scoreArea" id="scoreDiv"></div>
-	  <div id="applyNameDiv" class="applyNameHidden">
-	    Congratulations! You have made a top Score!<br/>
-	    Enter your name and hit ENTER to submit your name!</br>
-	    <label for="nameInput">Name: </label>
-	    <input type="text" id="nameInput" onkeydown="nameKeyDown(event)" />
+	  <div class="scoreArea">
+	    Daily High Scores:
+	    <div class="highScoresArea" id="dailyScoreDiv"></div>
+	    <br/>
+	    All-Time High Scores:
+	    <div class="highScoresArea" id="highScoreDiv"></div>
 	  </div>
-	  <br/><br/>
-	  <a href="index.html" class="bareLink">
-	    <div class="playAgainButton">
-	      Play Again
-	    </div>
-	  </a>
-
 	</td>
 	<td width="20"> </td>
 	<td class="towerAdCell">
