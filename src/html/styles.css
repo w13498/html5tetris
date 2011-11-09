@@ -116,6 +116,18 @@ body
     vertical-align: top;
 }
 
+.applyNameHidden
+{
+    visibility: hidden;
+    margin: auto 0;
+}
+
+.applyNameVisible
+{
+    visibility: visible;
+    margin: auto 0;
+}
+
 /* Page table */
 .mainTable
 {

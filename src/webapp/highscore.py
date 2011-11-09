@@ -69,10 +69,43 @@ class HSApplyNameHandler(webapp.RequestHandler):
         
         score.put()
 
+class HSTablesHandler(webapp.RequestHandler):
+    def post(self):
+        # get both lists
+        topScoreQ = db.GqlQuery("SELECT * FROM Score ORDER BY score DESC")
+        topScores = topScoreQ.fetch(100)
+        
+        todayString = datetime.date.today().isoformat()
+        dailyScoreQ = db.GqlQuery("SELECT * FROM Score WHERE date = '%s' ORDER By score DESC" % (todayString))
+        dailyScores = dailyScoreQ.fetch(100)
+
+        topScoreList = []
+        dailyScoreList = []
+        
+        # remove the unneeded values from the lists
+        for curScore in topScores:
+            topScoreList.append({
+                    'score': curScore.score,
+                    'date': curScore.date,
+                    'name': curScore.name
+                    })
+        for curScore in dailyScores:
+            dailyScoreList.append({
+                    'score': curScore.score,
+                    'name': curScore.name
+                    })
+        self.response.write(json.dumps({
+                    'topScores': topScoreList,
+                    'dailyScores': dailyScoreList
+                    }));
+
+
+
 application = webapp.WSGIApplication([
         ('/score/postGame', HSPostGameHandler),
         ('/score/reportScore', HSReportScoreHandler),
         ('/score/apply', HSApplyNameHandler),
+        ('/score/tables', HSTablesHandler)
         ], debug=True)
 
 def main():
