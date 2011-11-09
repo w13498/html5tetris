@@ -72,9 +72,9 @@ function applyName() {
     var sessionRef = $_GET('tempRef');
     var name = document.getElementById("nameInput").value;
 
-    document.getElementById("applyNameDiv").setAttribute('class', 'applyNameHidden');
-
     if (name.length < 1 || sessionRef.length < 1) return;
+
+    document.getElementById("applyNameDiv").setAttribute('class', 'applyNameHidden');
 
     var xmlhttp = getXmlHttp();
     xmlhttp.open("POST", "/score/apply?tempRef="+sessionRef+"&name="+name, true);

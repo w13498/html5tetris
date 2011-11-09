@@ -119,13 +119,13 @@ body
 .applyNameHidden
 {
     visibility: hidden;
-    margin: auto 0;
+    text-align: center;
 }
 
 .applyNameVisible
 {
     visibility: visible;
-    margin: auto 0;
+    text-align: center;
 }
 
 /* Page table */
