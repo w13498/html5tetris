@@ -23,8 +23,7 @@ DEBUG_HTML_SRC = \
 	src/html/scoreScreen.js \
 	src/html/highScores.htm \
 	src/html/highScores.js \
-	src/html/json-minified.js \
-	src/html/excanvas.compiled.js
+	src/html/json-minified.js
 
 DEPLOY_HTML_SRC = \
 	src/html/index_deploy.html \
@@ -34,8 +33,7 @@ DEPLOY_HTML_SRC = \
 	src/html/scoreScreen.js \
 	src/html/highScores.htm \
 	src/html/highScores.js \
-	src/html/json-minified.js \
-	src/html/excanvas.compiled.js
+	src/html/json-minified.js
 
 WEB_APP_SRC = \
 	src/webapp/app.yaml \
@@ -59,7 +57,6 @@ debug : $(JS_SRC) $(DEBUG_HTML_SRC) $(WEB_APP_SRC) favicon.ico
 	cp src/html/highScores.js debug/tetris/highScores.js
 	cp src/html/styles.css debug/tetris/
 	cp src/html/json-minified.js debug/tetris/
-	cp src/html/excanvas.compiled.js debug/tetris/
 	cp $(WEB_APP_SRC) debug
 
 
@@ -81,5 +78,4 @@ webDeployment : $(JS_SRC) $(DEPLOY_HTML_SRC) $(WEB_APP_SRC) favicon.ico
 	cp src/html/highScores.js deploy/tetris/highScores.js
 	cp src/html/styles.css deploy/tetris/
 	cp src/html/json-minified.js deploy/tetris/
-	cp src/html/excanvas.compiled.js deploy/tetris/
 	cp $(WEB_APP_SRC) deploy
