@@ -150,6 +150,11 @@ body
 {
     text-align: center;
 }
+.controlsTableHeader
+{
+    color: #c0c0c0;
+    font-weight: bold;
+}
 .controlsTable
 {
     margin: 0 auto;

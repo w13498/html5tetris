@@ -85,6 +85,11 @@ function Game() {
 		thisObject.resetLockCounter(true);
 	    }
 	}},
+	up: { handler: function() {
+	    if (thisObject.controlGroup.turn(false)) {
+		thisObject.resetLockCounter(true);
+	    }
+	}},
 	x: { handler: function() {
 	    if (thisObject.controlGroup.turn(true)) {
 		thisObject.resetLockCounter(true);
@@ -92,7 +97,11 @@ function Game() {
 	}},
 	c: { handler: function() {
 	    thisObject.swap();
+	}},
+	shift: { handler: function() {
+	    thisObject.swap();
 	}}
+
     };
 }
 
