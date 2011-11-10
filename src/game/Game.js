@@ -86,7 +86,7 @@ function Game() {
 	    }
 	}},
 	up: { handler: function() {
-	    if (thisObject.controlGroup.turn(false)) {
+	    if (thisObject.controlGroup.turn(true)) {
 		thisObject.resetLockCounter(true);
 	    }
 	}},
