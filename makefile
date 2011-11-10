@@ -41,13 +41,14 @@ WEB_APP_SRC = \
 	src/webapp/highscore.py \
 	src/webapp/index.yaml
 
-debug : $(JS_SRC) $(DEBUG_HTML_SRC) $(WEB_APP_SRC)
+debug : $(JS_SRC) $(DEBUG_HTML_SRC) $(WEB_APP_SRC) favicon.ico
 	-rm -r debug
 	mkdir debug
 	mkdir debug/tetris
 	cp $(JS_SRC) debug/tetris
 	mkdir debug/tetris/media
 	cp -R media/* debug/tetris/media
+	cp favicon.ico debug
 	cp src/html/index.htm debug/tetris/index.html
 	cp src/html/about.htm debug/tetris/about.html
 	cp src/html/scoreScreen.htm debug/tetris/scoreScreen.html
@@ -59,7 +60,7 @@ debug : $(JS_SRC) $(DEBUG_HTML_SRC) $(WEB_APP_SRC)
 	cp $(WEB_APP_SRC) debug
 
 
-webDeployment : $(JS_SRC) $(DEPLOY_HTML_SRC) $(WEB_APP_SRC)
+webDeployment : $(JS_SRC) $(DEPLOY_HTML_SRC) $(WEB_APP_SRC) favicon.ico
 	-rm -r deploy
 	mkdir deploy
 	mkdir deploy/tetris
@@ -68,6 +69,7 @@ webDeployment : $(JS_SRC) $(DEPLOY_HTML_SRC) $(WEB_APP_SRC)
 	rm deploy/tetris/tetris_main_noop.js
 	mkdir deploy/tetris/media
 	cp -R media/* deploy/tetris/media
+	cp favicon.ico deploy
 	cp src/html/index_deploy.html deploy/tetris/index.html
 	cp src/html/about.htm deploy/tetris/about.html
 	cp src/html/scoreScreen.htm deploy/tetris/scoreScreen.html

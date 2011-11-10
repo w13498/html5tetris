@@ -84,12 +84,17 @@ function Tetris(controller) {
 		// see if the game is over
 		scoreObject = game.getResults();
 		if (scoreObject) {
-		    // TODO: send a this on to someone to show and report the score
 		    gameOver = true;
 		    sendScoreRequest(scoreObject.score);
 		}
 	    }
 	} else if (paused) {
+	    // see if the escape key was hit
+	    if (escapePressed && (!lastEscapeState)) {
+		// change the time offset
+		timeOffset += realTime - startPauseTime;
+		paused = false;
+	    }
 	    // see if any buttons were pressed
 	    if (mouseClick) {
 		if (continueButton.isClicked(mouseClick.x, mouseClick.y)) {
@@ -188,6 +193,8 @@ function sendScoreRequest(score) {
 	}
     }
 
-    xmlhttp.open("POST", "/score/reportScore?s="+score, true);
+    // World's 3rd most piss-poor obfustication technique
+    // A serious real-time/replay game monitor is needed
+    xmlhttp.open("POST", "/score/reportScore?gthbyu="+(score*17), true);
     xmlhttp.send();
 }

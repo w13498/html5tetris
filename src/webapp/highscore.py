@@ -45,12 +45,12 @@ class HSPostGameHandler(webapp.RequestHandler):
 
 class HSReportScoreHandler(webapp.RequestHandler):
     def post(self):
-        # TODO: obfusticate score input
-        score = int(self.request.get('s'))
+        # TODO: make a real anti-fake-score-abuse system
+        score = int(self.request.get('gthbyu'))/17
         tempRef = int(random.random() * 100000000)
         # TODO: CGI clean name input
         record = Score(score=score,
-                       name=(self.request.get('name') or 'Unnamed'),
+                       name=cgi.escape(self.request.get('name') or 'Unnamed'),
                        tempRef=tempRef,
                        date=datetime.date.today().isoformat())
         
