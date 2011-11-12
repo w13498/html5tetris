@@ -30,14 +30,14 @@ Game.prototype.getRows = function () {
 * Removes the rows from the field
 */
 Game.prototype.removeRows = function (rows) {
-    var dropDist = [],
+    var dropDist = {},
     i, j,
     remove = {},
     curBlock,
     curY;
 
     // initialize drops to 0
-    for (i = 0; i < 20; i += 1) {
+    for (i = -4; i < 20; i += 1) {
 	dropDist[i] = 0;
     }
 
@@ -46,7 +46,7 @@ Game.prototype.removeRows = function (rows) {
 	remove[rows[i]] = true;
 	
 	// every row above this should be dropped another spot
-	for (j = 0; j < rows[i]; j += 1) {
+	for (j = -4; j < rows[i]; j += 1) {
 	    dropDist[j] += 1;
 	}
     }

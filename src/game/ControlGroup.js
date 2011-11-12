@@ -40,6 +40,8 @@ function ControlGroup(blocks, shape, isLegalCallback) {
 	}
 	this.blocks[i].setPosition(newX, newY);
     }
+
+    this.updateBottomedState();
 }
 
 /**
