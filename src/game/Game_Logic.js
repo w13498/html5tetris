@@ -116,6 +116,9 @@ Game.prototype.swap = function() {
     }
     this.swapAllowed = false;
 
+    // Reset the locking
+    this.resetLockCounter(false);
+
     // remove the blocks
     // for each block on the field
     for (i = 0; i < this.blocks.length; i += 1) {
