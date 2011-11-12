@@ -82,3 +82,7 @@ function applyName() {
 
     return false;
 }
+
+function trySubmitName() {
+    applyName();
+}
