@@ -1,5 +1,5 @@
 
-function TtyBlock (divName, numLines) {
+function TtyBlock (divName, numLines, rollOverLength, rollOverRemove) {
     var i;
 
     this.elem = document.getElementById(divName);
@@ -21,6 +21,9 @@ function TtyBlock (divName, numLines) {
 	this.lines.push("");
     }
     
+    this.rollOverLength = rollOverLength || 9;
+    this.rollOverRemove = rollOverRemove || 3;
+
     this.backlog = [];
 }
 
@@ -73,9 +76,8 @@ TtyBlock.prototype.draw = function (dTime) {
 
 TtyBlock.prototype.addLine = function(str) {
     // if the backlog is too long, then remove the last 3 values
-    // TOOD: parameterize these lengths
-    if (this.backlog.length > 9) {
-	this.backlog.splice(this.backlog.length - 3, 3);
+    if (this.backlog.length > this.rollOverLength) {
+	this.backlog.splice(this.backlog.length - this.rollOverRemove, this.rollOverRemove);
     }
 
     this.backlog.push("   > " + str);

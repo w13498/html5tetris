@@ -189,7 +189,8 @@ ScoreTracker.prototype.gameWon = function() {
 ScoreTracker.prototype.getResults = function() {
     return {
 	score: this.score,
-	level: this.level
+	level: this.level,
+	won: this.isGameWon
     };
 };
 
