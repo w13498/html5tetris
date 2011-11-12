@@ -45,7 +45,10 @@ function Tetris(controller) {
     restartButton = null,
 
     lastTime = null,
-    dTime = null;
+    dTime = null,
+
+    gameEndTty = new TtyBlock('gameEndDiv', 10, 20, 1);
+    
 
     this.setup = function () {
 	Tetris.currentInstance = self;
@@ -53,9 +56,9 @@ function Tetris(controller) {
 
 	continueButton = new Button({image: 'media/buttons/continue.png', x: 250, y: 150});
 	restartButton = new Button({image: 'media/buttons/restart.png', x: 250, y: 200});
-    
+	
 	background = new Background();
-	jaws.preventDefaultKeys(['up', 'down', 'left', 'right', 'space', 'z', 'x', 'esc']);
+	jaws.preventDefaultKeys(['up', 'down', 'left', 'right', 'space', 'z', 'x', 'esc', 'c', 'shift']);
 
 	timeOffset = (new Date()).getTime();
     };
@@ -85,6 +88,24 @@ function Tetris(controller) {
 		scoreObject = game.getResults();
 		if (scoreObject) {
 		    gameOver = true;
+
+		    // make the game end visible
+		    document.getElementById('gameEndContainer').setAttribute('class', 'gameEndOutputVisible');
+		    gameEndTty.addLine('GOOD GAME!!!');
+		    gameEndTty.addLine('');
+		    gameEndTty.addLine('');
+		    if (scoreObject.won) {
+			gameEndTty.addLine('You Win!');
+		    } else {
+			gameEndTty.addLine('Better Luck Next Time');
+		    }
+		    gameEndTty.addLine('');
+		    gameEndTty.addLine('');
+		    gameEndTty.addLine('Re-directing you to');
+		    gameEndTty.addLine('the score screen...');
+		    gameEndTty.addLine('');
+		    gameEndTty.addLine('');
+
 		    sendScoreRequest(scoreObject.score);
 		}
 	    }
@@ -115,7 +136,7 @@ function Tetris(controller) {
 	lastEscapeState = escapePressed;
 	mouseClick = null;
     };
-    
+
     this.draw = function() {
 
 	if (!paused && !gameOver) {
@@ -143,8 +164,9 @@ function Tetris(controller) {
 	    // draw the game
 	    background.draw();
 	    game.draw(dTime);
-
 	}
+
+	gameEndTty.draw(dTime);
     };
     
     this.mouseClicked = function(x, y) {
@@ -175,6 +197,12 @@ window.onload = function () {
     jaws.start(TetrisControl);
 };
 
+var redirCode;
+
+function redirectToScore() {
+    window.location.replace('/scoreScreen.html?tempRef=' + redirCode);
+}
+
 function sendScoreRequest(score) {
     var xmlhttp;
     if (window.XMLHttpRequest)
@@ -189,10 +217,12 @@ function sendScoreRequest(score) {
     {
 	if (xmlhttp.readyState==4 && xmlhttp.status==200)
 	{
-	    window.location.replace('/scoreScreen.html?tempRef='+xmlhttp.responseText);
+	    redirCode = xmlhttp.responseText;
+
+	    setTimeout('redirectToScore();', 4000);
 	}
     }
-
+    
     // World's 3rd most piss-poor obfustication technique
     // A serious real-time/replay game monitor is needed
     xmlhttp.open("POST", "/score/reportScore?gthbyu="+(score*17), true);

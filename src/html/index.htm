@@ -67,13 +67,18 @@
 	<td class="contentCell">
 	  <div class="gamePanel">
 	
-	    <div class="ttyOutput scoreOutput" id="scoreDiv"></div>
-	    <div class="ttyOutput linesOutput" id="linesDiv"></div>
-	    <div class="ttyOutput levelOutput" id="levelDiv"></div>
-	    <div class="ttyOutput tickerOutput" id="tickerDiv"></div>
-	    
-	    <canvas id="gameCanvas" width="600" height="500" onclick="onClickEvent(event)" class="gameCanvas">Your browser does not natively support Html5, or the Canvas Tag. Using this browser is slowing the progress of the web. Please get a modern browser, such as Google Chrome or Mozzila FireFox</canvas>
-	    
+	    <div class="gameElements">
+	      <div class="ttyOutput scoreOutput" id="scoreDiv"></div>
+	      <div class="ttyOutput linesOutput" id="linesDiv"></div>
+	      <div class="ttyOutput levelOutput" id="levelDiv"></div>
+	      <div class="ttyOutput tickerOutput" id="tickerDiv"></div>
+	      
+	      <div class="gameEndOutputHidden" id="gameEndContainer">
+		<div style="padding:5px;" id="gameEndDiv"></div>
+	      </div>
+	      
+	      <canvas class="gameCanvas" id="gameCanvas" width="600" height="500" onclick="onClickEvent(event)" class="gameCanvas">Your browser does not natively support Html5, or the Canvas Tag. Using this browser is slowing the progress of the web. Please get a modern browser, such as Google Chrome or Mozzila FireFox</canvas>
+	    </div>
 	    <div class="controlsTitle">
 	      <br/>
 	      <b>Controls:</b><br/>
@@ -107,8 +112,8 @@
 	  <div class="towerAd">
 <script type="text/javascript"><!--
 google_ad_client = "ca-pub-9406939281323264";
-/* TwitchTetris Ads */
-google_ad_slot = "5204671365";
+/* High Contrast Wdie */
+google_ad_slot = "5532038480";
 google_ad_width = 160;
 google_ad_height = 600;
 //-->

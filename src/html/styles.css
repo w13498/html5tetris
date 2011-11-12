@@ -234,15 +234,29 @@ body
 }
 
 /** GAME ELEMENTS **/
-/* text blocks */
+.gameElements
+{
+    position: relative;
+    height: 500px;
+    width: 600px;
+}
+
+.gameCanvas
+{
+    position: absolute;
+    top: 0; left: 0;
+    z-index: 1;
+}
+
 .ttyOutput
 {
     font-family: VT323;
     font-size:20px;
-    position: relative;
+    position: absolute;
     height: 0px; width: 200px;
     color: #008800;
     line-height: 100%;
+    z-index: 2;
 }
 .scoreOutput
 {
@@ -261,3 +275,23 @@ body
     top: 372; left: 435;
 }
 
+.gameEndOutputHidden
+{
+    top: 60px; left: 195px;
+    width: 210px; height: 216px;
+    background-image: url('media/background/endconsole.png');
+    visibility: hidden;
+}
+
+.gameEndOutputVisible
+{
+    font-family: VT323;
+    font-size:20px;
+    position: absolute;
+    color: #008800;
+    line-height: 100%;
+    z-index: 2;
+    top: 60px; left: 195px;
+    width: 210px; height: 216px;
+    background-image: url('media/background/endconsole.png');
+}
