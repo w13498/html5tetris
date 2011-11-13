@@ -73,8 +73,6 @@ ControlGroup.prototype.isLegalPosition = function (x, y) {
 ControlGroup.prototype.shift = function(left) {
     var dx = (left ? -1 : 1),
     i;
-    
-    this.lastWasSpin = false;
 
     for (i = 0; i < 4; i += 1) {
 	if (!this.isLegalPosition(this.blocks[i].getX()+dx, this.blocks[i].getY())) {
@@ -82,6 +80,7 @@ ControlGroup.prototype.shift = function(left) {
 	}
     }
 
+    this.lastWasSpin = false;
     this.baseX += dx;
 
     for (i = 0; i < this.blocks.length; i += 1) {
@@ -111,13 +110,12 @@ ControlGroup.prototype.updateBottomedState = function() {
 ControlGroup.prototype.drop = function() {
     var i;
 
-    this.lastWasSpin = false;
-
     // don't drop if bottomed
     if (this.bottomed) {
 	return;
     }
 
+    this.lastWasSpin = false;
     this.baseY += 1;
 
     for (i = 0; i < this.blocks.length; i += 1) {
@@ -145,8 +143,6 @@ ControlGroup.prototype.turn = function(cw) {
     availableKicks = this.kickOffsets[this.dir][direction],
     i;
 
-    this.lastWasSpin = true;
-
     // for possible each kick offset
     for (i = 0; i < availableKicks.length; i += 1) {
 	kick = availableKicks[i];
@@ -160,6 +156,8 @@ ControlGroup.prototype.turn = function(cw) {
     if (!newPos) {
 	return false;
     }
+
+    this.lastWasSpin = true;
 
     // must be legal at this point move the bocks
     for (i = 0; i < 4; i += 1) {
@@ -284,7 +282,9 @@ ControlGroup.prototype.fall = function() {
     dist = fall.dist,
     i, curPos;
 
-    this.lastWasSpin = false;
+    if (dist !== 0) {
+	this.lastWasSpin = false;
+    }
 
     // for each block
     for (i = 0; i < 4; i += 1) {
@@ -324,7 +324,9 @@ ControlGroup.prototype.getBlocks = function () {
 ControlGroup.prototype.getTSpin = function() {
     var i,
     testPoints = [{x:-1,y:-1},{x:1,y:-1},{x:1,y:1},{x:-1,y:1}],
-    count = 0;
+    count = 0,
+    mini = false,
+    curPoint;
     
     if (!this.lastWasSpin) {
 	return null;
@@ -335,15 +337,33 @@ ControlGroup.prototype.getTSpin = function() {
 	return null;
     }
 
+    // t-spin mini tests
+    if (this.dir === 0) {
+	testPoints[0].miniCheck = true;
+	testPoints[1].miniCheck = true;
+    } else if (this.dir === 1) {
+	testPoints[1].miniCheck = true;
+	testPoints[2].miniCheck = true;
+    } else if (this.dir === 2) {
+	testPoints[2].miniCheck = true;
+	testPoints[3].miniCheck = true;
+    } else if (this.dir === 3) {
+	testPoints[3].miniCheck = true;
+	testPoints[0].miniCheck = true;
+    } 
+
     // 3 point t test
     for (i = 0; i < 4; i += 1) {
-	if (!this.isLegalPosition(this.baseX + testPoints[i].x, this.baseY + testPoints[i].y)) {
+	curPoint = testPoints[i]
+	if (!this.isLegalPosition(this.baseX + curPoint.x, this.baseY + curPoint.y)) {
 	    count += 1;
+	} else if (curPoint.miniCheck) {
+	    mini = true;
 	}
     }
 
     if (count >= 3) {
-	if (this.dir === 0) {
+	if (mini) {
 	    return 'mini';
 	}
 	return 'normal';
