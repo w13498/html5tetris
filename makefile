@@ -1,5 +1,5 @@
 
-JS_SRC = \
+GAME_SRC = \
 	src/game/jawsjs.js \
 	src/game/Block.js \
 	src/game/Shapes.js \
@@ -15,29 +15,39 @@ JS_SRC = \
 	src/game/Button.js \
 	src/game/tetris.js
 
-DEBUG_HTML_SRC = \
-	src/html/index.htm \
-	src/html/styles.css \
+STATIC_CONTENT = \
+	src/js/json-minified.js \
+	src/css/styles.css \
 	src/html/about.htm \
 	src/html/scoreScreen.htm \
-	src/html/scoreScreen.js \
+	src/js/scoreScreen.js \
 	src/html/highScores.htm \
-	src/html/highScores.js \
-	src/html/json-minified.js \
+	src/js/highScores.js \
 	src/html/controls.htm \
-	src/html/controlsStyles.css
+	src/css/controlsStyles.css
+
+MEDIA = \
+	media/blueblock.png \
+	media/cyanblock.png \
+	media/emptyblock.png \
+	media/greenblock.png \
+	media/greyblock.png \
+	media/orangeblock.png \
+	media/purpleblock.png \
+	media/redblock.png \
+	media/yellowblock.png \
+	media/buttons/continue.png \
+	media/buttons/restart.png \
+	media/background/backdrop.png \
+	media/background/endconsole.png \
+	media/background/logo.png \
+	media/background/topbar.png
+
+DEBUG_HTML_SRC = \
+	src/html/index.htm 
 
 DEPLOY_HTML_SRC = \
-	src/html/index_deploy.html \
-	src/html/styles.css \
-	src/html/about.htm \
-	src/html/scoreScreen.htm \
-	src/html/scoreScreen.js \
-	src/html/highScores.htm \
-	src/html/highScores.js \
-	src/html/json-minified.js \
-	src/html/controls.htm \
-	src/html/controlsStyles.css
+	src/html/index_deploy.htm
 
 
 WEB_APP_SRC = \
@@ -46,45 +56,40 @@ WEB_APP_SRC = \
 	src/webapp/highscore.py \
 	src/webapp/index.yaml
 
-debug : $(JS_SRC) $(DEBUG_HTML_SRC) $(WEB_APP_SRC) favicon.ico
-	-rm -r debug
-	mkdir debug
-	mkdir debug/tetris
-	cp $(JS_SRC) debug/tetris
-	mkdir debug/tetris/media
-	cp -R media/* debug/tetris/media
-	cp favicon.ico debug
-	cp src/html/index.htm debug/tetris/index.html
-	cp src/html/about.htm debug/tetris/about.html
-	cp src/html/scoreScreen.htm debug/tetris/scoreScreen.html
-	cp src/html/scoreScreen.js debug/tetris/scoreScreen.js
-	cp src/html/highScores.htm debug/tetris/highScores.html
-	cp src/html/highScores.js debug/tetris/highScores.js
-	cp src/html/styles.css debug/tetris/
-	cp src/html/json-minified.js debug/tetris/
-	cp src/html/controls.htm debug/tetris/controls.html
-	cp src/html/controlsStyles.css debug/tetris/
-	cp $(WEB_APP_SRC) debug
 
+debug: DIR = debug
+debug: webApp gameUncompressed staticContent
 
-webDeployment : $(JS_SRC) $(DEPLOY_HTML_SRC) $(WEB_APP_SRC) favicon.ico
-	-rm -r deploy
-	mkdir deploy
-	mkdir deploy/tetris
-	cat $(JS_SRC) > deploy/tetris/tetris_main_noop.js
-	java -jar build/yuicompressor-2.4.6.jar deploy/tetris/tetris_main_noop.js -o deploy/tetris/tetris_main.js
-	rm deploy/tetris/tetris_main_noop.js
-	mkdir deploy/tetris/media
-	cp -R media/* deploy/tetris/media
-	cp favicon.ico deploy
-	cp src/html/index_deploy.html deploy/tetris/index.html
-	cp src/html/about.htm deploy/tetris/about.html
-	cp src/html/scoreScreen.htm deploy/tetris/scoreScreen.html
-	cp src/html/scoreScreen.js deploy/tetris/scoreScreen.js
-	cp src/html/highScores.htm deploy/tetris/highScores.html
-	cp src/html/highScores.js deploy/tetris/highScores.js
-	cp src/html/styles.css deploy/tetris/
-	cp src/html/json-minified.js deploy/tetris/
-	cp src/html/controls.htm deploy/tetris/controls.html
-	cp src/html/controlsStyles.css deploy/tetris/
-	cp $(WEB_APP_SRC) deploy
+release: DIR = deploy
+release: webApp gameCompressed staticContent
+
+webApp: $(WEB_APP_SRC)
+	-rm -r $(DIR)
+	mkdir $(DIR)
+	cp $(WEB_APP_SRC) $(DIR)
+
+gameUncompressed: $(GAME_SRC) $(DEBUG_HTML_SRC)
+	mkdir $(DIR)/tetris
+	cp $(GAME_SRC) $(DIR)/tetris
+	cp src/html/index.htm $(DIR)/tetris/index.html
+
+gameCompressed: $(GAME_SRC) $(DEPLOY_HTML_SRC)
+	mkdir $(DIR)/tetris
+	cat $(GAME_SRC) > $(DIR)/tetris/tetris_main_noop.js
+	java -jar build/yuicompressor-2.4.6.jar $(DIR)/tetris/tetris_main_noop.js -o $(DIR)/tetris/tetris_main.js
+	rm $(DIR)/tetris/tetris_main_noop.js
+	cp src/html/index_deploy.htm $(DIR)/tetris/index.html
+
+staticContent: $(STATIC_CONTENT) $(MEDIA)
+	mkdir $(DIR)/tetris/media
+	cp -R media/* $(DIR)/tetris/media
+	cp favicon.ico $(DIR)
+	cp src/html/about.htm $(DIR)/tetris/about.html
+	cp src/html/scoreScreen.htm $(DIR)/tetris/scoreScreen.html
+	cp src/js/scoreScreen.js $(DIR)/tetris/
+	cp src/html/highScores.htm $(DIR)/tetris/highScores.html
+	cp src/js/highScores.js $(DIR)/tetris/
+	cp src/css/styles.css $(DIR)/tetris/
+	cp src/js/json-minified.js $(DIR)/tetris/
+	cp src/html/controls.htm $(DIR)/tetris/controls.html
+	cp src/css/controlsStyles.css $(DIR)/tetris/
