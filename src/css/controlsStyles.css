@@ -25,6 +25,21 @@
     width: 200px;
 }
 
+.controlsUnit:hover
+{
+    cursor: pointer;
+    background-color: #008000;
+    color: #000d00;
+}
+
+.controlsUnitPending
+{
+    cursor: pointer;
+    background-color: #008000;
+    color: #000d00;
+    font-weight: bold;
+}
+
 .enableCustomDiv
 {
     margin: 10px 5px;

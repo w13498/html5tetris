@@ -18,13 +18,18 @@ GAME_SRC = \
 STATIC_CONTENT = \
 	src/js/json-minified.js \
 	src/css/styles.css \
+	src/js/scoreScreen.js \
+	src/js/highScores.js \
+	src/css/controlsStyles.css \
+	src/js/controls.js \
+	src/js/cookie.js \
+	favicon.ico
+
+STATIC_CONTENT_EXPLICIT = \
 	src/html/about.htm \
 	src/html/scoreScreen.htm \
-	src/js/scoreScreen.js \
 	src/html/highScores.htm \
-	src/js/highScores.js \
-	src/html/controls.htm \
-	src/css/controlsStyles.css
+	src/html/controls.htm
 
 MEDIA = \
 	media/blueblock.png \
@@ -80,16 +85,11 @@ gameCompressed: $(GAME_SRC) $(DEPLOY_HTML_SRC)
 	rm $(DIR)/tetris/tetris_main_noop.js
 	cp src/html/index_deploy.htm $(DIR)/tetris/index.html
 
-staticContent: $(STATIC_CONTENT) $(MEDIA)
+staticContent: $(STATIC_CONTENT) $(STATIC_CONTENT_EXXPLICIT) $(MEDIA)
 	mkdir $(DIR)/tetris/media
-	cp -R media/* $(DIR)/tetris/media
-	cp favicon.ico $(DIR)
+	cp -r media/* $(DIR)/tetris/media
+	cp $(STATIC_CONTENT) $(DIR)/tetris
 	cp src/html/about.htm $(DIR)/tetris/about.html
 	cp src/html/scoreScreen.htm $(DIR)/tetris/scoreScreen.html
-	cp src/js/scoreScreen.js $(DIR)/tetris/
 	cp src/html/highScores.htm $(DIR)/tetris/highScores.html
-	cp src/js/highScores.js $(DIR)/tetris/
-	cp src/css/styles.css $(DIR)/tetris/
-	cp src/js/json-minified.js $(DIR)/tetris/
 	cp src/html/controls.htm $(DIR)/tetris/controls.html
-	cp src/css/controlsStyles.css $(DIR)/tetris/
