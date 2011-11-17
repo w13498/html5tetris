@@ -21,6 +21,8 @@ STATIC_CONTENT = \
 	src/js/scoreScreen.js \
 	src/js/highScores.js \
 	src/css/controlsStyles.css \
+	src/game/jawsjs.js \
+	src/js/input.js \
 	src/js/controls.js \
 	src/js/cookie.js \
 	favicon.ico

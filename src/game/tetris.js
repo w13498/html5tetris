@@ -174,8 +174,6 @@ function Tetris(controller) {
     };
 }
 
-
-
 window.onload = function () {
     jaws.assets.add('media/blueblock.png');
     jaws.assets.add('media/cyanblock.png');
