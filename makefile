@@ -62,6 +62,7 @@ WEB_APP_SRC = \
 	src/webapp/tetris.py \
 	src/webapp/highscore.py \
 	src/webapp/index.yaml \
+	src/webapp/cron.yaml \
 	favicon.ico
 
 
