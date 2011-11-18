@@ -5,6 +5,9 @@
 
     <link href="styles.css" rel="stylesheet" type="text/css" />
 
+    <script src="cookie.js"></script>
+    <script src="gameControls.js"></script>
+
     <script src="jawsjs.js"></script>
     <script src="Block.js"></script>
     <script src="Shapes.js"></script>
@@ -37,17 +40,21 @@
 	  <div class="menu">
 	    <img class="menuLogo" src="media/background/logo.png"></img>
 	    <br/><br/>
-	    
+
 	    <a href="index.html" class="bareLink">
 	      <div class="menuItem selectedMenuItem">Play TwitchTetris</div>
 	    </a>
 	    <br/>
-	    <a href="about.html" class="bareLink">
-	      <div class="menuItem">About TwitchTetris</div>
+	    <a href="controls.html" class="bareLink">
+	      <div class="menuItem">Controls Options</div>
 	    </a>
 	    <br/>
 	    <a href="highScores.html" class="bareLink">
 	      <div class="menuItem">High Scores</div>
+	    </a>
+	    <br/>
+	    <a href="about.html" class="bareLink">
+	      <div class="menuItem">About TwitchTetris</div>
 	    </a>
 	    <br/>
 	    <a href="http://www.leighpauls.com" class="bareLink">
@@ -93,11 +100,11 @@
 		</tr>
 
 		<tr>
-		  <td>Left, Right</td>
-		  <td>Down</td>
-		  <td>Z, X, Up</td>
-		  <td>C, Shift</td>
-		  <td>Space</td>
+		  <td><span id="shiftLeft">Left</span>, <span id="shiftRight">Right</span></td>
+		  <td><span id="softDrop">Down</span></td>
+		  <td><span id="rotateLeft">Z</span>, <span id="rotateRight">X, Up</span></td>
+		  <td><span id="swap">C, Shift</span></td>
+		  <td><span id="hardDrop">Space</span></td>
 		  <td>Esc</td>
 		</tr>
 

@@ -56,32 +56,32 @@ function configureCustomControls(fromCookie) {
 
     if (controlsLoaded && !fromCookie) {
 	// the cookies need to be created & initialized
-	createCookie('c_rotateLeft', 'Z', 1000);
-	createCookie('c_rotateRight', 'X', 1000);
-	createCookie('c_shiftLeft', 'LEFT', 1000);
-	createCookie('c_shiftRight', 'RIGHT', 1000);
-	createCookie('c_softDrop', 'DOWN', 1000);
-	createCookie('c_hardDrop', 'SPACE', 1000);
-	createCookie('c_swap', 'C', 1000);
+	createCookie('rotateLeft', 'Z', 1000);
+	createCookie('rotateRight', 'X', 1000);
+	createCookie('shiftLeft', 'LEFT', 1000);
+	createCookie('shiftRight', 'RIGHT', 1000);
+	createCookie('softDrop', 'DOWN', 1000);
+	createCookie('hardDrop', 'SPACE', 1000);
+	createCookie('swap', 'C', 1000);
 
 	createCookie('customControls', 'TRUE', 1000);
     }
     
     // assign all of the GUI elements based on the cookie
     document.getElementById('rotateLeftValue')
-	.innerHTML = readCookie('c_rotateLeft');
+	.innerHTML = readCookie('rotateLeft');
     document.getElementById('rotateRightValue')
-	.innerHTML = readCookie('c_rotateRight');
+	.innerHTML = readCookie('rotateRight');
     document.getElementById('shiftLeftValue')
-	.innerHTML = readCookie('c_shiftLeft');
+	.innerHTML = readCookie('shiftLeft');
     document.getElementById('shiftRightValue')
-	.innerHTML = readCookie('c_shiftRight');
+	.innerHTML = readCookie('shiftRight');
     document.getElementById('softDropValue')
-	.innerHTML = readCookie('c_softDrop');
+	.innerHTML = readCookie('softDrop');
     document.getElementById('hardDropValue')
-	.innerHTML = readCookie('c_hardDrop');
+	.innerHTML = readCookie('hardDrop');
     document.getElementById('swapValue')
-	.innerHTML = readCookie('c_swap');
+	.innerHTML = readCookie('swap');
 }
 
 function controlsUnitClicked(controlName) {
@@ -100,7 +100,7 @@ function controlsUnitClicked(controlName) {
 	stopPollingInput();
     }
     curControl = {
-	name: 'c_' + controlName,
+	name:  controlName,
 	containerId: controlName + 'Div'
     };
 
@@ -123,13 +123,13 @@ function stopPollingInput() {
 }
 
 function findWhereKeyUsed(key) {
-    var cookies = ['c_rotateLeft',
-		   'c_rotateRight',
-		   'c_shiftLeft',
-		   'c_shiftRight',
-		   'c_softDrop',
-		   'c_hardDrop',
-		   'c_swap'],
+    var cookies = ['rotateLeft',
+		   'rotateRight',
+		   'shiftLeft',
+		   'shiftRight',
+		   'softDrop',
+		   'hardDrop',
+		   'swap'],
     i;
 
     for (i = 0; i < cookies.length; i += 1) {

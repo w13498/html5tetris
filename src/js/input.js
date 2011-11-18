@@ -5,7 +5,6 @@ var availKeys = [
     "shift",
     "ctrl",
     "alt",
-    "esc",
     "space",
     "pageup",
     "pagedown",

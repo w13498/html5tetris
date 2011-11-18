@@ -13,7 +13,8 @@ GAME_SRC = \
 	src/game/Game.js \
 	src/game/Game_Logic.js \
 	src/game/Button.js \
-	src/game/tetris.js
+	src/game/tetris.js \
+	src/game/gameControls.js
 
 STATIC_CONTENT = \
 	src/js/json-minified.js \
