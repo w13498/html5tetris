@@ -101,12 +101,34 @@ class HSTablesHandler(webapp.RequestHandler):
                     }));
 
 
+class HSPurgeHandler(webapp.RequestHandler):
+    def get(self):
+        topScoreQ = db.GqlQuery("SELECT * FROM Score ORDER BY score DESC")
+        topScores = topScoreQ.fetch(100)
+        
+        todayString = datetime.date.today().isoformat()
+        dailyScoreQ = db.GqlQuery("SELECT * FROM Score WHERE date = '%s' ORDER By score DESC" % (todayString))
+        dailyScores = dailyScoreQ.fetch(100)
 
+        keepSet = set()
+        for score in topScores:
+            keepSet.add(score.key())
+        for score in dailyScores:
+            keepSet.add(score.key())
+
+        allScores = db.GqlQuery("SELECT * FROM Score")
+        
+        # remove the values that are not in the top 100 or daily 100
+        for score in allScores:
+            if score.key() not in keepSet:
+                score.delete()
+        
 application = webapp.WSGIApplication([
         ('/score/postGame', HSPostGameHandler),
         ('/score/reportScore', HSReportScoreHandler),
         ('/score/apply', HSApplyNameHandler),
-        ('/score/tables', HSTablesHandler)
+        ('/score/tables', HSTablesHandler),
+        ('/score/purge', HSPurgeHandler)
         ], debug=True)
 
 def main():

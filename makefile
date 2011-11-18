@@ -25,8 +25,7 @@ STATIC_CONTENT = \
 	src/game/jawsjs.js \
 	src/js/input.js \
 	src/js/controls.js \
-	src/js/cookie.js \
-	favicon.ico
+	src/js/cookie.js
 
 STATIC_CONTENT_EXPLICIT = \
 	src/html/about.htm \
@@ -62,7 +61,8 @@ WEB_APP_SRC = \
 	src/webapp/app.yaml \
 	src/webapp/tetris.py \
 	src/webapp/highscore.py \
-	src/webapp/index.yaml
+	src/webapp/index.yaml \
+	favicon.ico
 
 
 debug: DIR = debug
