@@ -51,14 +51,22 @@ function Tetris(controller) {
     
 
     this.setup = function () {
+	// find the keys to stop	
+	var stoppedKeys = [],
+	curAction, i;
+	for (curAction in inputAssignments) {
+	    stoppedKeys = stoppedKeys.concat(inputAssignments[curAction]);
+	}
+	jaws.preventDefaultKeys(stoppedKeys);
+
+
 	Tetris.currentInstance = self;
-	game = new Game();
+	game = new Game(inputAssignments);
 
 	continueButton = new Button({image: 'media/buttons/continue.png', x: 250, y: 150});
 	restartButton = new Button({image: 'media/buttons/restart.png', x: 250, y: 200});
 	
 	background = new Background();
-	jaws.preventDefaultKeys(['up', 'down', 'left', 'right', 'space', 'z', 'x', 'esc', 'c', 'shift']);
 
 	timeOffset = (new Date()).getTime();
     };
@@ -175,6 +183,8 @@ function Tetris(controller) {
 }
 
 window.onload = function () {
+    loadGameControls();
+
     jaws.assets.add('media/blueblock.png');
     jaws.assets.add('media/cyanblock.png');
     jaws.assets.add('media/greenblock.png');

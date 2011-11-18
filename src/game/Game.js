@@ -1,4 +1,4 @@
-function Game() {
+function Game(inputMapping) {
     var thisObject = this,
     i;
 
@@ -51,7 +51,7 @@ function Game() {
     this.occupiedPositions = {};
 
     this.input = {
-	left: { 
+	shiftLeft: { 
 	    autoRepeat: true,
 	    handler: function () {
 		if (thisObject.controlGroup.shift(true)) {
@@ -59,7 +59,7 @@ function Game() {
 		}
 	    }
 	},
-	right: { 
+	shiftRight: { 
 	    autoRepeat: true,
 	    handler: function() {
 		if (thisObject.controlGroup.shift(false)) {
@@ -67,7 +67,7 @@ function Game() {
 		}
 	    }
 	},
-	down: {
+	softDrop: {
 	    autoRepeat: true,
 	    preCharged: true,
 	    handler: function() {
@@ -75,34 +75,27 @@ function Game() {
 		thisObject.scoreTracker.softDrop();
 	    }
 	},
-	space: { handler: function() {
+	hardDrop: { handler: function() {
 	    var dist = thisObject.controlGroup.fall();
 	    thisObject.scoreTracker.hardDrop(dist);
 	    thisObject.lockBlocks();
 	}},
-	z: { handler: function() {
+	rotateLeft: { handler: function() {
 	    if (thisObject.controlGroup.turn(false)) {
 		thisObject.resetLockCounter(true);
 	    }
 	}},
-	up: { handler: function() {
+	rotateRight: { handler: function() {
 	    if (thisObject.controlGroup.turn(true)) {
 		thisObject.resetLockCounter(true);
 	    }
 	}},
-	x: { handler: function() {
-	    if (thisObject.controlGroup.turn(true)) {
-		thisObject.resetLockCounter(true);
-	    }
-	}},
-	c: { handler: function() {
-	    thisObject.swap();
-	}},
-	shift: { handler: function() {
+	swap: { handler: function() {
 	    thisObject.swap();
 	}}
-
     };
+
+    this.inputMapping = inputMapping;
 }
 
 /**
@@ -146,13 +139,24 @@ Game.prototype.newBlock = function (calledBySwap) {
 */
 Game.prototype.processInput = function(dTime) {
     var curInput,
-    keyName;
+    keyName,
+    curKeys,
+    pressed,
+    curInput,
+    i;
 
-    for (keyName in this.input) {
-	curInput = this.input[keyName];
+    for (actionType in this.inputMapping) {
+	curKeys = this.inputMapping[actionType];
+	curInput = this.input[actionType];
+	pressed = false;
+	for (i = 0; i < curKeys.length; i += 1) {
+	    if (jaws.pressed(curKeys[i])) {
+		pressed = true;
+	    }
+	}
 	
 	//  if the key is down
-	if (jaws.pressed(keyName)) {
+	if (pressed) {
 	    // if it is a 'press' frame
 	    if (!curInput.lastState) {
 		curInput.handler();
