@@ -17,6 +17,8 @@ function onControlsLoad() {
 	setDefaultControls();
     }
 
+    configureAutoRepeat();
+
     controlsLoaded = true;
 }
 
@@ -47,7 +49,7 @@ function setDefaultControls() {
 	.innerHTML = 'SHIFT, C';
 }
 
-function configureCustomControls(fromCookie) {
+function configureCustomControls(fromCookie, fromThreshold) {
     stopPollingInput();
 
     document.getElementById('instructionsDefault').setAttribute('class', 'noDisplay');
@@ -66,7 +68,7 @@ function configureCustomControls(fromCookie) {
 
 	createCookie('customControls', 'TRUE', 1000);
     }
-    
+
     // assign all of the GUI elements based on the cookie
     document.getElementById('rotateLeftValue')
 	.innerHTML = readCookie('rotateLeft');
@@ -85,16 +87,16 @@ function configureCustomControls(fromCookie) {
 }
 
 function controlsUnitClicked(controlName) {
-    document.getElementById('instructionsDefault').setAttribute('class', 'noDisplay');
-    document.getElementById('instructionsCustom').setAttribute('class', 'noDisplay');
-    document.getElementById('instructionsPending').setAttribute('class', 'withDisplay');
-
     // if default controls, switch to custom
     if (readCookie('customControls') !== 'TRUE') {
 	// if no cookie, assign defaults, create the cookie
 	document.getElementById('customRadio').checked = true;
 	configureCustomControls();
     }
+
+    document.getElementById('instructionsDefault').setAttribute('class', 'noDisplay');
+    document.getElementById('instructionsCustom').setAttribute('class', 'noDisplay');
+    document.getElementById('instructionsPending').setAttribute('class', 'withDisplay');
 
     if (curControl !== null) {
 	stopPollingInput();
@@ -163,3 +165,38 @@ function reportKeyPressed(keyLower) {
     }
 }
 
+function configureAutoRepeat() {
+    var autoRepeat = readCookie('autoRepeat');
+    if (autoRepeat === null) {
+	autoRepeat = "50";
+	createCookie('autoRepeat', autoRepeat, 1000);
+    }
+    var threshold = readCookie('threshold');
+    if (threshold === null) {
+	threshold = "200";
+	createCookie("threshold", threshold, 1000);
+    }
+
+    document.getElementById('autoRepeatRange').value = autoRepeat;
+    document.getElementById('autoRepeatValue').innerHTML = autoRepeat;
+    document.getElementById('thresholdRange').value = threshold;
+    document.getElementById('thresholdValue').innerHTML = threshold;
+}
+
+function updateAutoRepeat() {
+    var newVal = document.getElementById('autoRepeatRange').value;
+    document.getElementById('autoRepeatValue').innerHTML = newVal;
+    createCookie('autoRepeat', newVal, 1000);
+}
+
+function updateThreshold() {
+    var newVal = document.getElementById('thresholdRange').value;
+    document.getElementById('thresholdValue').innerHTML = newVal;
+    createCookie('threshold', newVal, 1000);
+}
+
+function resetAutoRepeat() {
+    eraseCookie('autoRepeat');
+    eraseCookie('threshold');
+    configureAutoRepeat();
+}

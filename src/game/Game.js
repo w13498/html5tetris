@@ -1,4 +1,4 @@
-function Game(inputMapping) {
+function Game(inputMapping, autoRepeat, threshold) {
     var thisObject = this,
     i;
 
@@ -23,8 +23,8 @@ function Game(inputMapping) {
     this.timeToNextDrop = this.dropPeriod;
 
     // TODO: find the official values for these constants
-    this.keyChargeTime = 200;
-    this.keyRepeatTime = 50;
+    this.keyChargeTime = threshold;
+    this.keyRepeatTime = autoRepeat;
     
     this.bottomTimer = null;
     this.bottomLockTime = 500;
