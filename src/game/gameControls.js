@@ -10,6 +10,9 @@ var inputAssignments = {
     hardDrop: ['space']
 };
 
+var autoRepeatConfig = 50;
+var thresholdConfig = 200;
+
 function loadGameControls() {
     var cookies = ['rotateLeft',
 		   'rotateRight',
@@ -30,5 +33,14 @@ function loadGameControls() {
 	    // pass the controls into the config object
 	    inputAssignments[cookies[i]] = [curVal.toLowerCase()];
 	}
+    }
+
+    var autoRepeat = readCookie('autoRepeat');
+    if (autoRepeat !== null) {
+	autoRepeatConfig = parseInt(autoRepeat);
+    }
+    var threshold = readCookie('threshold');
+    if (threshold != null) {
+	thresholdConfig = parseInt(threshold);
     }
 }

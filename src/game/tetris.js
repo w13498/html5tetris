@@ -61,7 +61,7 @@ function Tetris(controller) {
 
 
 	Tetris.currentInstance = self;
-	game = new Game(inputAssignments);
+	game = new Game(inputAssignments, autoRepeatConfig, thresholdConfig);
 
 	continueButton = new Button({image: 'media/buttons/continue.png', x: 250, y: 150});
 	restartButton = new Button({image: 'media/buttons/restart.png', x: 250, y: 200});

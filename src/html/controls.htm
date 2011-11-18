@@ -98,6 +98,23 @@
 		Swap Peice: <span id="swapValue" class="controlsValue"></span>
 	      </div>
 	    </div>
+
+	    <div class="autoRepeatArea">
+	      Auto-Repeat Times:<br/>
+	      <button onclick="resetAutoRepeat();">Reset Auto-Repeat</button>
+
+	      <div class="autoRepeatForm">
+		<div class="autoRepeatDiv">
+		  AutoRepeat: <span id="autoRepeatValue"></span> ms <br/>
+		  <input id="autoRepeatRange" type="range" min="15" max="300" value="50" step="5" onchange="updateAutoRepeat();"/>
+		</div>
+		<div class="thresholdDiv">
+		  Repeat Charge: <span id="thresholdValue"></span> ms <br/>
+		  <input id="thresholdRange" type="range" min="15" max="500" value="200" step="5" onchange="updateThreshold();"/>
+		</div>
+	      </div>
+	    </div>
+
 	  </div>
 	</td>
 	<td width="20"> </td>
