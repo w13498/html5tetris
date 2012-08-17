@@ -1,0 +1,55 @@
+##############################################################
+Legal Stuff:
+##############################################################
+
+This code is under Apache License 2.0. I have no idea what
+that means.
+
+Please keep Leigh informed about any deployments/modifications
+not commited back to the original project at:
+leigh.pauls@gmail.com
+
+If possible, please reference the original project site:
+https://code.google.com/p/html5tetris/
+or
+leighpauls.com
+on any derivitive deployments.
+
+##############################################################
+Building:
+##############################################################
+
+To make a debug build(un-minified), from this directory:
+> make debug
+
+To make a release build (yui-compressed), from this directory:
+> make release
+
+
+##############################################################
+Running:
+##############################################################
+
+To run those within a local server, first get the appropriate
+python sever from:
+https://developers.google.com/appengine/downloads
+
+I've got it working with python 2.7, and SDK 1.7.0-2012-06-26
+
+To run the debug server, from this directory:
+
+/path/to/.../google_appengine/dev_appserver.py debug/
+
+For release:
+
+/path/to/.../google_appengine/dev_appserver.py deploy/
+
+##############################################################
+Notes:
+##############################################################
+
+This app uses an old version of jawsjs for rendering, which is
+completely html5.
+
+A lot of code in this project may be crap. I wrote/commited a
+lot of it drunk. Appologies in advance.
