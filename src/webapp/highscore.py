@@ -23,22 +23,17 @@ class HSPostGameHandler(webapp.RequestHandler):
                                "WHERE tempRef = %s" % (self.request.get('tempRef')))
         myScore = myScoreQ[0]
 
-        totalRankQ = db.GqlQuery("SELECT * FROM Score WHERE score > %s" % (myScore.score))
         dailyRankQ = db.GqlQuery("SELECT * FROM Score WHERE date = '%s' AND score > %s"
                                  % (myScore.date, myScore.score))
         
-        totalRank = len(totalRankQ.fetch(100)) + 1
         dailyRank = len(dailyRankQ.fetch(1000)) + 1
 
-        if totalRank > 100:
-            totalRank = -1
         if dailyRank > 100:
             dailyRank = -1
 
         self.response.out.write(simplejson.dumps({
                     'userScore': myScore.score,
                     'tempRef': myScore.tempRef,
-                    'totalRank': totalRank,
                     'dailyRank': dailyRank
                     }) + '\n');
 
@@ -46,6 +41,7 @@ class HSPostGameHandler(webapp.RequestHandler):
 class HSReportScoreHandler(webapp.RequestHandler):
     def post(self):
         # TODO: make a real anti-fake-score-abuse system
+        # don't care about abuse, blowing away long-term score storage
         score = int(self.request.get('gthbyu'))/17
         tempRef = int(random.random() * 100000000)
         # TODO: CGI clean name input
