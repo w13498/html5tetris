@@ -1,8 +1,7 @@
 application: twitchtetris
 version: 1-2-5-without-total-hs
-runtime: python27
+runtime: python
 api_version: 1
-threadsafe: false
 
 handlers:
 - url: /
@@ -23,7 +22,3 @@ handlers:
 - url: /(.+)
   static_files: tetris/\1
   upload: tetris/(.*)
-
-libraries:
-- name: django
-  version: "1.5"
